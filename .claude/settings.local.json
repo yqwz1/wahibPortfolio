@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3131/index.html)",
+      "Bash(pkill -f \"http.server 3132\")",
+      "Bash(pkill -f \"http.server 3133\")",
+      "Bash(pkill -f \"http.server 3134\")",
+      "Bash(pkill -f \"http.server 3135\")"
+    ]
+  }
+}
