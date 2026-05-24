@@ -74,14 +74,14 @@
         #cursor-dot {
             position: fixed; width: 8px; height: 8px;
             background: var(--amber); border-radius: 50%;
-            pointer-events: none; z-index: 9999;
+            pointer-events: none; z-index: 999999;
             transform: translate(-50%,-50%);
             transition: width 200ms, height 200ms;
         }
         #cursor-ring {
             position: fixed; width: 32px; height: 32px;
             border: 2px solid var(--amber); border-radius: 50%;
-            pointer-events: none; z-index: 9998;
+            pointer-events: none; z-index: 999998;
             transform: translate(-50%,-50%);
             opacity: 0.55;
             transition: width 300ms var(--spring), height 300ms var(--spring), opacity 200ms;
@@ -1856,6 +1856,70 @@
             box-shadow: 3px 3px 0 var(--amber-dark),
                         0 0 12px rgba(245,166,35,0.2);
         }
+
+        /* ============================================================
+           LIGHTBOX
+        ============================================================ */
+        #lightbox {
+            position: fixed; inset: 0; z-index: 99000;
+            background: rgba(18,14,10,0.92);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 240ms ease;
+            backdrop-filter: blur(6px);
+        }
+        #lightbox.open {
+            opacity: 1; pointer-events: all;
+        }
+        #lightbox img {
+            max-width: 92vw; max-height: 90vh;
+            border-radius: 4px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+            transform: scale(0.88);
+            transition: transform 280ms cubic-bezier(0.34,1.56,0.64,1);
+            object-fit: contain;
+        }
+        #lightbox.open img {
+            transform: scale(1);
+        }
+        #lightbox-close {
+            position: absolute; top: 1.2rem; right: 1.4rem;
+            width: 40px; height: 40px;
+            background: rgba(255,255,255,0.12);
+            border: 1.5px solid rgba(255,255,255,0.25);
+            border-radius: 50%; color: #fff;
+            font-size: 1.2rem; line-height: 1;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: background 180ms, transform var(--spring);
+        }
+        #lightbox-close:hover { background: var(--amber); color: var(--ink); transform: rotate(90deg) scale(1.1); }
+        .lb-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 48px; height: 48px;
+            background: rgba(255,255,255,0.12);
+            border: 1.5px solid rgba(255,255,255,0.25);
+            border-radius: 50%; color: #fff;
+            font-size: 1.3rem; line-height: 1;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: background 180ms, transform 180ms cubic-bezier(0.34,1.56,0.64,1);
+            user-select: none;
+        }
+        #lb-prev { left: 1.4rem; }
+        #lb-next { right: 1.4rem; }
+        .lb-arrow:hover { background: var(--amber); color: var(--ink); border-color: var(--amber); }
+        #lb-prev:hover { transform: translateY(-50%) scale(1.15) rotate(-5deg); }
+        #lb-next:hover { transform: translateY(-50%) scale(1.15) rotate(5deg); }
+        .lb-arrow:disabled { opacity: 0.18; cursor: default; pointer-events: none; }
+        .lb-counter {
+            position: absolute; bottom: 1.1rem; left: 50%; transform: translateX(-50%);
+            font-family: var(--font-mono); font-size: 0.7rem;
+            color: rgba(255,255,255,0.55);
+            background: rgba(0,0,0,0.35); padding: 0.2rem 0.7rem; border-radius: 999px;
+            pointer-events: none;
+        }
+        .ppage-photo img { cursor: zoom-in; }
     </style>
 
     <!-- Anti-FOUC: set theme before first paint -->
@@ -3925,22 +3989,50 @@ new IntersectionObserver(entries=>{
 /* ============================================================
    CONTACT FORM
 ============================================================ */
+const W3F_KEY = '93bee5bb-c0cb-4aad-b70b-32606d3811ad'; // ← paste your key from web3forms.com
+
 const msgEl    = document.getElementById('cf-msg');
 const charCnt  = document.getElementById('char-cnt');
 msgEl.addEventListener('input', ()=> charCnt.textContent = msgEl.value.length);
 
-document.getElementById('contact-form').addEventListener('submit', e=>{
+document.getElementById('contact-form').addEventListener('submit', async e=>{
     e.preventDefault();
-    const btn = document.getElementById('submit-btn');
-    btn.textContent='Sending...'; btn.disabled=true;
-    setTimeout(()=>{
-        btn.textContent='Sent! ✓'; btn.style.background='var(--teal)';
-        showToast('Message sent! I\'ll get back to you soon.');
-        setTimeout(()=>{
-            btn.textContent='Send it! →'; btn.style.background=''; btn.disabled=false;
-            e.target.reset(); charCnt.textContent='0';
-        },4000);
-    },1500);
+    const form = e.target;
+    const btn  = document.getElementById('submit-btn');
+    btn.textContent = 'Sending...'; btn.disabled = true;
+
+    const data = {
+        access_key: W3F_KEY,
+        name:       form.name.value,
+        email:      form.email.value,
+        subject:    'Portfolio contact: ' + form.subject.value,
+        message:    form.message.value,
+        from_name:  'Wahib Portfolio',
+        replyto:    form.email.value,
+    };
+
+    try {
+        const res  = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(data),
+        });
+        const json = await res.json();
+        if(json.success){
+            btn.textContent = 'Sent! ✓'; btn.style.background = 'var(--teal)';
+            showToast('Message sent! I\'ll get back to you soon.');
+            setTimeout(()=>{
+                btn.textContent = 'Send it! →'; btn.style.background = ''; btn.disabled = false;
+                form.reset(); charCnt.textContent = '0';
+            }, 4000);
+        } else {
+            throw new Error(json.message || 'Send failed');
+        }
+    } catch(err) {
+        btn.textContent = 'Try again'; btn.style.background = 'var(--red-pin)'; btn.disabled = false;
+        showToast('Oops — something went wrong. Try emailing directly!', 4000);
+        console.error('Contact form error:', err);
+    }
 });
 
 /* Copy email */
@@ -4001,6 +4093,86 @@ document.addEventListener('keydown', e=>{
         if(!localStorage.getItem('wahib-theme')){
             html.setAttribute('data-theme', e.matches ? 'dark' : 'light');
         }
+    });
+})();
+
+/* ============================================================
+   LIGHTBOX
+============================================================ */
+(function(){
+    const lb      = document.createElement('div');
+    lb.id         = 'lightbox';
+    const img     = document.createElement('img');
+    const close   = document.createElement('button');
+    const btnPrev = document.createElement('button');
+    const btnNext = document.createElement('button');
+    const counter = document.createElement('div');
+
+    close.id   = 'lightbox-close';
+    close.innerHTML = '✕';
+    close.setAttribute('aria-label', 'Close');
+
+    btnPrev.id = 'lb-prev';
+    btnPrev.className = 'lb-arrow';
+    btnPrev.innerHTML = '&#8592;';
+    btnPrev.setAttribute('aria-label', 'Previous');
+
+    btnNext.id = 'lb-next';
+    btnNext.className = 'lb-arrow';
+    btnNext.innerHTML = '&#8594;';
+    btnNext.setAttribute('aria-label', 'Next');
+
+    counter.className = 'lb-counter';
+
+    lb.appendChild(btnPrev);
+    lb.appendChild(img);
+    lb.appendChild(btnNext);
+    lb.appendChild(close);
+    lb.appendChild(counter);
+    document.body.appendChild(lb);
+
+    let images = [];
+    let current = 0;
+
+    function show(n){
+        current = Math.max(0, Math.min(images.length - 1, n));
+        const el = images[current];
+        img.src = el.src;
+        img.alt = el.alt || '';
+        counter.textContent = (current + 1) + ' / ' + images.length;
+        btnPrev.disabled = current === 0;
+        btnNext.disabled = current === images.length - 1;
+    }
+
+    function openAt(index){
+        images = [...document.querySelectorAll('.ppage-photo img')];
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        show(index);
+    }
+
+    function closeLb(){
+        lb.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    close.addEventListener('click', closeLb);
+    btnPrev.addEventListener('click', e=>{ e.stopPropagation(); show(current - 1); });
+    btnNext.addEventListener('click', e=>{ e.stopPropagation(); show(current + 1); });
+    lb.addEventListener('click', e=>{ if(e.target === lb) closeLb(); });
+    document.addEventListener('keydown', e=>{
+        if(!lb.classList.contains('open')) return;
+        if(e.key === 'Escape')       closeLb();
+        if(e.key === 'ArrowLeft')  { e.preventDefault(); show(current - 1); }
+        if(e.key === 'ArrowRight') { e.preventDefault(); show(current + 1); }
+    });
+
+    document.querySelectorAll('.ppage-photo img').forEach((el, i)=>{
+        el.addEventListener('click', e=>{
+            e.stopPropagation();
+            const all = [...document.querySelectorAll('.ppage-photo img')];
+            openAt(all.indexOf(el));
+        });
     });
 })();
 </script>

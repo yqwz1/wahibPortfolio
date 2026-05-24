@@ -6,7 +6,8 @@
       "Bash(pkill -f \"http.server 3132\")",
       "Bash(pkill -f \"http.server 3133\")",
       "Bash(pkill -f \"http.server 3134\")",
-      "Bash(pkill -f \"http.server 3135\")"
+      "Bash(pkill -f \"http.server 3135\")",
+      "Bash(npx --yes serve -l 3131 .)"
     ]
   }
 }
