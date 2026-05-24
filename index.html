@@ -1860,12 +1860,69 @@
                 linear-gradient(90deg, rgba(139,121,96,0.045) 1px, transparent 1px);
             background-size:48px 48px; pointer-events:none;
         }
+        /* Search + sort controls */
+        .blog-controls {
+            max-width: 1100px; margin: 0 auto 2.5rem;
+            display: flex; gap: 1rem; flex-wrap: wrap;
+            align-items: center; justify-content: space-between;
+            position: relative;
+        }
+        .blog-search-wrap {
+            position: relative; flex: 1; min-width: 260px;
+        }
+        .blog-search-icon {
+            position: absolute; left: 0.85rem; top: 50%;
+            transform: translateY(-50%);
+            width: 16px; height: 16px;
+            color: var(--ink-muted); pointer-events: none;
+        }
+        .blog-search {
+            width: 100%;
+            padding: 0.7rem 1rem 0.7rem 2.4rem;
+            background: #fff;
+            border: 2px solid var(--paper-darker);
+            border-radius: 6px;
+            font-family: var(--font-body); font-size: 0.95rem;
+            color: var(--ink); outline: none;
+            transition: border-color var(--transition), box-shadow var(--transition);
+            box-shadow: var(--shadow-paper);
+            transform: rotate(-0.4deg);
+        }
+        .blog-search:focus {
+            border-color: var(--amber);
+            box-shadow: var(--shadow-paper), 0 0 0 3px rgba(232,162,74,0.15);
+        }
+        .blog-sort-wrap { display: flex; align-items: center; gap: 0.55rem; }
+        .blog-sort-label {
+            font-family: var(--font-hand); font-size: 1.05rem;
+            color: var(--ink-muted);
+        }
+        .blog-sort {
+            font-family: var(--font-body); font-size: 0.9rem;
+            background: #fff; color: var(--ink);
+            border: 2px solid var(--paper-darker);
+            padding: 0.55rem 0.9rem; border-radius: 6px;
+            outline: none; cursor: pointer;
+            box-shadow: var(--shadow-paper);
+            transform: rotate(0.4deg);
+            transition: border-color var(--transition);
+        }
+        .blog-sort:focus, .blog-sort:hover { border-color: var(--amber); }
+
+        .blog-no-results {
+            max-width: 1100px; margin: 1rem auto 0;
+            text-align: center;
+            font-family: var(--font-hand); font-size: 1.4rem;
+            color: var(--ink-muted); padding: 2rem 1rem;
+        }
+
         .blog-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 2rem; max-width: 1100px; margin: 0 auto;
             position: relative;
         }
+        .blog-grid.empty { min-height: 0; }
         .blog-loading {
             grid-column: 1 / -1; text-align: center;
             font-family: var(--font-hand); color: var(--ink-muted); padding: 2rem;
@@ -1922,6 +1979,49 @@
             color: var(--ink-muted); padding: 0.15rem 0.5rem; border-radius: 4px;
             text-transform: lowercase;
         }
+        .blog-card-foot {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 0.85rem;
+        }
+
+        /* Like button — heart with count */
+        @keyframes heart-pop {
+            0%   { transform: scale(1); }
+            30%  { transform: scale(1.4) rotate(-8deg); }
+            60%  { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        .like-btn {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            background: transparent; border: 1.5px solid var(--paper-darker);
+            color: var(--ink-muted);
+            font-family: var(--font-mono); font-size: 0.75rem;
+            padding: 0.3rem 0.7rem; border-radius: 999px;
+            cursor: pointer;
+            transition: border-color var(--transition), color var(--transition),
+                        background var(--transition), transform var(--spring);
+        }
+        .like-btn svg {
+            width: 14px; height: 14px;
+            transition: fill var(--transition), stroke var(--transition);
+        }
+        .like-btn:hover {
+            border-color: var(--red-pin); color: var(--red-pin);
+            background: rgba(201,97,74,0.06);
+            transform: translateY(-1px) rotate(-2deg);
+        }
+        .like-btn.liked {
+            border-color: var(--red-pin);
+            color: var(--red-pin);
+            background: rgba(201,97,74,0.12);
+        }
+        .like-btn.liked svg { fill: var(--red-pin); stroke: var(--red-pin); }
+        .like-btn.pop svg { animation: heart-pop 480ms ease; }
+        .like-btn-lg {
+            font-family: var(--font-hand); font-size: 1.05rem;
+            padding: 0.55rem 1.2rem; gap: 0.55rem;
+        }
+        .like-btn-lg svg { width: 18px; height: 18px; }
         /* Blog modal viewer */
         #blog-modal {
             position: fixed; inset: 0; z-index: 99000;
@@ -3676,8 +3776,30 @@
             <h2 class="section-title">From the Notebook</h2>
         </div>
         <p class="jams-summary">Devlogs, Unity tips, jam writeups — fresh from the workbench.</p>
+
+        <!-- Search + sort controls -->
+        <div class="blog-controls">
+            <div class="blog-search-wrap">
+                <svg class="blog-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="search" id="blog-search" class="blog-search" placeholder="Search posts by title or tag…" autocomplete="off">
+            </div>
+            <div class="blog-sort-wrap">
+                <label for="blog-sort" class="blog-sort-label">Sort by</label>
+                <select id="blog-sort" class="blog-sort">
+                    <option value="newest">Newest first</option>
+                    <option value="oldest">Oldest first</option>
+                    <option value="liked">Most liked</option>
+                </select>
+            </div>
+        </div>
+
         <div id="blog-grid" class="blog-grid">
             <div class="blog-loading">Loading posts…</div>
+        </div>
+        <div id="blog-no-results" class="blog-no-results" hidden>
+            <span>No posts match that.</span>
         </div>
 
         <!-- ===== Subscribe box ===== -->
@@ -3741,9 +3863,12 @@
         <button id="blog-modal-close" aria-label="Close">✕</button>
         <article id="blog-modal-content"></article>
         <div class="blog-modal-footer">
-            <a id="blog-share-li" class="btn-primary" href="#" target="_blank" rel="noopener">
-                Share on LinkedIn →
-            </a>
+            <button id="blog-modal-like" class="like-btn like-btn-lg" aria-label="Like this post">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+                <span class="like-count">0</span>
+            </button>
         </div>
     </div>
 </div>
@@ -4498,12 +4623,69 @@ document.addEventListener('keydown', e=>{
    BLOG
 ============================================================ */
 (function(){
-    const grid    = document.getElementById('blog-grid');
-    const modal   = document.getElementById('blog-modal');
-    const content = document.getElementById('blog-modal-content');
-    const closeBtn= document.getElementById('blog-modal-close');
-    const shareBtn= document.getElementById('blog-share-li');
+    const grid        = document.getElementById('blog-grid');
+    const modal       = document.getElementById('blog-modal');
+    const content     = document.getElementById('blog-modal-content');
+    const closeBtn    = document.getElementById('blog-modal-close');
+    const modalLikeBtn= document.getElementById('blog-modal-like');
+    const searchInp   = document.getElementById('blog-search');
+    const sortSel     = document.getElementById('blog-sort');
+    const noResults   = document.getElementById('blog-no-results');
     if(!grid) return;
+
+    const LIKES_NS  = 'wahib-blog-v1';
+    const LIKED_KEY = 'wahib-blog-liked';
+    let allPosts        = [];
+    let likeCounts      = {}; // slug -> number
+    let likedLocally    = new Set(JSON.parse(localStorage.getItem(LIKED_KEY) || '[]'));
+    let currentPostSlug = null;
+
+    function saveLiked(){
+        localStorage.setItem(LIKED_KEY, JSON.stringify([...likedLocally]));
+    }
+
+    // Counter API — Abacus (free, no auth). Falls back to local-only on failure.
+    async function fetchLikeCount(slug){
+        try {
+            const res = await fetch(
+                `https://abacus.jasoncameron.dev/get/${LIKES_NS}/${slug}`,
+                { cache: 'no-cache' });
+            if(!res.ok) throw 0;
+            const j = await res.json();
+            return typeof j.value === 'number' ? j.value : 0;
+        } catch { return likeCounts[slug] || 0; }
+    }
+    async function incrementLike(slug){
+        try {
+            const res = await fetch(
+                `https://abacus.jasoncameron.dev/hit/${LIKES_NS}/${slug}`,
+                { cache: 'no-cache' });
+            if(!res.ok) throw 0;
+            const j = await res.json();
+            return typeof j.value === 'number' ? j.value : (likeCounts[slug]||0)+1;
+        } catch { return (likeCounts[slug]||0) + 1; }
+    }
+
+    function renderLikeBtn(btn, slug){
+        if(!btn) return;
+        btn.dataset.slug = slug;
+        const isLiked = likedLocally.has(slug);
+        btn.classList.toggle('liked', isLiked);
+        const span = btn.querySelector('.like-count');
+        if(span) span.textContent = likeCounts[slug] || 0;
+    }
+
+    async function handleLikeClick(slug, btn){
+        if(likedLocally.has(slug)) return; // one like per browser
+        likedLocally.add(slug); saveLiked();
+        btn.classList.add('liked', 'pop');
+        setTimeout(()=> btn.classList.remove('pop'), 500);
+        const newCount = await incrementLike(slug);
+        likeCounts[slug] = newCount;
+        // update every visible button for that slug
+        document.querySelectorAll('.like-btn[data-slug="'+slug+'"] .like-count')
+            .forEach(el => el.textContent = newCount);
+    }
 
     // Minimal markdown renderer (headings, paragraphs, bold, italic, links, lists, code, images, blockquotes)
     function escapeHTML(s){
@@ -4584,44 +4766,93 @@ document.addEventListener('keydown', e=>{
         } catch { return iso; }
     }
 
+    function buildCard(post){
+        const card = document.createElement('a');
+        card.className = 'blog-card';
+        card.href = '#blog-' + post.slug;
+        card.dataset.slug = post.slug;
+        const heroHTML = post.hero
+            ? '<div class="blog-card-hero"><img src="'+post.hero+'" alt="'+escapeHTML(post.title)+'"></div>'
+            : '<div class="blog-card-hero"><div class="blog-card-hero-empty">✦</div></div>';
+        const tagsHTML = (post.tags || []).map(t=>
+            '<span class="blog-card-tag">'+escapeHTML(t)+'</span>').join('');
+        const likeCount = likeCounts[post.slug] || 0;
+        const isLiked   = likedLocally.has(post.slug);
+        card.innerHTML = heroHTML +
+            '<div class="blog-card-body">' +
+                '<div class="blog-card-meta">'+formatDate(post.date)+
+                    (post.readTime ? ' &nbsp;·&nbsp; '+escapeHTML(post.readTime) : '')+
+                '</div>' +
+                '<h3 class="blog-card-title">'+escapeHTML(post.title)+'</h3>' +
+                '<p class="blog-card-excerpt">'+escapeHTML(post.excerpt||'')+'</p>' +
+                '<div class="blog-card-foot">' +
+                    '<div class="blog-card-tags">'+tagsHTML+'</div>' +
+                    '<button class="like-btn'+(isLiked?' liked':'')+'" data-slug="'+post.slug+'" aria-label="Like">' +
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                            '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' +
+                        '</svg>' +
+                        '<span class="like-count">'+likeCount+'</span>' +
+                    '</button>' +
+                '</div>' +
+            '</div>';
+        card.addEventListener('click', e=>{
+            // ignore clicks on the like button itself
+            if(e.target.closest('.like-btn')) return;
+            e.preventDefault(); openPost(post);
+        });
+        const likeBtn = card.querySelector('.like-btn');
+        likeBtn.addEventListener('click', e=>{
+            e.preventDefault(); e.stopPropagation();
+            handleLikeClick(post.slug, likeBtn);
+        });
+        return card;
+    }
+
+    function applyFilters(){
+        const q    = (searchInp?.value || '').trim().toLowerCase();
+        const sort = sortSel?.value || 'newest';
+        let list = allPosts.slice();
+        if(q){
+            list = list.filter(p=>{
+                const hay = (p.title+' '+(p.excerpt||'')+' '+(p.tags||[]).join(' ')).toLowerCase();
+                return hay.includes(q);
+            });
+        }
+        list.sort((a,b)=>{
+            if(sort === 'oldest') return (a.date||'').localeCompare(b.date||'');
+            if(sort === 'liked')  return (likeCounts[b.slug]||0) - (likeCounts[a.slug]||0);
+            return (b.date||'').localeCompare(a.date||''); // newest
+        });
+        grid.innerHTML = '';
+        list.forEach(p => grid.appendChild(buildCard(p)));
+        if(noResults) noResults.hidden = list.length > 0;
+        grid.classList.toggle('empty', list.length === 0);
+    }
+
     async function loadBlogs(){
         try {
             const res = await fetch('blogs/posts.json', { cache: 'no-cache' });
             if(!res.ok) throw new Error('Failed to load posts.json');
             const data = await res.json();
-            const posts = (data.posts || []).slice().sort((a,b)=>
-                (b.date||'').localeCompare(a.date||''));
-            if(posts.length === 0){
+            allPosts = data.posts || [];
+            if(allPosts.length === 0){
                 grid.innerHTML = '<div class="blog-loading">No posts yet — check back soon!</div>';
                 return;
             }
-            grid.innerHTML = '';
-            posts.forEach(post=>{
-                const card = document.createElement('a');
-                card.className = 'blog-card';
-                card.href = '#blog-' + post.slug;
-                const heroHTML = post.hero
-                    ? '<div class="blog-card-hero"><img src="'+post.hero+'" alt="'+escapeHTML(post.title)+'"></div>'
-                    : '<div class="blog-card-hero"><div class="blog-card-hero-empty">✦</div></div>';
-                const tagsHTML = (post.tags || []).map(t=>
-                    '<span class="blog-card-tag">'+escapeHTML(t)+'</span>').join('');
-                card.innerHTML = heroHTML +
-                    '<div class="blog-card-body">' +
-                        '<div class="blog-card-meta">'+formatDate(post.date)+
-                            (post.readTime ? ' &nbsp;·&nbsp; '+escapeHTML(post.readTime) : '')+
-                        '</div>' +
-                        '<h3 class="blog-card-title">'+escapeHTML(post.title)+'</h3>' +
-                        '<p class="blog-card-excerpt">'+escapeHTML(post.excerpt||'')+'</p>' +
-                        '<div class="blog-card-tags">'+tagsHTML+'</div>' +
-                    '</div>';
-                card.addEventListener('click', e=>{ e.preventDefault(); openPost(post); });
-                grid.appendChild(card);
-            });
+            // Fetch all like counts in parallel (best-effort)
+            await Promise.all(allPosts.map(async p=>{
+                likeCounts[p.slug] = await fetchLikeCount(p.slug);
+            }));
+            applyFilters();
+
+            // Wire search & sort
+            if(searchInp) searchInp.addEventListener('input', applyFilters);
+            if(sortSel)   sortSel.addEventListener('change', applyFilters);
 
             // Auto-open if URL hash matches a post
             const hash = location.hash.replace('#blog-','');
             if(hash){
-                const match = posts.find(p=> p.slug === hash);
+                const match = allPosts.find(p => p.slug === hash);
                 if(match) openPost(match);
             }
         } catch(err){
@@ -4652,9 +4883,9 @@ document.addEventListener('keydown', e=>{
                     (post.readTime?' &nbsp;·&nbsp; '+escapeHTML(post.readTime):'')+'</div>' +
                 body + filesBlock;
 
-            // Wire LinkedIn share button (manual quick-share)
-            const url   = location.origin + location.pathname + '#blog-' + post.slug;
-            shareBtn.href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url);
+            // Wire the modal like button to this post
+            currentPostSlug = post.slug;
+            renderLikeBtn(modalLikeBtn, post.slug);
 
             modal.classList.add('open');
             modal.setAttribute('aria-hidden', 'false');
@@ -4682,6 +4913,12 @@ document.addEventListener('keydown', e=>{
     document.addEventListener('keydown', e=>{
         if(e.key === 'Escape' && modal.classList.contains('open')) closeModal();
     });
+
+    if(modalLikeBtn){
+        modalLikeBtn.addEventListener('click', ()=>{
+            if(currentPostSlug) handleLikeClick(currentPostSlug, modalLikeBtn);
+        });
+    }
 
     loadBlogs();
 
