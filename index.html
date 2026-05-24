@@ -2043,6 +2043,189 @@
         }
 
         /* ============================================================
+           SUBSCRIBE BOX
+        ============================================================ */
+        .subscribe-wrap {
+            position: relative;
+            max-width: 620px;
+            margin: 6rem auto 1rem;
+        }
+        @keyframes wiggle {
+            0%,100% { transform: rotate(var(--w-base, -3deg)); }
+            25%     { transform: rotate(calc(var(--w-base, -3deg) + 4deg)); }
+            50%     { transform: rotate(var(--w-base, -3deg)); }
+            75%     { transform: rotate(calc(var(--w-base, -3deg) - 4deg)); }
+        }
+        @keyframes float-bob {
+            0%,100% { transform: translateY(0) rotate(var(--f-rot, 0deg)); }
+            50%     { transform: translateY(-8px) rotate(calc(var(--f-rot, 0deg) + 3deg)); }
+        }
+        @keyframes draw-line {
+            from { stroke-dashoffset: 200; }
+            to   { stroke-dashoffset: 0; }
+        }
+        @keyframes pulse-glow {
+            0%,100% { box-shadow: 4px 4px 0 var(--amber-dark), 0 0 0 0 rgba(232,162,74,0.4); }
+            50%     { box-shadow: 4px 4px 0 var(--amber-dark), 0 0 0 12px rgba(232,162,74,0); }
+        }
+
+        /* Scribbly arrows pointing at the box */
+        .sub-arrow {
+            position: absolute;
+            width: 90px; height: 70px;
+            pointer-events: none; z-index: 3;
+        }
+        .sub-arrow-l { top: -30px; left: -60px; transform: rotate(-10deg); }
+        .sub-arrow-r { top: -30px; right: -60px; transform: rotate(10deg) scaleX(-1); }
+        .sub-arrow path { stroke-dasharray: 220; stroke-dashoffset: 220; }
+        .subscribe-wrap.in-view .sub-arrow path {
+            animation: draw-line 1.4s ease forwards;
+        }
+        .subscribe-wrap.in-view .sub-arrow-r path { animation-delay: 0.25s; }
+
+        /* Stickers around the box */
+        .sub-sticker {
+            position: absolute; z-index: 4;
+            font-size: 0.85rem;
+        }
+        .sub-sticker-1 {
+            top: -22px; left: 18%;
+            --sticker-rot: -8deg;
+            --w-base: -8deg;
+            animation: wiggle 3.2s ease-in-out infinite;
+        }
+        .sub-sticker-2 {
+            top: -8%; right: 6%;
+            --sticker-rot: 12deg;
+            --f-rot: 12deg;
+            animation: float-bob 3.6s ease-in-out infinite;
+            font-size: 0.7rem;
+        }
+        .sub-sticker-3 {
+            bottom: -22px; left: -34px;
+            --sticker-rot: -14deg;
+            --w-base: -14deg;
+            animation: wiggle 2.8s ease-in-out infinite 0.4s;
+            font-size: 0.75rem;
+        }
+        .sub-sticker-4 {
+            bottom: -10px; right: -22px;
+            --sticker-rot: 8deg;
+            --f-rot: 8deg;
+            animation: float-bob 4s ease-in-out infinite 0.6s;
+            font-size: 0.8rem;
+        }
+        @media (max-width: 600px) {
+            .sub-arrow, .sub-sticker-3, .sub-sticker-4 { display: none; }
+            .sub-sticker-1 { left: 10%; }
+            .sub-sticker-2 { right: 4%; }
+        }
+
+        /* The card itself */
+        .subscribe-card {
+            position: relative;
+            background: #fff;
+            padding: 2.5rem 2.5rem 2rem;
+            border-radius: 3px;
+            box-shadow: var(--shadow-paper);
+            transform: rotate(-0.8deg);
+            transition: transform var(--spring);
+            z-index: 2;
+            /* dashed scribbly border */
+            border: 2.5px dashed var(--amber);
+            outline: 2px dashed transparent;
+            outline-offset: 8px;
+        }
+        .subscribe-card:hover {
+            transform: rotate(0deg) translateY(-3px);
+        }
+
+        .sub-title {
+            font-family: var(--font-hand);
+            font-size: 2rem;
+            color: var(--ink);
+            margin-bottom: 0.4rem;
+            position: relative;
+            display: inline-block;
+        }
+        .sub-title-scribble {
+            position: absolute;
+            left: 0; right: 0; bottom: -6px;
+            width: 100%; height: 12px;
+            overflow: visible;
+        }
+        .sub-title-scribble path {
+            stroke-dasharray: 220; stroke-dashoffset: 220;
+        }
+        .subscribe-wrap.in-view .sub-title-scribble path {
+            animation: draw-line 1s ease 0.4s forwards;
+        }
+
+        .sub-desc {
+            font-size: 0.95rem;
+            line-height: 1.65;
+            color: var(--ink-light);
+            margin-bottom: 1.25rem;
+            max-width: 460px;
+        }
+
+        .sub-row {
+            display: flex; gap: 0.65rem;
+            flex-wrap: wrap;
+        }
+        .sub-input {
+            flex: 1; min-width: 200px;
+            padding: 0.7rem 1rem;
+            background: var(--paper);
+            border: 2px solid var(--paper-darker);
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--ink);
+            outline: none;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+        .sub-input:focus {
+            border-color: var(--amber);
+            box-shadow: 0 0 0 3px rgba(232,162,74,0.15);
+        }
+        .sub-btn {
+            font-family: var(--font-hand);
+            font-size: 1.15rem;
+            background: var(--amber); color: var(--ink);
+            border: none;
+            padding: 0.7rem 1.6rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transform: rotate(-1deg);
+            box-shadow: 4px 4px 0 var(--amber-dark);
+            transition: transform var(--spring), box-shadow var(--spring);
+            animation: pulse-glow 2.4s ease-in-out infinite;
+        }
+        .sub-btn:hover {
+            transform: rotate(1.5deg) translateY(-2px) scale(1.03);
+            box-shadow: 6px 6px 0 var(--amber-dark);
+            animation: none;
+        }
+        .sub-btn:active {
+            transform: rotate(-1deg) translateY(1px);
+            box-shadow: 2px 2px 0 var(--amber-dark);
+        }
+        .sub-btn:disabled { opacity: 0.6; cursor: wait; animation: none; }
+
+        .sub-msg {
+            font-family: var(--font-hand);
+            font-size: 1rem;
+            color: var(--green);
+            margin-top: 0.75rem;
+            min-height: 1.4rem;
+            opacity: 0;
+            transition: opacity 240ms;
+        }
+        .sub-msg.show { opacity: 1; }
+        .sub-msg.err  { color: var(--red-pin); }
+
+        /* ============================================================
            LIGHTBOX
         ============================================================ */
         #lightbox {
@@ -3496,6 +3679,59 @@
         <div id="blog-grid" class="blog-grid">
             <div class="blog-loading">Loading posts…</div>
         </div>
+
+        <!-- ===== Subscribe box ===== -->
+        <div class="subscribe-wrap">
+            <!-- Scribbly arrow doodle pointing at the box -->
+            <svg class="sub-arrow sub-arrow-l" viewBox="0 0 120 90" aria-hidden="true">
+                <path d="M5 20 Q 40 5, 60 25 T 110 70" stroke="#c4842a"
+                      stroke-width="2.4" fill="none" stroke-linecap="round"
+                      stroke-dasharray="0" />
+                <path d="M100 60 L 112 72 L 96 75 Z" fill="#c4842a"/>
+            </svg>
+            <svg class="sub-arrow sub-arrow-r" viewBox="0 0 120 90" aria-hidden="true">
+                <path d="M115 20 Q 80 5, 60 25 T 10 70" stroke="#4aa898"
+                      stroke-width="2.4" fill="none" stroke-linecap="round"/>
+                <path d="M20 60 L 8 72 L 24 75 Z" fill="#4aa898"/>
+            </svg>
+
+            <!-- Floating stickers around the box -->
+            <div class="sticker sticker-yellow sub-sticker sub-sticker-1">NO SPAM!</div>
+            <div class="sticker sticker-pink sticker-star sub-sticker sub-sticker-2">FRESH<br>POSTS</div>
+            <div class="sticker sticker-teal sticker-circle sub-sticker sub-sticker-3">✉<br>JOIN!</div>
+            <div class="sticker sticker-purple sub-sticker sub-sticker-4">unsub anytime</div>
+
+            <!-- The actual subscribe card -->
+            <form id="subscribe-form" class="subscribe-card" novalidate>
+                <!-- tape across the top -->
+                <div class="tape tape-amber" style="top:-12px; left:32%; transform:rotate(-3deg);"></div>
+
+                <!-- scribbly underlined title -->
+                <h3 class="sub-title">
+                    Stay in the loop!
+                    <svg class="sub-title-scribble" viewBox="0 0 200 12" aria-hidden="true">
+                        <path d="M2 6 Q 25 1, 50 7 T 100 5 T 150 8 T 198 4"
+                              stroke="#e8a24a" stroke-width="3"
+                              stroke-linecap="round" fill="none"/>
+                    </svg>
+                </h3>
+
+                <p class="sub-desc">
+                    Drop your email and get new devlogs, Unity tips, and jam writeups
+                    straight to your inbox. Roughly one post every couple of weeks.
+                </p>
+
+                <div class="sub-row">
+                    <input type="email" id="sub-email" name="email"
+                           class="sub-input" placeholder="you@cool-studio.com"
+                           required>
+                    <button type="submit" id="sub-btn" class="sub-btn">
+                        Subscribe! ✉
+                    </button>
+                </div>
+                <div class="sub-msg" id="sub-msg"></div>
+            </form>
+        </div>
     </div>
 </section>
 
@@ -4448,6 +4684,68 @@ document.addEventListener('keydown', e=>{
     });
 
     loadBlogs();
+
+    /* ===== Subscribe form ===== */
+    const subForm = document.getElementById('subscribe-form');
+    const subWrap = document.querySelector('.subscribe-wrap');
+    const subMsg  = document.getElementById('sub-msg');
+    const subBtn  = document.getElementById('sub-btn');
+    const subInp  = document.getElementById('sub-email');
+
+    // Trigger reveal animations (draw-line, etc) once
+    if(subWrap) subWrap.classList.add('in-view');
+
+    if(subForm){
+        subForm.addEventListener('submit', async e=>{
+            e.preventDefault();
+            const email = subInp.value.trim();
+            if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+                subMsg.textContent = 'Hmm, that email looks off — try again!';
+                subMsg.classList.add('show','err');
+                return;
+            }
+            subBtn.disabled = true;
+            const originalLabel = subBtn.textContent;
+            subBtn.textContent = 'Sending…';
+            subMsg.classList.remove('err','show');
+
+            try {
+                // Reuse the same Web3Forms key used by the contact form
+                const key = (typeof W3F_KEY !== 'undefined') ? W3F_KEY : 'YOUR_WEB3FORMS_ACCESS_KEY';
+                const res = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({
+                        access_key: key,
+                        subject:    '📬 New blog subscriber!',
+                        from_name:  'Wahib Blog Subscribe',
+                        email:      email,
+                        message:    'New blog subscriber: ' + email,
+                        replyto:    email,
+                    }),
+                });
+                const json = await res.json();
+                if(json.success){
+                    subForm.reset();
+                    subBtn.textContent = 'Thanks! 🎉';
+                    subMsg.textContent = 'You\'re in! Watch your inbox for the next post.';
+                    subMsg.classList.add('show'); subMsg.classList.remove('err');
+                    setTimeout(()=>{
+                        subBtn.disabled = false;
+                        subBtn.textContent = originalLabel;
+                    }, 4000);
+                } else {
+                    throw new Error(json.message || 'Subscribe failed');
+                }
+            } catch(err){
+                subBtn.disabled = false;
+                subBtn.textContent = originalLabel;
+                subMsg.textContent = 'Oops, something went wrong — try again?';
+                subMsg.classList.add('show','err');
+                console.error('Subscribe error:', err);
+            }
+        });
+    }
 })();
 
 /* ============================================================
