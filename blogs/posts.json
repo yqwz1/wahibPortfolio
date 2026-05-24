@@ -1,0 +1,14 @@
+{
+  "posts": [
+    {
+      "slug": "hello-world",
+      "title": "Hello — and why I started writing",
+      "date": "2026-05-24",
+      "readTime": "3 min read",
+      "excerpt": "First post! I'm going to use this space to document what I'm building, the bugs I hit, and the stuff I wish someone had told me when I started Unity.",
+      "tags": ["personal", "intro"],
+      "hero": "",
+      "files": []
+    }
+  ]
+}
