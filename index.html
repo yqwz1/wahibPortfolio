@@ -528,6 +528,7 @@
                 inset 0 0 30px rgba(180,140,80,0.12);
             font-family: var(--font-body);
             z-index: 6;
+            transition: transform var(--spring), box-shadow var(--spring);
         }
         .case-card::before {
             content: '';
@@ -638,6 +639,7 @@
                 4px 6px 14px rgba(30,18,5,0.32),
                 1px 1px 3px rgba(30,18,5,0.18);
             z-index: 7;
+            transition: transform var(--spring), box-shadow var(--spring);
         }
         .case-polaroid::before {
             content: '';
@@ -727,6 +729,23 @@
         .crime-row-3 .case-card { left: 30px; top: 50px; transform: rotate(-0.9deg); }
         .crime-row-3 .case-pin  { left: 188px; top: 38px; }
         .crime-row-3 .case-polaroid { right: 80px; top: 60px; transform: rotate(3deg); }
+
+        /* Hover — straighten + lift, matching site-wide spring */
+        .case-card:hover {
+            transform: rotate(0deg) translateY(-6px);
+            box-shadow:
+                8px 16px 32px rgba(40,25,10,0.38),
+                2px 3px 6px rgba(40,25,10,0.2),
+                inset 0 0 30px rgba(180,140,80,0.12);
+            z-index: 12;
+        }
+        .case-polaroid:hover {
+            transform: rotate(0deg) scale(1.04) translateY(-6px);
+            box-shadow:
+                8px 16px 32px rgba(30,18,5,0.42),
+                2px 3px 6px rgba(30,18,5,0.22);
+            z-index: 12;
+        }
 
         /* Mobile — single column, hide SVG strings */
         @media (max-width: 900px) {
