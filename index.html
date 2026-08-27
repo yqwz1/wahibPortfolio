@@ -1661,81 +1661,7 @@
         .postit-lbl  { font-family:var(--font-hand); font-size:0.85rem; color:var(--ink-light); margin-top:0.15rem; }
 
         /* ============================================================
-           FUNNY STICKY NOTES (scattered decoration)
-        ============================================================ */
-        .funny-notes {
-            position: absolute; inset: 0;
-            pointer-events: none; overflow: hidden;
-        }
-        .fnote {
-            position: absolute; width: 148px;
-            padding: 1.1rem 0.95rem 1.6rem;
-            font-family: var(--font-hand); font-size: 1rem; line-height: 1.45;
-            color: var(--ink);
-            transform: rotate(var(--fr, 0deg));
-            pointer-events: all;
-            border-radius: 2px;
-            overflow: hidden;
-            /* Paper grain texture — layered over per-instance bg color */
-            background-image:
-                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"),
-                repeating-linear-gradient(118deg,
-                    transparent 0, transparent 7px,
-                    rgba(255,255,255,0.05) 7px, rgba(255,255,255,0.05) 8px),
-                repeating-linear-gradient(28deg,
-                    transparent 0, transparent 9px,
-                    rgba(0,0,0,0.025) 9px, rgba(0,0,0,0.025) 10px);
-            box-shadow:
-                4px 5px 0 rgba(0,0,0,0.22),
-                0 1px 1px rgba(0,0,0,0.15),
-                0 2px 3px rgba(0,0,0,0.11),
-                0 6px 14px rgba(0,0,0,0.07),
-                0 16px 26px rgba(0,0,0,0.04),
-                inset 0 0 28px rgba(0,0,0,0.06);
-            transition: transform var(--spring), box-shadow var(--transition);
-        }
-        /* Sticky adhesive band at top */
-        .fnote::before {
-            content: '';
-            position: absolute; top: 0; left: 0; right: 0; height: 12px;
-            background: rgba(0,0,0,0.09);
-            border-radius: 2px 2px 0 0;
-        }
-        /* Page curl bottom-right */
-        .fnote::after {
-            content: '';
-            position: absolute; bottom: 0; right: 0;
-            width: 26px; height: 26px;
-            background: linear-gradient(225deg,
-                rgba(0,0,0,0.14) 44%,
-                rgba(255,255,255,0.32) 44%,
-                transparent 68%
-            );
-        }
-        .fnote:hover {
-            transform: rotate(0deg) scale(1.08) translateY(-6px);
-            z-index: 50;
-            box-shadow:
-                5px 7px 0 rgba(0,0,0,0.22),
-                0 2px 3px rgba(0,0,0,0.15),
-                0 6px 10px rgba(0,0,0,0.11),
-                0 18px 22px rgba(0,0,0,0.08),
-                0 30px 34px rgba(0,0,0,0.04);
-        }
-        .fnote-yellow { background-color: #ffd966; }
-        .fnote-pink   { background-color: #ffb3c6; }
-        .fnote-blue   { background-color: #b3d9ff; }
-        .fnote-green  { background-color: #b3f0d5; }
-        .fnote-text   { font-size: 0.9rem; display: block; padding-top: 0.5rem; }
-        .fnote-text code {
-            font-family: var(--font-mono); font-size: 0.7rem;
-            display: block; margin-top: 0.25rem;
-            background: rgba(0,0,0,0.08); padding: 0.1rem 0.3rem; border-radius: 3px;
-        }
-        @media(max-width:900px) { .funny-notes { display: none; } }
-
-        /* ============================================================
-           BACKGROUND HAND-WRITTEN SKETCHES
+           BACKGROUND HAND-DRAWN DECORATION
         ============================================================ */
         main { position: relative; }
 
@@ -1749,30 +1675,6 @@
 
         /* Every content section sits above the sketch layer */
         main > section, main > footer { position: relative; z-index: 1; }
-
-        .sk {
-            position: absolute;
-            font-family: var(--font-hand);
-            color: var(--ink);
-            opacity: var(--sk-op, 0.08);
-            transform: rotate(var(--sk-rot, 0deg));
-            font-size: var(--sk-sz, 1.05rem);
-            white-space: nowrap;
-            user-select: none;
-            line-height: 1.35;
-        }
-        /* Crossed-out text */
-        .sk-x { text-decoration: line-through; text-decoration-thickness: 2px; }
-
-        /* Wiggly underline on some sketches */
-        .sk-ul {
-            text-decoration: underline wavy var(--amber-dark);
-            text-underline-offset: 3px;
-        }
-
-        /* Random sizing helpers */
-        .sk-big   { font-size: 1.6rem !important; }
-        .sk-small { font-size: 0.85rem !important; }
 
         /* SVG sketch overlays inside #bg-sketches */
         .sk-svg {
@@ -2119,9 +2021,6 @@
         html[data-theme="dark"] .postit-num,
         html[data-theme="dark"] .postit-lbl { color: #1a1208; }
 
-        html[data-theme="dark"] .fnote,
-        html[data-theme="dark"] .fnote-text { color: #1a1208; }
-
         html[data-theme="dark"] .doc-sheet {
             background:
                 repeating-linear-gradient(to bottom,
@@ -2193,12 +2092,6 @@
         /* Notebook margin line — subtle teal glow in dark mode */
         html[data-theme="dark"] .notebook-margin {
             background: rgba(78,205,196,0.14);
-        }
-
-        /* Sketch text — slightly more visible on dark bg */
-        html[data-theme="dark"] .sk {
-            color: var(--ink);
-            opacity: calc(var(--sk-op, 0.08) * 1.55);
         }
 
         /* Red strings — punchier on dark */
@@ -2798,7 +2691,7 @@
             html { scroll-padding-top: 64px; }
             body::after { opacity: 0.35; }
             #scroll-progress, #bg-sketches, #fg-doodles,
-            .hero-doodles, .funny-notes, .sticker, .folder-floating,
+            .hero-doodles, .sticker, .folder-floating,
             .crayon, .notebook-margin { display: none !important; }
 
             #navbar {
@@ -3033,75 +2926,11 @@
 
 <main>
 <!-- ============================================================
-     BACKGROUND HAND-WRITTEN SKETCHES
+     BACKGROUND HAND-DRAWN DECORATION
      (scattered across the full page, behind everything)
 ============================================================ -->
 <div id="bg-sketches" aria-hidden="true">
-
-    <!-- ── ROW 1 — top of page (hero zone) ── -->
-    <div class="sk" style="top:1.5%;left:2%;     --sk-rot:-7deg;  --sk-op:0.09; --sk-sz:1.3rem;">why won't it compile??</div>
-    <div class="sk sk-ul" style="top:5%;  right:6%;     --sk-rot:4deg;   --sk-op:0.10; --sk-sz:1.2rem;">← hire this guy</div>
-    <div class="sk" style="top:10%; left:52%;    --sk-rot:-4deg;  --sk-op:0.07; --sk-sz:1rem;">TODO: add more fish</div>
-    <div class="sk sk-small" style="top:13%; left:25%;    --sk-rot:3deg;   --sk-op:0.065;--sk-sz:0.85rem;">// this variable name made sense at 3am</div>
-    <div class="sk" style="top:16%; left:72%;    --sk-rot:-2deg;  --sk-op:0.06; --sk-sz:0.9rem;">*squints at code*</div>
-
-    <!-- ── ROW 2 — about section zone ── -->
-    <div class="sk" style="top:19%; left:4%;     --sk-rot:6deg;   --sk-op:0.08; --sk-sz:1.2rem;">it's not a bug, it's a feature™</div>
-    <div class="sk" style="top:23%; right:4%;    --sk-rot:-5deg;  --sk-op:0.07; --sk-sz:1rem;">ctrl+z  ctrl+z  ctrl+z</div>
-    <div class="sk sk-big" style="top:27%; left:36%;    --sk-rot:-8deg;  --sk-op:0.09;">almost done™</div>
-    <div class="sk sk-small" style="top:31%; left:66%;    --sk-rot:3deg;   --sk-op:0.065;--sk-sz:0.8rem;">why does this only work on Tuesdays</div>
-    <div class="sk" style="top:34%; left:8%;     --sk-rot:-3deg;  --sk-op:0.07; --sk-sz:1.1rem;">72h deadline?? hold my coffee</div>
-
-    <!-- ── ROW 3 — projects top ── -->
-    <div class="sk" style="top:38%; left:3%;     --sk-rot:5deg;   --sk-op:0.08; --sk-sz:1rem;">please work PLEASE work please</div>
-    <div class="sk" style="top:41%; right:3%;    --sk-rot:-4deg;  --sk-op:0.07; --sk-sz:1.15rem;">ScriptableObject supremacy</div>
-    <div class="sk sk-small" style="top:44%; left:50%;    --sk-rot:3deg;   --sk-op:0.065;--sk-sz:0.82rem;">works on my machine</div>
-    <div class="sk" style="top:46%; left:20%;    --sk-rot:-6deg;  --sk-op:0.07; --sk-sz:1rem;">NullReferenceException</div>
-    <div class="sk sk-small" style="top:49%; left:75%;    --sk-rot:2deg;   --sk-op:0.06; --sk-sz:0.8rem;">...what do you mean ship date?</div>
-
-    <!-- ── ROW 4 — projects mid ── -->
-    <div class="sk" style="top:53%; left:3%;     --sk-rot:4deg;   --sk-op:0.08; --sk-sz:1.2rem;">coffee.exe not found</div>
-    <div class="sk sk-big" style="top:57%; right:22%;    --sk-rot:-3deg;  --sk-op:0.09;">this is fine</div>
-    <div class="sk sk-small" style="top:60%; left:48%;    --sk-rot:7deg;   --sk-op:0.065;--sk-sz:0.85rem;">brb debugging for 6 hours</div>
-    <div class="sk sk-ul" style="top:63%; right:5%;     --sk-rot:-8deg;  --sk-op:0.10; --sk-sz:1.2rem;">hire me please</div>
-    <div class="sk sk-small" style="top:65%; left:14%;    --sk-rot:-2deg;  --sk-op:0.06; --sk-sz:0.82rem;">the fish physics are perfect, don't touch them</div>
-
-    <!-- ── ROW 5 — skills / jams zone ── -->
-    <div class="sk" style="top:68%; left:3%;     --sk-rot:-4deg;  --sk-op:0.08; --sk-sz:1.15rem;">just one more commit...</div>
-    <div class="sk" style="top:72%; right:38%;   --sk-rot:4deg;   --sk-op:0.07; --sk-sz:1rem;">ship it  ship it  ship it</div>
-    <div class="sk sk-big" style="top:75%; left:5%;     --sk-rot:-9deg;  --sk-op:0.09; --sk-sz:1.4rem;">3am bug fix :)</div>
-    <div class="sk sk-x" style="top:79%; right:8%;     --sk-rot:6deg;   --sk-op:0.08; --sk-sz:1.2rem;">I should sleep</div>
-    <div class="sk sk-small" style="top:81%; left:40%;    --sk-rot:-3deg;  --sk-op:0.065;--sk-sz:0.82rem;">game feel — game feel — game feel</div>
-
-    <!-- ── ROW 6 — contact / bottom ── -->
-    <div class="sk" style="top:84%; left:3%;     --sk-rot:7deg;   --sk-op:0.08; --sk-sz:1.3rem;">add more game feel™</div>
-    <div class="sk" style="top:86%; left:52%;    --sk-rot:-5deg;  --sk-op:0.07; --sk-sz:1.1rem;">git push --force  (don't tell anyone)</div>
-    <div class="sk sk-ul" style="top:90%; right:16%;    --sk-rot:-3deg;  --sk-op:0.09; --sk-sz:1.15rem;">mom look I made a game!!</div>
-    <div class="sk" style="top:93%; left:8%;     --sk-rot:-6deg;  --sk-op:0.07; --sk-sz:1rem;">I love Unity (today). I hate Unity (also today).</div>
-    <div class="sk sk-small" style="top:96%; left:55%;    --sk-rot:4deg;   --sk-op:0.065;--sk-sz:0.82rem;">// TODO: write tests  lol  jk  ...unless?</div>
-
-    <!-- ── SVG doodles — hand-drawn circles, arrows, stars ── -->
-
-    <!-- Wobbly circle around "hire this guy" (top-right) -->
-    <svg class="sk-svg" style="top:3.5%;right:4.2%;width:130px;height:45px;" viewBox="0 0 130 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 30 C5 5, 40 0, 65 3 C90 6, 128 8, 125 28 C122 44, 85 46, 55 44 C28 42, 2 42, 8 30Z"
-              stroke="#c4842a" stroke-width="1.8" fill="none" stroke-linecap="round"
-              stroke-dasharray="3 2"/>
-    </svg>
-
-    <!-- Arrow pointing right at the hire-me note -->
-    <svg class="sk-svg" style="top:61.5%;right:18%;width:60px;height:28px;" viewBox="0 0 60 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2 16 C10 14, 30 12, 48 14" stroke="#c4842a" stroke-width="2" stroke-linecap="round"/>
-        <path d="M44 8 L52 14 L44 20" stroke="#c4842a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-
-    <!-- Underline squiggle under "almost done™" -->
-    <svg class="sk-svg" style="top:30%;left:33%;width:160px;height:12px;" viewBox="0 0 160 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2 6 C12 1, 22 11, 32 6 C42 1, 52 11, 62 6 C72 1, 82 11, 92 6 C102 1, 112 11, 122 6 C132 1, 142 11, 152 6 C157 3, 159 4, 160 6"
-              stroke="#e8a24a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-    </svg>
-
-    <!-- Scattered stars cluster (mid-left) -->
+    <!-- Scattered stars cluster -->
     <svg class="sk-svg" style="top:56%;left:38%;width:70px;height:60px;" viewBox="0 0 70 60" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M15 10 L17 16 L23 18 L17 20 L15 26 L13 20 L7 18 L13 16Z" fill="#e8a24a"/>
         <path d="M50 5 L51.5 9 L56 10.5 L51.5 12 L50 16 L48.5 12 L44 10.5 L48.5 9Z" fill="#e8a24a"/>
@@ -3111,28 +2940,10 @@
         <circle cx="42" cy="22" r="1.5" fill="#e8a24a"/>
     </svg>
 
-    <!-- Scribble / scratching out box -->
-    <svg class="sk-svg" style="top:78.5%;right:7%;width:100px;height:22px;" viewBox="0 0 100 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2 8 L98 8" stroke="#2a2016" stroke-width="2" stroke-linecap="round"/>
-        <path d="M2 14 L98 14" stroke="#2a2016" stroke-width="2" stroke-linecap="round"/>
-        <path d="M3 19 L97 19" stroke="#2a2016" stroke-width="1.5" stroke-linecap="round"/>
-    </svg>
-
     <!-- Doodle explosion / burst (top left corner accent) -->
     <svg class="sk-svg" style="top:0%;left:0%;width:80px;height:80px;" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M5 5 L20 30 M5 5 L30 20 M5 5 L32 8 M5 5 L8 32 M5 5 L25 25"
               stroke="#e8a24a" stroke-width="1.5" stroke-linecap="round"/>
-    </svg>
-
-    <!-- Wobbly bracket around "this is fine" -->
-    <svg class="sk-svg" style="top:55.5%;right:19.5%;width:15px;height:50px;" viewBox="0 0 15 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2 C5 2, 2 8, 2 25 C2 42, 5 48, 12 48" stroke="#c4842a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-    </svg>
-
-    <!-- Arrow pointing down at "please work" text -->
-    <svg class="sk-svg" style="top:35%;left:14%;width:24px;height:40px;" viewBox="0 0 24 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2 C11 12, 13 22, 12 34" stroke="#c4842a" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M6 28 L12 36 L18 28" stroke="#c4842a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
 
     <!-- ═══════════════════════════════════════════════════
@@ -3613,48 +3424,16 @@
 
     <!-- Stickers scattered in hero -->
     <div class="sticker sticker-red sticker-circle sticker-dotted sticker-hide-sm" id="st-ship" style="top:14%;left:5%;--sticker-rot:-12deg;">
-        SHIP<br>IT!
+        SHIPPED<br>WORK
     </div>
     <div class="sticker sticker-teal sticker-star sticker-hide-sm" id="st-unity" style="bottom:18%;left:8%;--sticker-rot:8deg;">
         100%<br>UNITY
     </div>
     <div class="sticker sticker-amber sticker-bubble" id="st-finn" style="top:8%;left:36%;--sticker-rot:-5deg;">
-        ✦ now playing: Finn ✦
+        ✦ CURRENTLY: FINN ✦
     </div>
     <div class="sticker sticker-purple sticker-hide-sm" id="st-cs" style="bottom:32%;left:2%;--sticker-rot:6deg;">
         BUILT&nbsp;WITH&nbsp;C#
-    </div>
-
-    <!-- Funny sticky notes scattered on the right -->
-    <div class="funny-notes" aria-hidden="true">
-        <!-- Yellow: TODO note -->
-        <div class="fnote fnote-yellow" style="top:18%;right:3.5%;--fr:-4deg;">
-            <span class="fnote-text">
-                TODO: sleep();<br>
-                <code>// eventually</code>
-            </span>
-        </div>
-        <!-- Pink: git commit note -->
-        <div class="fnote fnote-pink" style="top:42%;right:1.5%;--fr:3.5deg;">
-            <span class="fnote-text">
-                git commit -m<br>
-                <code>"it works<br>don't touch it"</code>
-            </span>
-        </div>
-        <!-- Blue: ScriptableObjects -->
-        <div class="fnote fnote-blue" style="bottom:24%;right:5%;--fr:-2.5deg;">
-            <span class="fnote-text">
-                ScriptableObjects<br>solve <em>everything</em><br>
-                <code>// (fight me)</code>
-            </span>
-        </div>
-        <!-- Green: 72hr jam -->
-        <div class="fnote fnote-green" style="top:68%;right:20%;--fr:2deg;">
-            <span class="fnote-text">
-                72 hrs deadline?<br>hold my<br>
-                <code>energy drink</code>
-            </span>
-        </div>
     </div>
 
     <div class="container">
@@ -3694,8 +3473,8 @@
     <div class="sticker sticker-pink sticker-circle sticker-hide-sm" id="st-love" style="top:46%;right:4%;--sticker-rot:14deg;">
         MADE<br>WITH<br>♥
     </div>
-    <div class="sticker sticker-yellow" id="st-coder" style="bottom:8%;left:6%;--sticker-rot:-6deg;">
-        ★ 3am coder ★
+    <div class="sticker sticker-yellow" id="st-systems" style="bottom:8%;left:6%;--sticker-rot:-6deg;">
+        ★ GAMEPLAY SYSTEMS ★
     </div>
 
     <div class="container">
@@ -3975,16 +3754,16 @@
         <span class="folder-tab-label">PROJECT&nbsp;LOG</span>
         <div class="folder-papers"></div>
         <div class="folder-stamp">SHIPPED</div>
-        <div class="folder-title">3 builds. Many bugs.</div>
-        <div class="folder-sub">CODE · ART · COFFEE · 2024</div>
+        <div class="folder-title">Selected Unity work</div>
+        <div class="folder-sub">GAMES · TOOLS · SYSTEMS</div>
     </div>
 
     <!-- Scattered stickers around projects -->
     <div class="sticker sticker-green sticker-circle sticker-hide-sm" id="st-oss" style="top:8%;right:4%;--sticker-rot:11deg;">
         OPEN<br>SOURCE
     </div>
-    <div class="sticker sticker-dark" id="st-certified" style="top:36%;right:3%;--sticker-rot:5deg;">
-        ✦ certified moments ✦
+    <div class="sticker sticker-dark" id="st-released" style="top:36%;right:3%;--sticker-rot:5deg;">
+        ✦ RELEASED &amp; PLAYABLE ✦
     </div>
     <div class="sticker sticker-red sticker-star sticker-hide-sm" id="st-first" style="top:60%;left:3%;--sticker-rot:-12deg;">
         1st<br>PLACE
@@ -4351,11 +4130,11 @@
 ============================================================ -->
 <section id="skills" aria-label="Skills and tools" style="position:relative;">
     <!-- Stickers in skills -->
-    <div class="sticker sticker-amber sticker-circle sticker-dotted sticker-hide-sm" id="st-expert" style="top:5%;right:3%;--sticker-rot:9deg;">
-        EXPERT<br>LEVEL
+    <div class="sticker sticker-amber sticker-circle sticker-dotted sticker-hide-sm" id="st-stack" style="top:5%;right:3%;--sticker-rot:9deg;">
+        UNITY<br>&amp; C#
     </div>
     <div class="sticker sticker-teal sticker-bubble sticker-hide-sm" id="st-so" style="top:48%;left:2%;--sticker-rot:-4deg;">
-        ScriptableObject gang
+        DATA-DRIVEN DESIGN
     </div>
     <div class="sticker sticker-purple sticker-star sticker-hide-sm" id="st-tools" style="bottom:6%;right:4%;--sticker-rot:8deg;">
         TOOLS<br>DEV
@@ -4472,10 +4251,10 @@
 
     <!-- Stickers -->
     <div class="sticker sticker-yellow sticker-star sticker-hide-sm" id="st-72hr" style="top:14%;left:3%;--sticker-rot:-10deg;">
-        72hr<br>HERO
+        72HR<br>BUILDS
     </div>
-    <div class="sticker sticker-red sticker-circle sticker-hide-sm" id="st-nosleep" style="bottom:8%;left:6%;--sticker-rot:13deg;">
-        NO<br>SLEEP
+    <div class="sticker sticker-red sticker-circle sticker-hide-sm" id="st-jam-count" style="bottom:8%;left:6%;--sticker-rot:13deg;">
+        8+<br>JAMS
     </div>
 
     <div class="container">
@@ -4623,11 +4402,11 @@
 ============================================================ -->
 <section id="contact" aria-label="Contact" style="position:relative;">
     <!-- Stickers around contact -->
-    <div class="sticker sticker-green sticker-bubble" id="st-reply" style="top:6%;right:5%;--sticker-rot:7deg;">
-        ✉ reply rate: 100%
+    <div class="sticker sticker-green sticker-bubble" id="st-opportunities" style="top:6%;right:5%;--sticker-rot:7deg;">
+        ✉ OPEN TO OPPORTUNITIES
     </div>
-    <div class="sticker sticker-amber sticker-circle sticker-dotted sticker-hide-sm" id="st-hire" style="top:38%;right:1.5%;--sticker-rot:-11deg;">
-        HIRE<br>ME!
+    <div class="sticker sticker-amber sticker-circle sticker-dotted sticker-hide-sm" id="st-work" style="top:38%;right:1.5%;--sticker-rot:-11deg;">
+        WORK<br>WITH ME
     </div>
     <div class="sticker sticker-pink sticker-star sticker-hide-sm" id="st-talk" style="bottom:14%;left:3%;--sticker-rot:9deg;">
         LET'S<br>TALK
@@ -4747,7 +4526,7 @@
 <div id="fg-doodles" aria-hidden="true">
 
     <!-- ── HERO ── -->
-    <!-- Scribbled crayon loop AROUND "SHIP IT!" -->
+    <!-- Scribbled crayon loop around the shipped-work sticker -->
     <svg class="fg-doodle fg-hide-sm" data-anchor="#st-ship" data-mode="wrap" data-pad="18"
          viewBox="0 0 100 100" preserveAspectRatio="none" fill="none" style="--fg-op:0.78;">
         <path d="M22 50 C18 18 50 8 72 12 C92 16 96 38 92 60 C88 84 64 92 44 88 C22 84 22 70 22 50 Z"
@@ -4755,11 +4534,11 @@
         <path d="M28 46 C26 22 54 16 76 20 C94 24 96 44 92 60 C86 80 64 86 48 84 C30 82 24 64 28 46 Z"
               stroke="#c9614a" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.6" vector-effect="non-scaling-stroke"/>
     </svg>
-    <!-- "← that's the spirit" label to right of SHIP IT! -->
+    <!-- Supporting label beside the shipped-work sticker -->
     <span class="fg-label fg-label-red fg-hide-sm" data-anchor="#st-ship" data-mode="right" data-pad="14"
-          style="--lab-rot:-6deg;font-size:1.05rem;">← that's the spirit</span>
+          style="--lab-rot:-6deg;font-size:1.05rem;">games + tools</span>
 
-    <!-- Wavy double-underline BELOW "now playing: Finn" bubble -->
+    <!-- Wavy double-underline below the current-project bubble -->
     <svg class="fg-doodle" data-anchor="#st-finn" data-mode="below" data-pad="3" data-w="180" data-h="14"
          viewBox="0 0 180 14" preserveAspectRatio="none" fill="none" style="--fg-op:0.85;">
         <path d="M3 7 C25 2 50 12 75 7 C100 2 125 12 150 7 C165 4 175 9 178 7"
@@ -4775,9 +4554,9 @@
               stroke="#4aa898" stroke-width="2.2" stroke-linecap="round" fill="none" stroke-dasharray="5 3"/>
         <path d="M14 76 L22 86 L30 78" stroke="#4aa898" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
     </svg>
-    <!-- "my one true love" label to right of 100% UNITY -->
+    <!-- Engine label beside the Unity sticker -->
     <span class="fg-label fg-label-teal fg-hide-sm" data-anchor="#st-unity" data-mode="right" data-pad="14"
-          style="--lab-rot:4deg;font-size:1.05rem;">my one true love</span>
+          style="--lab-rot:4deg;font-size:1.05rem;">primary engine</span>
 
     <!-- Purple sparkle starburst BEHIND/ON "BUILT WITH C#" -->
     <svg class="fg-doodle fg-hide-sm" data-anchor="#st-cs" data-mode="left" data-pad="8" data-w="56" data-h="56"
@@ -4806,15 +4585,15 @@
               fill="#c9614a" opacity="0.7"/>
     </svg>
 
-    <!-- Wavy underline BELOW "3am coder" -->
-    <svg class="fg-doodle" data-anchor="#st-coder" data-mode="below" data-pad="3" data-w="160" data-h="16"
+    <!-- Wavy underline below the gameplay-systems sticker -->
+    <svg class="fg-doodle" data-anchor="#st-systems" data-mode="below" data-pad="3" data-w="160" data-h="16"
          viewBox="0 0 160 16" preserveAspectRatio="none" fill="none" style="--fg-op:0.85;">
         <path d="M3 9 C20 4 38 14 55 9 C72 4 90 14 107 9 C124 4 142 14 158 9"
               stroke="#e8a24a" stroke-width="2.4" stroke-linecap="round" fill="none"/>
     </svg>
-    <!-- "(certified)" label right of "3am coder" -->
-    <span class="fg-label fg-label-amber" data-anchor="#st-coder" data-mode="right" data-pad="10"
-          style="--lab-rot:5deg;font-size:0.95rem;">(certified)</span>
+    <!-- Technology label beside the gameplay-systems sticker -->
+    <span class="fg-label fg-label-amber" data-anchor="#st-systems" data-mode="right" data-pad="10"
+          style="--lab-rot:5deg;font-size:0.95rem;">Unity · C#</span>
 
     <!-- ── PROJECTS ── -->
     <!-- Burst/sparkle radiating AROUND "1st PLACE" star -->
@@ -4847,12 +4626,12 @@
         <path d="M38 52 L50 64 L72 38" stroke="#5a9e6f" stroke-width="3" stroke-linecap="round"
               stroke-linejoin="round" fill="none" opacity="0.7" vector-effect="non-scaling-stroke"/>
     </svg>
-    <!-- "free! take one →" label below "OPEN SOURCE" -->
+    <!-- Availability label below "OPEN SOURCE" -->
     <span class="fg-label fg-label-green fg-hide-sm" data-anchor="#st-oss" data-mode="below" data-pad="14"
-          style="--lab-rot:-4deg;font-size:0.95rem;">free!! take one →</span>
+          style="--lab-rot:-4deg;font-size:0.95rem;">source available →</span>
 
-    <!-- Dotted ellipse loop wrapping "certified moments" -->
-    <svg class="fg-doodle fg-hide-sm" data-anchor="#st-certified" data-mode="wrap" data-pad="12"
+    <!-- Dotted ellipse around the released-work sticker -->
+    <svg class="fg-doodle fg-hide-sm" data-anchor="#st-released" data-mode="wrap" data-pad="12"
          viewBox="0 0 200 60" preserveAspectRatio="none" fill="none" style="--fg-op:0.7;">
         <ellipse cx="100" cy="30" rx="94" ry="26" stroke="#e8a24a" stroke-width="1.6"
                  stroke-linecap="round" fill="none" stroke-dasharray="4 3" vector-effect="non-scaling-stroke"/>
@@ -4860,13 +4639,9 @@
                  stroke-linecap="round" fill="none" stroke-dasharray="3 3" opacity="0.55" vector-effect="non-scaling-stroke"/>
     </svg>
 
-    <!-- "★★★★★" label above "playtested by 100+" -->
-    <span class="fg-label fg-hide-sm" data-anchor="#st-playtested" data-mode="above" data-pad="6"
-          style="--lab-rot:-3deg;color:#2a6fb5;font-size:1.05rem;">★★★★★</span>
-
     <!-- ── SKILLS ── -->
-    <!-- Big hand-drawn brackets [ ] AROUND "EXPERT LEVEL" -->
-    <svg class="fg-doodle fg-hide-sm" data-anchor="#st-expert" data-mode="wrap" data-pad="16"
+    <!-- Big hand-drawn brackets around the Unity and C# sticker -->
+    <svg class="fg-doodle fg-hide-sm" data-anchor="#st-stack" data-mode="wrap" data-pad="16"
          viewBox="0 0 100 100" preserveAspectRatio="none" fill="none" style="--fg-op:0.82;">
         <path d="M14 8 L4 8 L4 92 L14 92" stroke="#c4842a" stroke-width="2.2"
               stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke"/>
@@ -4874,15 +4649,15 @@
               stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke"/>
     </svg>
 
-    <!-- Loop-de-loop scribble BELOW "ScriptableObject gang" bubble -->
+    <!-- Loop-de-loop scribble below the data-driven-design bubble -->
     <svg class="fg-doodle fg-hide-sm" data-anchor="#st-so" data-mode="below" data-pad="4" data-w="180" data-h="36"
          viewBox="0 0 180 36" preserveAspectRatio="none" fill="none" style="--fg-op:0.78;">
         <path d="M4 22 C10 12 22 8 30 16 C36 24 22 30 22 20 C22 12 36 12 44 20 C54 30 38 34 38 24 C38 14 56 14 64 24 C74 32 58 36 58 28 C58 18 76 18 84 26 C100 32 130 26 160 24 C172 23 178 26 178 30"
               stroke="#4aa898" stroke-width="1.8" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke"/>
     </svg>
-    <!-- "SO supremacy!!" label far below loop -->
+    <!-- Supporting technology label below the loop -->
     <span class="fg-label fg-label-teal fg-hide-sm" data-anchor="#st-so" data-mode="below" data-pad="40"
-          style="--lab-rot:-3deg;font-size:0.95rem;">SO supremacy!!</span>
+          style="--lab-rot:-3deg;font-size:0.95rem;">ScriptableObject workflows</span>
 
     <!-- Crown drawn ABOVE "TOOLS DEV" star -->
     <svg class="fg-doodle fg-hide-sm" data-anchor="#st-tools" data-mode="above" data-pad="-6" data-w="74" data-h="40"
@@ -4896,7 +4671,7 @@
     </svg>
 
     <!-- ── JAMS ── -->
-    <!-- Swirly time loop AROUND "72hr HERO" -->
+    <!-- Swirly time loop around the 72-hour-builds sticker -->
     <svg class="fg-doodle fg-hide-sm" data-anchor="#st-72hr" data-mode="wrap" data-pad="24"
          viewBox="0 0 140 140" preserveAspectRatio="none" fill="none" style="--fg-op:0.8;">
         <path d="M70 60 C70 50 82 50 82 60 C82 76 54 76 54 56 C54 32 90 32 90 64 C90 98 40 98 40 52 C40 8 110 8 110 62"
@@ -4908,24 +4683,13 @@
             <line x1="120" y1="102" x2="128" y2="108"/>
         </g>
     </svg>
-    <!-- "tick. tick. tick." label right of "72hr HERO" -->
+    <!-- Delivery label beside the 72-hour-builds sticker -->
     <span class="fg-label fg-label-amber fg-hide-sm" data-anchor="#st-72hr" data-mode="right" data-pad="28"
-          style="--lab-rot:-10deg;font-size:1rem;">tick. tick. tick.</span>
-
-    <!-- "zZz" struck-through ABOVE "NO SLEEP" -->
-    <svg class="fg-doodle fg-hide-sm" data-anchor="#st-nosleep" data-mode="above" data-pad="4" data-w="100" data-h="50"
-         viewBox="0 0 100 50" preserveAspectRatio="none" fill="none" style="--fg-op:0.85;">
-        <g stroke="#2a2016" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
-            <path d="M12 8 L24 8 L12 22 L24 22"/>
-            <path d="M34 18 L46 18 L34 32 L46 32"/>
-            <path d="M56 28 L68 28 L56 42 L68 42"/>
-        </g>
-        <path d="M4 4 L78 46" stroke="#c9614a" stroke-width="2.6" stroke-linecap="round"/>
-    </svg>
+          style="--lab-rot:-10deg;font-size:1rem;">shipped on deadline</span>
 
     <!-- ── CONTACT ── -->
-    <!-- Triple-loop emphasis circle AROUND "HIRE ME!" + exclamations -->
-    <svg class="fg-doodle fg-hide-sm" data-anchor="#st-hire" data-mode="wrap" data-pad="22"
+    <!-- Triple-loop emphasis around the work-with-me sticker -->
+    <svg class="fg-doodle fg-hide-sm" data-anchor="#st-work" data-mode="wrap" data-pad="22"
          viewBox="0 0 100 100" preserveAspectRatio="none" fill="none" style="--fg-op:0.88;">
         <path d="M22 50 C18 22 50 12 72 16 C92 22 96 40 92 60 C86 82 60 90 42 86 C20 82 22 70 22 50 Z"
               stroke="#c4842a" stroke-width="1.8" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke"/>
@@ -4934,9 +4698,9 @@
         <path d="M30 52 C28 32 56 24 72 28 C88 32 92 48 88 60 C82 74 60 80 50 78 C34 76 26 68 30 52 Z"
               stroke="#c4842a" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.5" vector-effect="non-scaling-stroke"/>
     </svg>
-    <!-- "YES" big label left of "HIRE ME!" -->
-    <span class="fg-label fg-label-red fg-hide-sm" data-anchor="#st-hire" data-mode="left" data-pad="20" data-w="52"
-          style="--lab-rot:-16deg;font-size:1.4rem;font-weight:700;">YES</span>
+    <!-- Contact label beside the work-with-me sticker -->
+    <span class="fg-label fg-label-red fg-hide-sm" data-anchor="#st-work" data-mode="left" data-pad="20" data-w="52"
+          style="--lab-rot:-16deg;font-size:1.1rem;font-weight:700;">CONTACT</span>
 
 
     <!-- Heart swirl + sparkles AROUND "LET'S TALK" -->
@@ -4952,9 +4716,9 @@
               fill="#ffb3c6" stroke="#c9614a" stroke-width="1.6"/>
     </svg>
 
-    <!-- "↑ click here" near reply rate, pointing up — anchored above email link -->
-    <span class="fg-label fg-label-amber fg-hide-sm" data-anchor="#st-reply" data-mode="below" data-pad="6"
-          style="--lab-rot:4deg;font-size:0.95rem;">↑ tested. it works.</span>
+    <!-- Supporting note below the opportunity sticker -->
+    <span class="fg-label fg-label-amber fg-hide-sm" data-anchor="#st-opportunities" data-mode="below" data-pad="6"
+          style="--lab-rot:4deg;font-size:0.95rem;">email welcome</span>
 
 </div>
 
