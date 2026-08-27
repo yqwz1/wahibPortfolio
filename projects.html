@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; object-src 'none'; base-uri 'self';">
+    <title>Projects — Wahib Walaa Mohammed</title>
+    <meta name="description" content="Games, Unity editor tools, and production systems built by Wahib Walaa Mohammed.">
+    <meta name="theme-color" content="#f5f0e8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #f5f0e8;
+            --paper-dark: #ede6d4;
+            --paper-darker: #ddd4bc;
+            --paper-white: #fffdf8;
+            --amber: #e8a24a;
+            --amber-dark: #c4842a;
+            --teal: #6ec6b5;
+            --teal-dark: #4a9f91;
+            --ink: #2a2016;
+            --ink-light: #5c4e38;
+            --ink-muted: #8a7a64;
+            --red: #c9614a;
+            --green: #5a9e6f;
+            --purple: #8a6cc6;
+            --font-hand: 'Caveat', cursive;
+            --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --shadow-paper: 0 2px 8px rgba(42,32,22,.12), 0 6px 24px rgba(42,32,22,.07);
+            --shadow-lift: 0 16px 45px rgba(42,32,22,.16), 0 3px 10px rgba(42,32,22,.1);
+            --transition: 280ms cubic-bezier(.4,0,.2,1);
+            --spring: 380ms cubic-bezier(.34,1.56,.64,1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-body);
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image:
+                linear-gradient(rgba(139,121,96,.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139,121,96,.045) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 9000;
+            pointer-events: none;
+            opacity: .8;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");
+        }
+
+        a, button, input { -webkit-tap-highlight-color: transparent; }
+        :focus-visible { outline: 3px solid var(--teal-dark); outline-offset: 4px; }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        #navbar {
+            position: fixed;
+            inset: 0 0 auto;
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding: 1rem 2rem;
+            background: rgba(245,240,232,.93);
+            border-bottom: 2px dashed var(--paper-darker);
+            backdrop-filter: blur(14px);
+        }
+        .nav-logo {
+            flex: 0 0 auto;
+            color: var(--ink);
+            font: 700 1.5rem var(--font-hand);
+            text-decoration: none;
+        }
+        .nav-logo span { color: var(--amber-dark); }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-link {
+            color: var(--ink-light);
+            font: 500 1.1rem var(--font-hand);
+            text-decoration: none;
+            transition: color var(--transition);
+            white-space: nowrap;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--amber-dark); }
+        .nav-link.active { font-weight: 700; }
+
+        @keyframes draw-line {
+            from { stroke-dashoffset: 430; }
+            to { stroke-dashoffset: 0; }
+        }
+        @keyframes settle-in {
+            from { opacity: 0; transform: translateY(22px) rotate(var(--card-rotation, 0deg)); }
+            to { opacity: 1; transform: translateY(0) rotate(var(--card-rotation, 0deg)); }
+        }
+
+        .page-header {
+            position: relative;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 9rem 2rem 3.2rem;
+            text-align: center;
+        }
+        .back-home {
+            position: absolute;
+            top: 8.5rem;
+            left: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            color: var(--ink-muted);
+            font: 500 1.05rem var(--font-hand);
+            text-decoration: none;
+            transition: color var(--transition), transform var(--spring);
+        }
+        .back-home:hover { color: var(--amber-dark); transform: translateX(-3px); }
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            margin-bottom: .5rem;
+            color: var(--amber-dark);
+            font: 600 1rem var(--font-hand);
+            letter-spacing: .05em;
+        }
+        .section-label::before { content: '✦'; font-size: .75rem; }
+        .page-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.35rem;
+            color: var(--ink);
+            font: 700 clamp(2.7rem, 6vw, 4.2rem)/1.05 var(--font-hand);
+        }
+        .page-title-squiggle {
+            position: absolute;
+            right: 0;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            overflow: visible;
+        }
+        .page-title-squiggle path {
+            stroke-dasharray: 430;
+            stroke-dashoffset: 430;
+            animation: draw-line 1.1s ease .2s forwards;
+        }
+        .page-subtitle {
+            max-width: 650px;
+            margin: 0 auto;
+            color: var(--ink-muted);
+            font: 500 1.3rem/1.45 var(--font-hand);
+        }
+        .header-note {
+            position: absolute;
+            top: 7.9rem;
+            right: 2.5rem;
+            width: 122px;
+            padding: .75rem .8rem;
+            background: #ffd966;
+            box-shadow: 2px 3px 8px rgba(42,32,22,.16);
+            color: var(--ink);
+            font: 600 .95rem/1.12 var(--font-hand);
+            transform: rotate(4deg);
+        }
+        .header-note::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 31px;
+            width: 58px;
+            height: 17px;
+            background: rgba(255,255,255,.55);
+            transform: rotate(-3deg);
+        }
+
+        #projects-page { padding: 0 2rem 6rem; }
+        .project-controls {
+            display: grid;
+            grid-template-columns: minmax(260px, 1fr) auto;
+            align-items: center;
+            gap: 1.25rem;
+            max-width: 1100px;
+            margin: 0 auto 2.75rem;
+        }
+        .project-search-wrap { position: relative; }
+        .project-search-icon {
+            position: absolute;
+            top: 50%;
+            left: .9rem;
+            width: 16px;
+            height: 16px;
+            color: var(--ink-muted);
+            pointer-events: none;
+            transform: translateY(-50%);
+        }
+        .project-search {
+            width: 100%;
+            padding: .75rem 1rem .75rem 2.45rem;
+            border: 2px solid var(--paper-darker);
+            border-radius: 6px;
+            background: var(--paper-white);
+            box-shadow: var(--shadow-paper);
+            color: var(--ink);
+            font: 400 .95rem var(--font-body);
+            transform: rotate(-.25deg);
+            transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+        }
+        .project-search:focus {
+            border-color: var(--amber);
+            box-shadow: var(--shadow-paper), 0 0 0 3px rgba(232,162,74,.15);
+            outline: none;
+            transform: rotate(0);
+        }
+        .filters { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .45rem; }
+        .filter-btn {
+            border: 1.5px solid var(--paper-darker);
+            border-radius: 999px;
+            padding: .52rem .95rem;
+            background: var(--paper-white);
+            box-shadow: 1px 2px 5px rgba(42,32,22,.07);
+            color: var(--ink-muted);
+            cursor: pointer;
+            font: 600 .72rem var(--font-mono);
+            letter-spacing: .03em;
+            text-transform: uppercase;
+            transition: color var(--transition), border-color var(--transition), background var(--transition), transform var(--spring);
+        }
+        .filter-btn:hover { border-color: var(--amber); color: var(--amber-dark); transform: translateY(-2px); }
+        .filter-btn.active { border-color: var(--amber); background: var(--amber); color: var(--ink); }
+        .results-meta {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1100px;
+            margin: -1.3rem auto 1.5rem;
+            color: var(--ink-muted);
+            font: 500 .78rem var(--font-mono);
+        }
+        .results-meta span:last-child { font-family: var(--font-hand); font-size: 1rem; }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 2.25rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .project-card {
+            --card-rotation: -.55deg;
+            position: relative;
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(42,32,22,.1);
+            border-radius: 3px;
+            background: var(--paper-white);
+            box-shadow: var(--shadow-paper);
+            transform: rotate(var(--card-rotation));
+            animation: settle-in .65s both;
+            transition: transform var(--spring), box-shadow var(--transition);
+        }
+        .project-card:nth-child(even) { --card-rotation: .55deg; animation-delay: .08s; }
+        .project-card:nth-child(3) { animation-delay: .14s; }
+        .project-card:nth-child(4) { animation-delay: .2s; }
+        .project-card:hover { z-index: 3; box-shadow: var(--shadow-lift); transform: rotate(0) translateY(-5px); }
+        .project-card[hidden] { display: none; }
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: -9px;
+            left: 50%;
+            z-index: 4;
+            width: 78px;
+            height: 20px;
+            background: rgba(110,198,181,.62);
+            box-shadow: 0 1px 2px rgba(42,32,22,.12);
+            transform: translateX(-50%) rotate(-2deg);
+        }
+        .project-card:nth-child(even)::before { background: rgba(232,162,74,.55); transform: translateX(-50%) rotate(2deg); }
+        .project-visual {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            background: var(--ink);
+        }
+        .project-visual::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(to top, rgba(18,14,10,.34), transparent 42%);
+        }
+        .project-visual img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            transition: transform 650ms cubic-bezier(.2,.8,.2,1);
+        }
+        .project-card:hover .project-visual img { transform: scale(1.035); }
+        .project-index {
+            position: absolute;
+            right: 1rem;
+            bottom: .8rem;
+            z-index: 2;
+            padding: .25rem .55rem;
+            border: 1px solid rgba(255,255,255,.25);
+            border-radius: 999px;
+            background: rgba(18,14,10,.58);
+            color: #fff;
+            font: 500 .62rem var(--font-mono);
+            letter-spacing: .08em;
+            backdrop-filter: blur(5px);
+        }
+        .project-body {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding: 1.5rem 1.55rem 1.6rem;
+        }
+        .project-topline {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: .55rem;
+        }
+        .project-title { color: var(--ink); font: 700 2rem/1 var(--font-hand); }
+        .project-kind { margin-top: .25rem; color: var(--ink-muted); font: 500 1.02rem var(--font-hand); }
+        .status {
+            flex: 0 0 auto;
+            margin-top: .15rem;
+            padding: .25rem .65rem;
+            border: 1px solid currentColor;
+            border-radius: 999px;
+            font: 600 .72rem var(--font-hand);
+            transform: rotate(1deg);
+        }
+        .status.dev { background: rgba(232,162,74,.13); color: var(--amber-dark); }
+        .status.shipped { background: rgba(90,158,111,.12); color: var(--green); }
+        .status.open { background: rgba(110,198,181,.13); color: var(--teal-dark); }
+        .project-role {
+            width: fit-content;
+            margin: .2rem 0 .9rem;
+            padding: .24rem .58rem;
+            background: var(--paper-dark);
+            color: var(--ink-light);
+            font: 500 .67rem var(--font-mono);
+            letter-spacing: .035em;
+        }
+        .project-desc { margin-bottom: 1rem; color: var(--ink-light); font-size: .92rem; line-height: 1.68; }
+        .project-outcome {
+            position: relative;
+            margin-bottom: 1.05rem;
+            padding: .68rem .8rem .72rem 2.15rem;
+            border-left: 2px solid rgba(201,97,74,.4);
+            background:
+                repeating-linear-gradient(to bottom, transparent 0, transparent 22px, rgba(116,146,182,.16) 22px, rgba(116,146,182,.16) 23px),
+                #fdfaf2;
+            box-shadow: 1px 2px 6px rgba(42,32,22,.08);
+            color: var(--ink-light);
+            font-size: .8rem;
+            line-height: 1.6;
+        }
+        .project-outcome strong { color: var(--ink); font-family: var(--font-hand); font-size: 1rem; }
+        .project-outcome::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: .75rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--paper-dark);
+            box-shadow: inset 0 1px 2px rgba(42,32,22,.22);
+        }
+        .tech-tags { display: flex; flex-wrap: wrap; gap: .38rem; margin-top: auto; margin-bottom: 1.15rem; }
+        .tech-tag {
+            padding: .2rem .5rem;
+            border: 1.5px solid var(--paper-darker);
+            border-radius: 4px;
+            background: #fff;
+            color: var(--ink-muted);
+            font: 400 .62rem var(--font-mono);
+        }
+        .project-links { display: flex; flex-wrap: wrap; align-items: center; gap: .85rem; min-height: 30px; }
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            padding-bottom: 1px;
+            border-bottom: 1.5px solid var(--amber);
+            color: var(--amber-dark);
+            font: 600 .98rem var(--font-hand);
+            text-decoration: none;
+            transition: color var(--transition), transform var(--spring);
+        }
+        .project-link:hover { color: var(--ink); transform: translateY(-1px); }
+        .project-link svg { width: 14px; height: 14px; }
+        .coming-soon { color: var(--ink-muted); font: 500 .92rem var(--font-hand); }
+        .no-results {
+            max-width: 1100px;
+            margin: 1rem auto 0;
+            padding: 3rem 1rem;
+            text-align: center;
+            color: var(--ink-muted);
+            font: 600 1.4rem var(--font-hand);
+        }
+
+        .projects-footer {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1rem 2rem 5rem;
+            text-align: center;
+            color: var(--ink-muted);
+            font: 500 1.08rem var(--font-hand);
+        }
+        .projects-footer a { color: var(--amber-dark); text-decoration: none; border-bottom: 1.5px solid var(--amber); }
+
+        @media (max-width: 900px) {
+            .header-note { display: none; }
+            .project-controls { grid-template-columns: 1fr; }
+            .filters { justify-content: flex-start; }
+        }
+        @media (max-width: 760px) {
+            #navbar { padding: .9rem 1rem; }
+            .nav-links { gap: 1rem; overflow-x: auto; padding-bottom: .2rem; scrollbar-width: none; }
+            .nav-links::-webkit-scrollbar { display: none; }
+            .nav-link { font-size: .95rem; }
+            .page-header { padding: 7rem 1.25rem 2.7rem; }
+            .back-home { position: static; display: block; margin-bottom: 1rem; text-align: left; }
+            #projects-page { padding: 0 1.15rem 4rem; }
+            .projects-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .results-meta { align-items: flex-start; gap: .5rem; }
+        }
+        @media (max-width: 470px) {
+            .nav-logo { display: none; }
+            .nav-links { width: 100%; }
+            .project-topline { flex-direction: column; gap: .35rem; }
+            .status { margin: 0; }
+            .project-body { padding: 1.3rem 1.15rem 1.4rem; }
+            .filters { gap: .35rem; }
+            .filter-btn { padding: .47rem .72rem; font-size: .64rem; }
+            .results-meta span:last-child { display: none; }
+        }
+
+        /* Phone edition: quick project scan; desktop keeps the case studies. */
+        @media (max-width: 600px) {
+            body::after { opacity: .35; }
+            #navbar { padding: .75rem 1rem; }
+            .nav-logo { display: block; font-size: 1.3rem; }
+            .nav-links { width: auto; gap: .9rem; overflow: visible; padding: 0; }
+            .nav-links li:nth-child(1),
+            .nav-links li:nth-child(2),
+            .nav-links li:nth-child(4),
+            .nav-links li:nth-child(5) { display: none; }
+            .nav-link { font-size: .9rem; }
+
+            .page-header { padding: 6.5rem 1rem 2rem; text-align: left; }
+            .back-home, .header-note { display: none; }
+            .section-label { font-size: .88rem; }
+            .page-title { margin-bottom: .9rem; font-size: 2.55rem; }
+            .page-subtitle { margin: 0; max-width: 19rem; font-size: 1.08rem; }
+
+            #projects-page { padding: 0 1rem 3rem; }
+            .project-controls { display: block; margin-bottom: 1.25rem; }
+            .project-search-wrap, .results-meta { display: none; }
+            .filters { justify-content: flex-start; gap: .4rem; }
+            .filter-btn { padding: .45rem .72rem; font-size: .62rem; }
+            .filter-btn[data-filter="shipped"] { display: none; }
+
+            .projects-grid { gap: .9rem; }
+            .project-card,
+            .project-card:hover {
+                display: grid;
+                grid-template-columns: 108px minmax(0, 1fr);
+                min-height: 128px;
+                overflow: hidden;
+                border-radius: 8px;
+                transform: none;
+                animation: none;
+                box-shadow: 0 2px 10px rgba(42,32,22,.1);
+            }
+            .project-card::before { display: none; }
+            .project-visual { min-height: 100%; aspect-ratio: auto; }
+            .project-visual img { height: 100%; object-fit: cover; }
+            .project-index { display: none; }
+            .project-body { display: block; padding: .95rem .9rem; }
+            .project-topline { display: block; margin: 0; }
+            .project-title { font-size: 1.45rem; line-height: .95; }
+            .project-kind { margin-top: .3rem; font-size: .88rem; line-height: 1.05; }
+            .status { display: inline-block; margin: .55rem 0 0; font-size: .64rem; }
+            .project-role, .project-desc, .project-outcome, .tech-tags { display: none; }
+            .project-links { min-height: 0; margin-top: .65rem; gap: .6rem; }
+            .project-link, .coming-soon { font-size: .82rem; line-height: 1.15; }
+            .project-link svg { display: none; }
+
+            .projects-footer { padding: .5rem 1rem 3rem; font-size: 1rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+        }
+    </style>
+</head>
+<body>
+<nav id="navbar" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo">W<span>·</span>W<span>·</span>M</a>
+    <ul class="nav-links">
+        <li><a href="index.html#about" class="nav-link">About</a></li>
+        <li><a href="index.html#experience" class="nav-link">Experience</a></li>
+        <li><a href="projects.html" class="nav-link active" aria-current="page">Work</a></li>
+        <li><a href="index.html#skills" class="nav-link">Skills</a></li>
+        <li><a href="index.html#jams" class="nav-link">Jams</a></li>
+        <li><a href="blog.html" class="nav-link">Blog</a></li>
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+    </ul>
+</nav>
+
+<main>
+    <header class="page-header">
+        <a href="index.html" class="back-home">← Back to home</a>
+        <div class="section-label">Selected Work</div><br>
+        <h1 class="page-title">
+            Projects &amp; Case Files
+            <svg class="page-title-squiggle" viewBox="0 0 400 15" aria-hidden="true">
+                <path d="M3 8 Q 50 1, 100 9 T 200 6 T 300 10 T 397 5" stroke="#e8a24a" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+            </svg>
+        </h1>
+        <p class="page-subtitle">Games, editor tools, and the technical decisions behind shipping them.</p>
+        <div class="header-note" aria-hidden="true">built in Unity<br>tested by humans<br>held together by coffee</div>
+    </header>
+
+    <section id="projects-page" aria-label="Project archive">
+        <div class="project-controls">
+            <div class="project-search-wrap">
+                <svg class="project-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path>
+                </svg>
+                <label for="project-search" class="sr-only">Search projects</label>
+                <input type="search" id="project-search" class="project-search" placeholder="Search projects, tools, or technologies…" autocomplete="off">
+            </div>
+            <div class="filters" aria-label="Filter projects">
+                <button type="button" class="filter-btn active" data-filter="all" aria-pressed="true">All work</button>
+                <button type="button" class="filter-btn" data-filter="game" aria-pressed="false">Games</button>
+                <button type="button" class="filter-btn" data-filter="tool" aria-pressed="false">Tools</button>
+                <button type="button" class="filter-btn" data-filter="shipped" aria-pressed="false">Shipped</button>
+            </div>
+        </div>
+
+        <div class="results-meta" aria-live="polite">
+            <span id="project-count">4 projects</span>
+            <span>open a case file ↓</span>
+        </div>
+
+        <div class="projects-grid" id="projects-grid">
+            <article class="project-card" data-kind="game development" data-status="development" data-search="finn cozy fishing game unity c# urp scriptableobjects cinemachine textmeshpro dialogue npc path steam">
+                <div class="project-visual">
+                    <img src="images/finn/image9.png" alt="FINN game scene showing a wooden dock by the water">
+                    <span class="project-index">CASE 001 / 004</span>
+                </div>
+                <div class="project-body">
+                    <div class="project-topline">
+                        <div>
+                            <h2 class="project-title">FINN</h2>
+                            <p class="project-kind">3D Cozy Fishing Adventure</p>
+                        </div>
+                        <span class="status dev">In development</span>
+                    </div>
+                    <p class="project-role">LEAD PROGRAMMER · GAMEPLAY &amp; TOOLS</p>
+                    <p class="project-desc">A cozy fishing game heading to Steam. My work centers on tactile fishing, a flag-based dialogue system writers can use without C#, and custom path tools that help the team bring NPCs to life.</p>
+                    <div class="project-outcome"><strong>Built for the team</strong><br>Designer-friendly fishing content, dialogue trees, and NPC routes can all be authored without programmer intervention.</div>
+                    <div class="tech-tags" aria-label="Technologies">
+                        <span class="tech-tag">Unity</span><span class="tech-tag">C#</span><span class="tech-tag">URP</span><span class="tech-tag">ScriptableObjects</span><span class="tech-tag">Cinemachine</span>
+                    </div>
+                    <div class="project-links"><span class="coming-soon">Steam page coming soon</span></div>
+                </div>
+            </article>
+
+            <article class="project-card" data-kind="game shipped" data-status="shipped" data-search="two moons narrative card battler unity c# scriptableobjects webgl game jam shipped first place">
+                <div class="project-visual">
+                    <img src="images/two-moons/image3.png" alt="Two Moons narrative card battler gameplay">
+                    <span class="project-index">CASE 002 / 004</span>
+                </div>
+                <div class="project-body">
+                    <div class="project-topline">
+                        <div>
+                            <h2 class="project-title">TWO MOONS</h2>
+                            <p class="project-kind">Narrative Card Battler</p>
+                        </div>
+                        <span class="status shipped">Shipped · 1st place</span>
+                    </div>
+                    <p class="project-role">LEAD PROGRAMMER · 72-HOUR JAM</p>
+                    <p class="project-desc">A narrative card battler built by six people under a 72-hour deadline. I established the project structure early so design, writing, art, and programming could move in parallel.</p>
+                    <div class="project-outcome"><strong>What made it ship</strong><br>Every card was content-driven. Designers created 40+ cards while the scene and prefab structure avoided merge conflicts for the entire sprint.</div>
+                    <div class="tech-tags" aria-label="Technologies">
+                        <span class="tech-tag">Unity</span><span class="tech-tag">C#</span><span class="tech-tag">ScriptableObjects</span><span class="tech-tag">Narrative Systems</span><span class="tech-tag">WebGL</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://yqwz1.itch.io" target="_blank" rel="noopener" class="project-link">Play on itch.io
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-kind="tool" data-status="open source" data-search="easy dialogue unity editor tool c# editorwindow custom inspector scriptableobjects graph open source">
+                <div class="project-visual">
+                    <img src="images/easy-dialogue/image.png" alt="Easy Dialogue graph editor inside Unity">
+                    <span class="project-index">CASE 003 / 004</span>
+                </div>
+                <div class="project-body">
+                    <div class="project-topline">
+                        <div>
+                            <h2 class="project-title">EASY DIALOGUE</h2>
+                            <p class="project-kind">Unity Editor Tool</p>
+                        </div>
+                        <span class="status open">Open source</span>
+                    </div>
+                    <p class="project-role">TOOL DESIGN · EDITOR &amp; RUNTIME</p>
+                    <p class="project-desc">A clean graph-based dialogue workflow for teams that need flexibility without heavyweight setup. The editor provides visual node connections and validation; the runtime stays small and dependency-free.</p>
+                    <div class="project-outcome"><strong>One source of truth</strong><br>Dialogue nodes are ScriptableObject assets on disk, so the visual graph is the project data rather than a second representation that can drift.</div>
+                    <div class="tech-tags" aria-label="Technologies">
+                        <span class="tech-tag">C#</span><span class="tech-tag">Unity Editor API</span><span class="tech-tag">EditorWindow</span><span class="tech-tag">CustomInspector</span><span class="tech-tag">ScriptableObjects</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/yqwz1" target="_blank" rel="noopener" class="project-link">View GitHub
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-kind="tool shipped" data-status="shipped" data-search="waypoint path system unity navmesh path authoring tool c# ui toolkit scene view navmeshagent unityevents asset store shipped">
+                <div class="project-visual">
+                    <img src="images/pathnpc/banner.png" alt="Waypoint Path System banner showing visual NPC path authoring in Unity">
+                    <span class="project-index">CASE 004 / 004</span>
+                </div>
+                <div class="project-body">
+                    <div class="project-topline">
+                        <div>
+                            <h2 class="project-title">WAYPOINT PATH SYSTEM</h2>
+                            <p class="project-kind">Unity NavMesh Path-Authoring Tool</p>
+                        </div>
+                        <span class="status shipped">Released · v1.0.0</span>
+                    </div>
+                    <p class="project-role">PRODUCT DESIGN · EDITOR TOOLING · RUNTIME</p>
+                    <p class="project-desc">A visual route-authoring system for Unity NPCs. Designers place and edit waypoints directly in the Scene View, then drive one agent or a crowd through configurable paths using NavMeshAgent.</p>
+                    <div class="project-outcome"><strong>Production-focused authoring</strong><br>Four traversal modes, curve smoothing, per-waypoint behavior, Undo support, runtime interruption, save/restore, and UnityEvent hooks in one workflow.</div>
+                    <div class="tech-tags" aria-label="Technologies">
+                        <span class="tech-tag">C#</span><span class="tech-tag">Unity 2022.3+</span><span class="tech-tag">UI Toolkit</span><span class="tech-tag">NavMeshAgent</span><span class="tech-tag">Scene View Tooling</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://assetstore.unity.com/packages/tools/game-toolkits/waypoint-path-system-390624" target="_blank" rel="noopener" class="project-link">Unity Asset Store
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+                        </a>
+                        <a href="https://github.com/yqwz1/waypoint-path-system-tool" target="_blank" rel="noopener" class="project-link">GitHub &amp; docs
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div id="no-results" class="no-results" hidden>No project matches that search. Try a technology or choose another filter.</div>
+    </section>
+</main>
+
+<footer class="projects-footer">
+    Have a project in mind? <a href="index.html#contact">Tell me what you're building →</a>
+</footer>
+
+<script>
+(() => {
+    const search = document.getElementById('project-search');
+    const cards = [...document.querySelectorAll('.project-card')];
+    const buttons = [...document.querySelectorAll('.filter-btn')];
+    const count = document.getElementById('project-count');
+    const noResults = document.getElementById('no-results');
+    let activeFilter = 'all';
+
+    function applyFilters() {
+        const query = search.value.trim().toLowerCase();
+        let visible = 0;
+
+        cards.forEach(card => {
+            const matchesQuery = !query || card.dataset.search.includes(query);
+            const matchesFilter = activeFilter === 'all'
+                || card.dataset.kind.includes(activeFilter)
+                || card.dataset.status.includes(activeFilter);
+            const show = matchesQuery && matchesFilter;
+            card.hidden = !show;
+            if (show) visible += 1;
+        });
+
+        count.textContent = visible + (visible === 1 ? ' project' : ' projects');
+        noResults.hidden = visible !== 0;
+    }
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            activeFilter = button.dataset.filter;
+            buttons.forEach(item => {
+                const active = item === button;
+                item.classList.toggle('active', active);
+                item.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
+            applyFilters();
+        });
+    });
+
+    search.addEventListener('input', applyFilters);
+})();
+</script>
+</body>
+</html>

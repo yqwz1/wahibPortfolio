@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.web3forms.com https://abacus.jasoncameron.dev; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com;">
     <title>Wahib Walaa Mohammed — Game Developer</title>
     <meta name="description" content="Unity C# programmer, game jam champion, and head of a 100-student game dev community. Currently building Finn for Steam.">
     <meta property="og:title" content="Wahib Walaa Mohammed — Game Developer">
@@ -55,7 +56,6 @@
             background: var(--paper);
             color: var(--ink);
             overflow-x: hidden;
-            cursor: none;
         }
 
         /* Subtle paper grain overlay */
@@ -67,18 +67,6 @@
             pointer-events: none;
             z-index: 9000;
         }
-
-        /* ============================================================
-           CURSOR
-        ============================================================ */
-        #cursor {
-            position: fixed; pointer-events: none; z-index: 999999;
-            transform: translate(-50%, -50%);
-            width: 20px; height: 20px;
-            transition: transform 80ms ease, opacity 200ms;
-        }
-        #cursor svg { display: block; width: 100%; height: 100%; overflow: visible; }
-        .cursor-hover #cursor { transform: translate(-50%, -50%) scale(1.5); }
 
         /* ============================================================
            SCROLL PROGRESS
@@ -271,19 +259,6 @@
         }
         .hero-name .name-accent { color: var(--amber-dark); }
 
-        .hero-typed-wrap {
-            font-family: var(--font-hand);
-            font-size: clamp(1.2rem, 2.5vw, 1.7rem);
-            color: var(--ink-light); margin-bottom: 1.5rem; min-height: 2.4rem;
-        }
-        .cursor-blink {
-            display: inline-block; width: 3px; height: 1em;
-            background: var(--amber); margin-left: 2px;
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
-        }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
         .hero-bio {
             font-size: 1.05rem; color: var(--ink-light);
             max-width: 500px; line-height: 1.75; margin-bottom: 1.5rem;
@@ -316,7 +291,6 @@
         .doodle-fish    { top:14%; right:7%;  width:150px; animation: floatA 7s ease-in-out infinite; }
         .doodle-moon    { top:10%; left:62%;  width:100px; animation: floatB 9s ease-in-out infinite; opacity:0.3; }
         .doodle-ctrl    { bottom:18%; right:13%; width:110px; animation: floatC 8s ease-in-out infinite; opacity:0.3; }
-        .doodle-stars   { top:35%; right:30%; width:90px;  animation: floatA 6s ease-in-out infinite reverse; opacity:0.4; }
         .doodle-squig   { top:62%; left:52%; width:130px; opacity:0.15; }
 
         /* ============================================================
@@ -1595,7 +1569,6 @@
             .jams-grid     { grid-template-columns:1fr; }
             .stats-grid    { grid-template-columns:repeat(2,1fr); }
             .hero-ctas     { flex-direction:column; }
-            .doodle-stars  { display:none; }
         }
         /* ============================================================
            SQUIGGLY TEXT & OUTLINE EFFECT
@@ -1976,11 +1949,6 @@
         @media(prefers-reduced-motion:reduce) {
             *, *::before, *::after { animation-duration:0.01ms!important; transition-duration:0.01ms!important; }
         }
-        @media(pointer:coarse) {
-            #cursor { display:none; }
-            body { cursor:auto; }
-        }
-
         /* ============================================================
            DARK MODE TOGGLE BUTTON
         ============================================================ */
@@ -2820,6 +2788,153 @@
             pointer-events: none;
         }
         .ppage-photo img { cursor: zoom-in; }
+
+        /* ============================================================
+           PHONE EDITION — a focused portfolio, not a shrunken desktop
+        ============================================================ */
+        .mobile-only { display: none; }
+
+        @media (max-width: 600px) {
+            html { scroll-padding-top: 64px; }
+            body::after { opacity: 0.35; }
+            #scroll-progress, #bg-sketches, #fg-doodles,
+            .hero-doodles, .funny-notes, .sticker, .folder-floating,
+            .crayon, .notebook-margin { display: none !important; }
+
+            #navbar {
+                padding: 0.75rem 1rem;
+                background: rgba(245,240,232,0.96);
+                border-bottom: 1px solid var(--paper-darker);
+                backdrop-filter: blur(14px);
+            }
+            html[data-theme="dark"] #navbar {
+                background: rgba(9,11,15,0.96);
+                border-bottom-color: rgba(255,255,255,0.08);
+            }
+            .nav-logo { font-size: 1.35rem; }
+            #mobile-menu {
+                justify-content: flex-start;
+                gap: 0;
+                padding: 5.5rem 1.25rem 2rem;
+            }
+            #mobile-menu .nav-link {
+                width: 100%;
+                padding: 0.9rem 0;
+                border-bottom: 1px solid var(--paper-darker);
+                font-size: 2rem;
+            }
+            #mobile-menu a[href="#experience"],
+            #mobile-menu a[href="#skills"],
+            #mobile-menu a[href="#jams"] { display: none; }
+
+            .desktop-copy { display: none; }
+            .mobile-only { display: block; }
+            .pin-in {
+                opacity: 1;
+                transform: none !important;
+            }
+
+            #hero {
+                min-height: auto;
+                padding: 7rem 1.1rem 3.5rem;
+            }
+            #hero::before { background-size: 28px 28px; opacity: 0.65; }
+            .hero-sticker { margin-bottom: 1.1rem; font-size: 0.85rem; }
+            .hero-name {
+                max-width: 330px;
+                margin-bottom: 1.1rem;
+                font-size: clamp(3.15rem, 17vw, 4.25rem);
+                line-height: 0.9;
+            }
+            .hero-bio {
+                max-width: 330px;
+                margin-bottom: 1.35rem;
+                font-size: 0.98rem;
+                line-height: 1.6;
+            }
+            .hero-ctas { gap: 0.75rem; }
+            .hero-ctas .btn-primary,
+            .hero-ctas .btn-secondary {
+                width: auto;
+                padding: 0.7rem 1.15rem;
+                font-size: 1rem;
+                text-align: center;
+            }
+
+            #about { padding: 3.75rem 1.1rem; }
+            .about-grid { display: block; }
+            .about-grid > div:first-child {
+                max-width: 168px;
+                margin: 1.25rem 0 1.75rem;
+            }
+            .avatar-card { padding: 0.65rem 0.65rem 0.9rem; transform: rotate(-1deg); }
+            .avatar-photo-area { aspect-ratio: 1; margin-bottom: 0.65rem; padding: 0; }
+            .avatar-caption { font-size: 1rem; }
+            .avatar-sub { font-size: 0.56rem; }
+            .about-content h2 { margin-bottom: 0.8rem; font-size: 2rem; }
+            .about-content > p:not(.mobile-only) { display: none; }
+            .about-content .mobile-only {
+                margin: 0;
+                max-width: 34rem;
+                font-size: 0.98rem;
+                line-height: 1.65;
+            }
+            .postit-grid { display: none; }
+
+            /* Detailed sections remain discoverable from Work and Blog. */
+            #experience, #skills, #jams, #blog { display: none; }
+
+            #projects { padding: 3.75rem 1rem; }
+            .section-header { margin-bottom: 2rem; text-align: left; }
+            .section-header .section-label { justify-content: flex-start !important; }
+            .section-title { font-size: 2.25rem; }
+            .projects-board { gap: 2.4rem; }
+            .project-card:nth-child(2),
+            .project-card:nth-child(3) { display: none; }
+            .project-card {
+                grid-template-columns: 1fr;
+                gap: 0.85rem;
+            }
+            .project-card:nth-child(even) { direction: ltr; }
+            .polaroid,
+            .polaroid:hover { transform: none !important; }
+            .ppage {
+                padding: 0.55rem 0.55rem 1.9rem;
+                border-radius: 6px;
+                box-shadow: 0 2px 10px rgba(42,32,22,0.12);
+            }
+            .pstack > .ppage:not(.active),
+            .shot-arrow, .shot-dots, .shot-counter { display: none !important; }
+            .ppage-caption { bottom: 0.52rem; font-size: 0.78rem; }
+            .project-info { padding: 0 0.25rem; }
+            .project-num, .project-desc, .tech-tags,
+            .tech-highlights, .achievement-sticker { display: none; }
+            .project-title { margin-bottom: 0.15rem; font-size: 2rem; }
+            .project-sub { margin-bottom: 0.55rem; font-size: 1rem; }
+            .status-badge { margin-bottom: 0.7rem; font-size: 0.78rem; }
+            .project-links { gap: 0.75rem; }
+            .project-link { font-size: 0.95rem; }
+            .blog-view-all-wrap { margin-top: 2.25rem; }
+
+            #contact { padding: 3.75rem 1rem 4.25rem; }
+            #contact .section-title { margin-bottom: 2rem !important; }
+            .contact-grid { display: block; }
+            .form-card { display: none; }
+            .contact-note {
+                padding: 1.5rem 1.25rem 2.25rem;
+                transform: none;
+            }
+            .contact-note h3 { font-size: 1.8rem; }
+            .contact-note p:nth-of-type(n+2),
+            .contact-note .open-to { display: none; }
+            .contact-email { overflow-wrap: anywhere; font-size: 1.05rem; }
+
+            #footer { padding: 1.5rem 1rem; }
+            .footer-inner { align-items: flex-start; flex-direction: column; }
+            .footer-links { gap: 1rem; }
+            #footer .footer-link[href="#skills"] { display: none; }
+            #btt { right: 1rem; bottom: 1rem; }
+        }
     </style>
 
     <!-- Anti-FOUC: set theme before first paint -->
@@ -2876,18 +2991,6 @@
     </defs>
 </svg>
 
-<div id="cursor">
-  <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- warm filled circle -->
-    <circle cx="10" cy="10" r="5" fill="#e8a24a"/>
-    <!-- soft outer ring -->
-    <circle cx="10" cy="10" r="8.5" stroke="#e8a24a" stroke-width="1.5" opacity="0.45"/>
-    <!-- tiny sparkle top-right -->
-    <line x1="15" y1="4" x2="16.5" y2="2.5" stroke="#f5c87a" stroke-width="1.2" stroke-linecap="round"/>
-    <line x1="16" y1="5.5" x2="18" y2="5.5" stroke="#f5c87a" stroke-width="1.2" stroke-linecap="round"/>
-    <line x1="15.5" y1="3" x2="15.5" y2="1" stroke="#f5c87a" stroke-width="1.2" stroke-linecap="round"/>
-  </svg>
-</div>
 <div id="scroll-progress"></div>
 
 <!-- NAV -->
@@ -2896,7 +2999,7 @@
     <ul class="nav-links">
         <li><a href="#about"    class="nav-link">About</a></li>
         <li><a href="#experience" class="nav-link">Experience</a></li>
-        <li><a href="#projects" class="nav-link">Work</a></li>
+        <li><a href="projects.html" class="nav-link">Work</a></li>
         <li><a href="#skills"   class="nav-link">Skills</a></li>
         <li><a href="#jams"     class="nav-link">Jams</a></li>
         <li><a href="#blog"     class="nav-link">Blog</a></li>
@@ -2921,10 +3024,10 @@
 <div id="mobile-menu" aria-hidden="true">
     <a href="#about"    class="nav-link">About</a>
     <a href="#experience" class="nav-link">Experience</a>
-    <a href="#projects" class="nav-link">Work</a>
+    <a href="projects.html" class="nav-link">Work</a>
     <a href="#skills"   class="nav-link">Skills</a>
     <a href="#jams"     class="nav-link">Jams</a>
-    <a href="#blog"     class="nav-link">Blog</a>
+    <a href="blog.html" class="nav-link">Blog</a>
     <a href="#contact"  class="nav-link">Contact</a>
 </div>
 
@@ -3502,17 +3605,6 @@
             <rect x="59" y="22" width="7" height="3.5" rx="1.75" fill="#6ec6b5" opacity="0.55"/>
         </svg>
 
-        <!-- Stars scatter -->
-        <svg class="doodle doodle-stars" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 12 L22 18 L28 20 L22 22 L20 28 L18 22 L12 20 L18 18Z" fill="#e8a24a" opacity="0.9"/>
-            <path d="M72 38 L73.5 43 L79 44.5 L73.5 46 L72 51 L70.5 46 L65 44.5 L70.5 43Z" fill="#e8a24a" opacity="0.6"/>
-            <path d="M12 58 L13 61 L16 62 L13 63 L12 66 L11 63 L8 62 L11 61Z" fill="#ffd966" opacity="0.9"/>
-            <path d="M82 72 L83.5 77 L89 78.5 L83.5 80 L82 85 L80.5 80 L75 78.5 L80.5 77Z" fill="#ffd966" opacity="0.7"/>
-            <circle cx="45" cy="50" r="2.5" fill="#e8a24a" opacity="0.5"/>
-            <circle cx="62" cy="15" r="2" fill="#ffd966" opacity="0.7"/>
-            <circle cx="30" cy="80" r="2" fill="#e8a24a" opacity="0.4"/>
-        </svg>
-
         <!-- Squiggle doodle (squiggly-svg class makes it wobbly) -->
         <svg class="doodle doodle-squig squiggly-svg" viewBox="0 0 130 44" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M5 22 C15 8 25 36 35 22 C45 8 55 36 65 22 C75 8 85 36 95 22 C105 8 115 36 125 22" stroke="#e8a24a" stroke-width="2" fill="none" stroke-linecap="round"/>
@@ -3573,11 +3665,9 @@
                 <span class="name-accent squiggly-slow">Walaa</span><br>
                 Mohammed
             </h1>
-            <div class="hero-typed-wrap">
-                <span id="hero-typed"></span><span class="cursor-blink"></span>
-            </div>
             <p class="hero-bio">
-                Unity C# programmer, game jam champion, and head of a 150-student game dev community at UQU. Currently building Finn for Steam.
+                <span class="desktop-copy">Unity C# programmer, game jam champion, and head of a 150-student game dev community at UQU. Currently building Finn for Steam.</span>
+                <span class="mobile-only">Unity programmer building games and practical tools for other developers.</span>
             </p>
             <div class="hero-ctas">
                 <a href="#projects" class="btn-primary">View My Work →</a>
@@ -3645,6 +3735,9 @@
             <!-- Bio + stats -->
             <div class="about-content">
                 <h2 class="pin-in">Hey, I'm Wahib!</h2>
+                <p class="mobile-only">
+                    I build polished Unity gameplay and editor tools, lead a 150-student game development community at UQU, and care about making complex systems easy for teams to use.
+                </p>
                 <p class="pin-in">
                     I've been making games since high school — the moment I realized I could make the games I play was world-changing, and I never stopped. I'm now three years into a Software Engineering degree at Umm Al-Qura University in Saudi Arabia, and every free hour goes back into building — polished systems, better tools, and games that feel good to play.
                 </p>
@@ -4139,29 +4232,59 @@
                 </div>
             </article>
 
-            <!-- ── PROJECT 4: PATHNPC ── -->
+            <!-- ── PROJECT 4: WAYPOINT PATH SYSTEM ── -->
             <article class="project-card">
                 <div class="polaroid pin-in" data-carousel>
                     <div class="pin pin-green" style="top:-10px;left:52%;"></div>
                     <div class="tape tape-teal" style="top:-11px;left:32%;transform:rotate(-1.5deg);"></div>
                     <div class="pstack">
                         <div class="ppage active">
-                            <div class="ppage-photo" style="background:linear-gradient(135deg,#0f1e14 0%,#1a3322 50%,#244a30 100%);">
-                                <img src="images/pathnpc/image6.png" alt="PathNPC — screenshot 1">
+                            <div class="ppage-photo" style="background:#111;">
+                                <img src="images/pathnpc/banner.png" alt="Waypoint Path System product banner">
                             </div>
-                            <div class="ppage-caption">PathNPC — waypoint editor ✦</div>
+                            <div class="ppage-caption">Waypoint Path System — visual pathing for Unity ✦</div>
                         </div>
                         <div class="ppage">
-                            <div class="ppage-photo" style="background:linear-gradient(135deg,#0f1e14 0%,#1a3322 50%,#244a30 100%);">
-                                <img src="images/pathnpc/image7.png" alt="PathNPC — screenshot 2">
+                            <div class="ppage-photo" style="background:#111;">
+                                <img src="images/pathnpc/scene-overview.png" alt="Unity Scene View showing four NPC waypoint routes and the Path Placer HUD">
                             </div>
-                            <div class="ppage-caption">PathNPC — inspector dashboard</div>
+                            <div class="ppage-caption">Scene View authoring — click to build routes</div>
                         </div>
                         <div class="ppage">
-                            <div class="ppage-photo" style="background:linear-gradient(135deg,#0f1e14 0%,#1a3322 50%,#244a30 100%);">
-                                <img src="images/pathnpc/image8.png" alt="PathNPC — screenshot 3">
+                            <div class="ppage-photo" style="background:#111;">
+                                <img src="images/pathnpc/inspector.png" alt="Waypoint Path System custom Unity inspector with NPC and path controls">
                             </div>
-                            <div class="ppage-caption">PathNPC — runtime demo</div>
+                            <div class="ppage-caption">Custom inspector — control every detail</div>
+                        </div>
+                        <div class="ppage">
+                            <div class="ppage-photo" style="background:#111;">
+                                <img src="images/pathnpc/path-modes.png" alt="Loop, PingPong, OneShot, and Random waypoint path modes">
+                            </div>
+                            <div class="ppage-caption">Four traversal modes per path</div>
+                        </div>
+                        <div class="ppage">
+                            <div class="ppage-photo" style="background:#111;">
+                                <img src="images/pathnpc/smoothing.png" alt="Straight, Catmull-Rom, and Bezier waypoint path smoothing options">
+                            </div>
+                            <div class="ppage-caption">Straight, Catmull–Rom, or Bézier paths</div>
+                        </div>
+                        <div class="ppage">
+                            <div class="ppage-photo" style="background:#111;">
+                                <img src="images/pathnpc/smoothing-scene.png" alt="Bezier, Catmull-Rom, and straight paths edited in the Unity Scene View">
+                            </div>
+                            <div class="ppage-caption">Curve editing directly in the Scene View</div>
+                        </div>
+                        <div class="ppage">
+                            <div class="ppage-photo" style="background:#111;">
+                                <img src="images/pathnpc/scene-hud.png" alt="Waypoint placement HUD and custom path inspector in Unity">
+                            </div>
+                            <div class="ppage-caption">Live placement stats and keyboard shortcuts</div>
+                        </div>
+                        <div class="ppage">
+                            <div class="ppage-photo" style="background:#111;">
+                                <img src="images/pathnpc/events.png" alt="Waypoint Path System events including waypoint reached and path interrupted">
+                            </div>
+                            <div class="ppage-caption">Gameplay hooks through UnityEvents</div>
                         </div>
                     </div><!-- /.pstack -->
                     <button class="shot-arrow shot-prev" aria-label="Previous photo">
@@ -4176,42 +4299,49 @@
 
                 <div class="project-info pin-in">
                     <div class="project-num">004</div>
-                    <h3 class="project-title">PATHNPC</h3>
-                    <div class="project-sub">Unity Editor Tool</div>
-                    <div class="status-badge badge-tool">Open Source</div>
+                    <h3 class="project-title">WAYPOINT PATH SYSTEM</h3>
+                    <div class="project-sub">Unity NavMesh path-authoring tool</div>
+                    <div class="status-badge badge-shipped">Released · v1.0.0</div>
 
                     <p class="project-desc">
-                        A visual, waypoint-based NPC pathing system for Unity. Click-to-place waypoints directly in the Scene View with real-time preview — no code needed to set up patrol routes. Supports multiple named paths per NPC, ping-pong and loop modes, per-waypoint pause durations, and color-coded path visualization.
+                        A visual route-authoring system for Unity NPCs. Designers can place and edit waypoints directly in the Scene View, then drive one agent or a crowd through configurable paths using Unity’s built-in NavMeshAgent — without writing setup boilerplate.
                     </p>
 
                     <div class="tech-tags">
                         <span class="tech-tag">C#</span>
-                        <span class="tech-tag">Unity Editor API</span>
-                        <span class="tech-tag">CustomInspector</span>
-                        <span class="tech-tag">NavMesh</span>
-                        <span class="tech-tag">Scene View Handles</span>
-                        <span class="tech-tag">Open Source</span>
+                        <span class="tech-tag">Unity 2022.3+</span>
+                        <span class="tech-tag">UI Toolkit</span>
+                        <span class="tech-tag">NavMeshAgent</span>
+                        <span class="tech-tag">Scene View Tooling</span>
+                        <span class="tech-tag">UnityEvents</span>
                     </div>
 
                     <div class="tech-highlights">
                         <div class="th">
                             <div class="pflag pflag-r pflag-teal" style="top:17px;" aria-hidden="true"></div>
-                            <div class="th-title"><span class="th-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#e8a24a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="4" cy="12" r="2.5"/><circle cx="12" cy="4" r="2.5"/><path d="M6 10.5 L10 5.5"/></svg></span>Visual Scene View Editing</div>
-                            <div class="th-detail">Click-to-place waypoints directly in the Scene View with real-time path preview, Gizmo handles, and full undo support. Zero friction for designers.</div>
+                            <div class="th-title"><span class="th-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#e8a24a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="4" cy="12" r="2.5"/><circle cx="12" cy="4" r="2.5"/><path d="M6 10.5 L10 5.5"/></svg></span>Fast visual route authoring</div>
+                            <div class="th-detail">Click to place, reorder, insert, label, and color waypoints with live distance and timing readouts, grid snapping, keyboard shortcuts, and full Undo support. Each route can use OneShot, Loop, PingPong, or weighted Random traversal.</div>
                         </div>
                         <div class="th">
                             <div class="pflag pflag-r pflag-green" style="top:14px;" aria-hidden="true"></div>
-                            <div class="th-title"><span class="th-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#e8a24a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8 L6 4 L10 8 L14 4"/><path d="M2 12 L6 8 L10 12 L14 8"/></svg></span>Multi-Path Runtime Switching</div>
-                            <div class="th-detail">Multiple named paths per NPC with runtime switching. Inspector dashboard shows path statistics — total distance, waypoint count, estimated patrol time.</div>
+                            <div class="th-title"><span class="th-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#e8a24a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8 L6 4 L10 8 L14 4"/><path d="M2 12 L6 8 L10 12 L14 8"/></svg></span>Curves and runtime control</div>
+                            <div class="th-detail">Build straight, Catmull–Rom, or Bézier routes with NavMesh-aware smoothing. Per-waypoint waits, speeds, and weights combine with priority interruption/resume, Animator syncing, save/restore, crowd controls, and UnityEvents.</div>
                         </div>
                     </div>
 
                     <div class="project-links">
-                        <a href="https://github.com/yqwz1/PathNPC-Unity" target="_blank" rel="noopener" class="project-link">GitHub →</a>
+                        <a href="https://assetstore.unity.com/packages/tools/game-toolkits/waypoint-path-system-390624" target="_blank" rel="noopener" class="project-link">Unity Asset Store →</a>
+                        <a href="https://github.com/yqwz1/waypoint-path-system-tool" target="_blank" rel="noopener" class="project-link">GitHub &amp; docs →</a>
                     </div>
                 </div>
             </article>
 
+        </div>
+
+        <div class="blog-view-all-wrap">
+            <a href="projects.html" class="btn-primary blog-view-all">
+                See all projects →
+            </a>
         </div>
     </div>
 </section>
@@ -4439,6 +4569,7 @@
 
             <!-- The actual subscribe card -->
             <form id="subscribe-form" class="subscribe-card" novalidate>
+                <input type="checkbox" name="botcheck" style="display:none;">
                 <!-- tape across the top -->
                 <div class="tape tape-amber" style="top:-12px; left:32%; transform:rotate(-3deg);"></div>
 
@@ -4554,6 +4685,7 @@
                 <div class="pin pin-blue" style="top:-10px;left:50%;transform:translateX(-50%);"></div>
                 <div class="tape tape-teal" style="top:-11px;right:28%;transform:rotate(1.5deg);"></div>
                 <form id="contact-form" novalidate>
+                    <input type="checkbox" name="botcheck" style="display:none;">
                     <div class="form-row">
                         <label class="form-label" for="cf-name">Your Name</label>
                         <input type="text" id="cf-name" name="name" class="form-input" placeholder="e.g. Studio Recruiter" required minlength="2">
@@ -4597,8 +4729,9 @@
         </div>
         <nav class="footer-links" aria-label="Footer navigation">
             <a href="#about"    class="footer-link">About</a>
-            <a href="#projects" class="footer-link">Work</a>
+            <a href="projects.html" class="footer-link">Work</a>
             <a href="#skills"   class="footer-link">Skills</a>
+            <a href="blog.html" class="footer-link mobile-only">Blog</a>
             <a href="#contact"  class="footer-link">Contact</a>
         </nav>
     </div>
@@ -4914,40 +5047,6 @@
 
 <script>
 /* ============================================================
-   CONFIG
-============================================================ */
-const CFG = {
-    typingSpeed:    78,
-    deletingSpeed:  38,
-    pauseBetween:   2400,
-    counterMs:      2100,
-    cursorLag:      0.1
-};
-const PHRASES = [
-    "I build games players remember.",
-    "I ship tools developers trust.",
-    "I lead teams that learn fast.",
-    "I make cozy games with technical depth.",
-    "I turn ScriptableObjects into worlds."
-];
-
-/* ============================================================
-   CURSOR
-============================================================ */
-const cursor = document.getElementById('cursor');
-
-if(window.matchMedia('(pointer:fine)').matches){
-    document.addEventListener('mousemove', e => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top  = e.clientY + 'px';
-    }, { passive: true });
-    document.querySelectorAll('a,button,.skill-chip,.jam-card,.postit,.polaroid').forEach(el=>{
-        el.addEventListener('mouseenter', ()=> document.body.classList.add('cursor-hover'));
-        el.addEventListener('mouseleave', ()=> document.body.classList.remove('cursor-hover'));
-    });
-}
-
-/* ============================================================
    SCROLL PROGRESS + NAVBAR
 ============================================================ */
 const progressBar = document.getElementById('scroll-progress');
@@ -4992,25 +5091,6 @@ mMenu.querySelectorAll('a').forEach(a=> a.addEventListener('click', ()=>{
     burger.setAttribute('aria-expanded','false');
     mMenu.setAttribute('aria-hidden','true');
 }));
-
-/* ============================================================
-   TYPING EFFECT
-============================================================ */
-const typedEl = document.getElementById('hero-typed');
-let pIdx=0, cIdx=0, deleting=false;
-
-function type(){
-    const phrase = PHRASES[pIdx];
-    if(!deleting){
-        typedEl.textContent = phrase.slice(0, ++cIdx);
-        if(cIdx===phrase.length){ deleting=true; setTimeout(type, CFG.pauseBetween); return; }
-    } else {
-        typedEl.textContent = phrase.slice(0, --cIdx);
-        if(cIdx===0){ deleting=false; pIdx=(pIdx+1)%PHRASES.length; }
-    }
-    setTimeout(type, deleting ? CFG.deletingSpeed : CFG.typingSpeed);
-}
-setTimeout(type, 900);
 
 /* ============================================================
    SCROLL REVEAL
@@ -5125,16 +5205,27 @@ document.getElementById('contact-form').addEventListener('submit', async e=>{
     e.preventDefault();
     const form = e.target;
     const btn  = document.getElementById('submit-btn');
+
+    const nameVal    = form.elements['name'].value.trim();
+    const emailVal   = form.elements['email'].value.trim();
+    const subjectVal = form.elements['subject'].value;
+    const messageVal = form.elements['message'].value.trim();
+
+    if(!nameVal || !emailVal || !subjectVal || messageVal.length < 20){
+        showToast('Please fill in all fields before sending.');
+        return;
+    }
+
     btn.textContent = 'Sending...'; btn.disabled = true;
 
     const data = {
         access_key: W3F_KEY,
-        name:       form.name.value,
-        email:      form.email.value,
-        subject:    'Portfolio contact: ' + form.subject.value,
-        message:    form.message.value,
+        name:       nameVal,
+        email:      emailVal,
+        subject:    'Portfolio contact: ' + subjectVal,
+        message:    messageVal,
         from_name:  'Wahib Portfolio',
-        replyto:    form.email.value,
+        replyto:    emailVal,
     };
 
     try {
@@ -5321,10 +5412,12 @@ document.addEventListener('keydown', e=>{
         function inline(s){
             s = escapeHTML(s);
             // images: ![alt](url)
-            s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+            s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, url)=>
+                /^javascript:/i.test(url.trim()) ? escapeHTML(alt) : '<img src="'+url+'" alt="'+alt+'">');
             // links
-            s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,
-                '<a href="$2" target="_blank" rel="noopener">$1</a>');
+            s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url)=>
+                /^javascript:/i.test(url.trim()) ? text
+                    : '<a href="'+url+'" target="_blank" rel="noopener">'+text+'</a>');
             // bold
             s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
             // italic
@@ -5379,7 +5472,7 @@ document.addEventListener('keydown', e=>{
         card.href = '#blog-' + post.slug;
         card.dataset.slug = post.slug;
         const heroHTML = post.hero
-            ? '<div class="blog-card-hero"><img src="'+post.hero+'" alt="'+escapeHTML(post.title)+'"></div>'
+            ? '<div class="blog-card-hero"><img src="'+escapeHTML(post.hero)+'" alt="'+escapeHTML(post.title)+'"></div>'
             : '<div class="blog-card-hero"><div class="blog-card-hero-empty">✦</div></div>';
         const tagsHTML = (post.tags || []).map(t=>
             '<span class="blog-card-tag">'+escapeHTML(t)+'</span>').join('');
@@ -5479,7 +5572,7 @@ document.addEventListener('keydown', e=>{
             const body = renderMarkdown(md);
 
             const files = (post.files || []).map(f=>
-                '<a class="blog-post-file" href="'+f.url+'" download>' +
+                '<a class="blog-post-file" href="'+escapeHTML(f.url)+'" download>' +
                 '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
                 escapeHTML(f.name) + '</a>'
             ).join('');
