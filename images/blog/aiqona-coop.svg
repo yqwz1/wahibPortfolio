@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Starting co-op training at Aiqona</title>
+  <desc id="desc">A warm notebook-style illustration with a route from student projects to professional game development.</desc>
+  <rect width="1200" height="630" fill="#f5f0e8"/>
+  <path d="M0 90h1200M0 180h1200M0 270h1200M0 360h1200M0 450h1200M0 540h1200" stroke="#b9d7df" stroke-width="2" opacity=".6"/>
+  <path d="M105 0v630" stroke="#e69aaa" stroke-width="4" opacity=".55"/>
+  <g transform="rotate(-2 600 315)">
+    <rect x="150" y="104" width="900" height="424" rx="8" fill="#fffdf7" stroke="#2a2016" stroke-width="6"/>
+    <rect x="207" y="72" width="245" height="62" rx="4" fill="#f6d78f" opacity=".9"/>
+    <rect x="748" y="82" width="244" height="52" rx="4" fill="#c7efd9" opacity=".9"/>
+    <text x="210" y="212" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#5f5549">STUDENT PROJECTS</text>
+    <text x="992" y="212" text-anchor="end" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#5f5549">PRO TEAM</text>
+    <circle cx="275" cy="327" r="66" fill="#d8cff4" stroke="#2a2016" stroke-width="5"/>
+    <path d="M245 327h60M275 297v60" stroke="#2a2016" stroke-width="12" stroke-linecap="round"/>
+    <path d="M370 328c120-101 260 101 380 0" fill="none" stroke="#4aa898" stroke-width="12" stroke-linecap="round" stroke-dasharray="20 19"/>
+    <path d="M728 296l49 31-50 35" fill="none" stroke="#4aa898" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="818" y="263" width="130" height="130" rx="14" fill="#e8a24a" stroke="#2a2016" stroke-width="5"/>
+    <path d="M853 311h60M853 340h60" stroke="#2a2016" stroke-width="8" stroke-linecap="round"/>
+    <text x="600" y="470" text-anchor="middle" font-family="monospace" font-size="25" font-weight="700" fill="#2a2016">CO-OP TRAINING · GAME DEVELOPMENT · AIQONA</text>
+  </g>
+</svg>

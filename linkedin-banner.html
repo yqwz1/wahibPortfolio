@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f5f0e8; --paper-dark:#ede6d4; --paper-darker:#ddd4bc;
+  --amber:#e8a24a; --amber-light:#f5c87a; --amber-dark:#c4842a;
+  --teal:#6ec6b5; --teal-dark:#4aa898;
+  --ink:#2a2016; --ink-light:#5c4e38; --ink-muted:#8a7a64;
+  --red-pin:#c9614a; --purple:#8a6cc6; --green:#5a9e6f;
+  --postit-yellow:#ffd966; --postit-pink:#ffb3c6; --postit-blue:#b3d9ff;
+  --postit-green:#b3f0d5; --postit-orange:#ffd9b3;
+  --font-hand:'Caveat',cursive; --font-body:'DM Sans',sans-serif; --font-mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#3a322a;display:flex;align-items:center;justify-content:center;min-height:100vh;}
+
+.banner{
+  position:relative;
+  width:1584px;height:396px;
+  background:
+    radial-gradient(circle at 78% 30%, rgba(232,162,74,0.10), transparent 45%),
+    radial-gradient(circle at 20% 80%, rgba(110,198,181,0.10), transparent 50%),
+    var(--paper);
+  overflow:hidden;
+  font-family:var(--font-body);
+  color:var(--ink);
+}
+/* paper grain */
+.banner::after{
+  content:'';position:absolute;inset:0;z-index:40;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+/* dashed inner frame */
+.frame{position:absolute;inset:18px;border:2px dashed var(--paper-darker);border-radius:14px;z-index:1;}
+
+/* ---------- MAIN TEXT BLOCK (centred-left, clear of avatar bottom-left) ---------- */
+.content{position:absolute;left:360px;top:50%;transform:translateY(-50%);z-index:20;}
+.eyebrow{
+  font-family:var(--font-hand);font-size:1.55rem;font-weight:600;color:var(--amber-dark);
+  letter-spacing:0.3px;margin-bottom:2px;
+}
+.name{
+  font-family:var(--font-hand);font-weight:700;font-size:5.1rem;line-height:0.92;
+  color:var(--ink);margin:2px 0 6px;
+}
+.name .accent{color:var(--amber-dark);position:relative;}
+/* hand underline under Walaa */
+.name .accent svg{position:absolute;left:-4%;bottom:-14px;width:108%;height:16px;overflow:visible;}
+.role{
+  font-family:var(--font-body);font-size:1.32rem;font-weight:500;color:var(--ink-light);
+  letter-spacing:0.2px;margin-top:14px;
+}
+.role b{color:var(--ink);font-weight:600;}
+.role .sep{color:var(--amber);font-weight:700;margin:0 12px;font-size:1.1rem;vertical-align:1px;}
+.meta{
+  font-family:var(--font-mono);font-size:0.86rem;color:var(--ink-muted);margin-top:12px;
+  display:flex;gap:18px;align-items:center;flex-wrap:wrap;
+}
+.meta .dot{width:7px;height:7px;border-radius:50%;background:var(--teal-dark);display:inline-block;margin-right:7px;vertical-align:middle;}
+.meta span{display:inline-flex;align-items:center;}
+
+/* ---------- DOODLES ---------- */
+.doodle{position:absolute;z-index:10;}
+
+/* ---------- STICKY NOTES ---------- */
+.fnote{
+  position:absolute;z-index:15;
+  padding:14px 16px;width:auto;
+  font-family:var(--font-hand);font-size:1.18rem;line-height:1.2;color:var(--ink);
+  box-shadow:0 6px 18px rgba(42,32,22,0.18),0 2px 5px rgba(42,32,22,0.10);
+  transform:rotate(var(--fr,0deg));
+}
+.fnote code{font-family:var(--font-mono);font-size:0.72rem;color:var(--ink-light);display:inline-block;margin-top:3px;}
+.fnote::before{ /* tape */
+  content:'';position:absolute;top:-9px;left:50%;transform:translateX(-50%) rotate(-3deg);
+  width:54px;height:18px;background:rgba(255,255,255,0.45);box-shadow:0 1px 3px rgba(0,0,0,0.08);
+}
+.fnote-yellow{background:var(--postit-yellow);}
+.fnote-blue{background:var(--postit-blue);}
+.fnote-green{background:var(--postit-green);}
+
+/* ---------- STICKERS ---------- */
+.sticker{
+  position:absolute;z-index:16;
+  font-family:var(--font-hand);font-weight:700;text-align:center;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  transform:rotate(var(--sr,0deg));
+  box-shadow:0 4px 12px rgba(42,32,22,0.16);
+}
+.sticker-ship{
+  width:78px;height:78px;border-radius:50%;border:2.5px dotted #fff;
+  background:var(--red-pin);color:#fff;font-size:1.2rem;
+}
+.sticker-csharp{
+  padding:8px 16px;border-radius:8px;background:var(--purple);color:#fff;font-size:1.15rem;
+  letter-spacing:0.5px;
+}
+.sticker-unity{
+  padding:9px 15px;background:var(--teal-dark);color:#fff;font-size:1.1rem;border-radius:6px;
+}
+
+/* ---------- CROWN (sits on the LinkedIn profile photo) ---------- */
+/* Avatar on LinkedIn desktop ≈ centre x:150px, top of circle ≈ y:175px in banner space.
+   Tune the crown with --crown-x / --crown-y / --crown-w if your layout differs. */
+.crown{
+  position:absolute;z-index:25;
+  left:var(--crown-x,104px);
+  top:var(--crown-y,94px);
+  width:var(--crown-w,165px);
+  transform:rotate(-6deg);
+  filter:drop-shadow(0 4px 6px rgba(42,32,22,0.22));
+}
+.crown-cap{
+  position:absolute;z-index:24;
+  font-family:var(--font-hand);font-weight:700;font-size:1.5rem;color:var(--amber-dark);
+  left:236px;top:118px;transform:rotate(-6deg);white-space:nowrap;
+}
+/* placeholder avatar — REMOVE for final export */
+.avatar-guide{
+  position:absolute;z-index:20;
+  left:43px;top:172px;width:286px;height:286px;border-radius:50%;
+  background:radial-gradient(circle at 50% 40%,#cfc3aa,#b7a988);
+  border:3px solid #fff;box-shadow:0 4px 14px rgba(0,0,0,0.25);
+  display:flex;align-items:flex-start;justify-content:center;
+  font-size:5rem;padding-top:34px;
+}
+</style>
+</head>
+<body>
+<div class="banner">
+  <div class="frame"></div>
+
+  <!-- ===== CROWN (on the profile photo) ===== -->
+  <svg class="crown" viewBox="0 0 120 92" fill="none">
+    <!-- crown body -->
+    <path d="M12 72 L20 38 L38 56 L60 24 L82 56 L100 38 L108 72 Q60 82 12 72 Z"
+          fill="#f5c87a" stroke="#2a2016" stroke-width="2.6" stroke-linejoin="round"/>
+    <!-- gold band -->
+    <path d="M13 67 Q60 78 107 67" stroke="#c4842a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <!-- peak gems -->
+    <circle cx="20" cy="36" r="5.5" fill="#c9614a" stroke="#2a2016" stroke-width="1.6"/>
+    <circle cx="60" cy="22" r="6.5" fill="#6ec6b5" stroke="#2a2016" stroke-width="1.6"/>
+    <circle cx="100" cy="36" r="5.5" fill="#8a6cc6" stroke="#2a2016" stroke-width="1.6"/>
+    <!-- band gems -->
+    <circle cx="36" cy="69" r="3.2" fill="#ffb3c6"/>
+    <circle cx="60" cy="72" r="3.6" fill="#c9614a"/>
+    <circle cx="84" cy="69" r="3.2" fill="#b3d9ff"/>
+    <!-- sparkles -->
+    <path d="M60 4 L62 11 L69 13 L62 15 L60 22 L58 15 L51 13 L58 11 Z" fill="#ffd966" opacity="0.95"/>
+    <path d="M16 20 L17.5 25 L22 26.5 L17.5 28 L16 33 L14.5 28 L10 26.5 L14.5 25 Z" fill="#ffd966" opacity="0.8"/>
+  </svg>
+
+  <!-- ===== DOODLES ===== -->
+  <!-- Fish (Finn) -->
+  <svg class="doodle" style="top:18px;left:48px;width:118px;opacity:0.5;" viewBox="0 0 160 90" fill="none">
+    <path d="M22 45 C45 15 100 15 120 45 C100 75 45 75 22 45Z" stroke="#e8a24a" stroke-width="2.5" fill="rgba(232,162,74,0.08)" stroke-linecap="round"/>
+    <path d="M120 45 L144 28 L138 45 L144 62Z" fill="#e8a24a" opacity="0.5"/>
+    <circle cx="50" cy="38" r="5" fill="#e8a24a"/><circle cx="51" cy="37" r="2" fill="#2a2016"/>
+    <path d="M60 32 Q72 26 84 32" stroke="#e8a24a" stroke-width="1.5" fill="none"/>
+    <path d="M65 56 Q77 62 89 56" stroke="#e8a24a" stroke-width="1.5" fill="none"/>
+    <path d="M38 45 Q32 38 34 30" stroke="#e8a24a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <circle cx="35" cy="29" r="1.5" fill="#e8a24a"/>
+    <path d="M70 20 Q72 14 76 10" stroke="#6ec6b5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="3 3"/>
+    <circle cx="76" cy="9" r="3" fill="#6ec6b5" opacity="0.6"/>
+  </svg>
+
+  <!-- Moon + stars -->
+  <svg class="doodle" style="top:14px;left:182px;width:78px;opacity:0.4;" viewBox="0 0 110 110" fill="none">
+    <path d="M50 18 C28 18 12 35 12 55 C12 76 28 90 50 90 C38 76 33 65 35 55 C37 40 46 26 60 20 C57 18 54 18 50 18Z" fill="#8a6cc6" opacity="0.6"/>
+    <circle cx="78" cy="22" r="5" fill="#ffd966" opacity="0.9"/>
+    <circle cx="22" cy="32" r="3" fill="#ffd966" opacity="0.6"/>
+    <path d="M66 38 L68 31 L70 38 L77 40.5 L70 43 L68 50 L66 43 L59 40.5Z" fill="#ffd966" opacity="0.95"/>
+  </svg>
+
+  <!-- Game controller (moved to centre, clear of the avatar) -->
+  <svg class="doodle" style="top:230px;left:560px;width:104px;opacity:0.34;" viewBox="0 0 110 72" fill="none">
+    <rect x="5" y="16" width="100" height="44" rx="22" stroke="#6ec6b5" stroke-width="2.5" fill="none"/>
+    <rect x="22" y="29" width="4" height="18" rx="2" fill="#6ec6b5"/>
+    <rect x="14" y="35" width="20" height="4" rx="2" fill="#6ec6b5"/>
+    <circle cx="72" cy="32" r="4.5" fill="#c9614a" opacity="0.75"/>
+    <circle cx="83" cy="38" r="4.5" fill="#e8a24a" opacity="0.75"/>
+    <circle cx="72" cy="44" r="4.5" fill="#5a9e6f" opacity="0.75"/>
+    <circle cx="61" cy="38" r="4.5" fill="#8a6cc6" opacity="0.75"/>
+  </svg>
+
+  <!-- Stars scatter (right) -->
+  <svg class="doodle" style="top:120px;right:470px;width:90px;opacity:0.5;" viewBox="0 0 100 100" fill="none">
+    <path d="M20 12 L22 18 L28 20 L22 22 L20 28 L18 22 L12 20 L18 18Z" fill="#e8a24a" opacity="0.9"/>
+    <path d="M72 38 L73.5 43 L79 44.5 L73.5 46 L72 51 L70.5 46 L65 44.5 L70.5 43Z" fill="#e8a24a" opacity="0.6"/>
+    <path d="M12 58 L13 61 L16 62 L13 63 L12 66 L11 63 L8 62 L11 61Z" fill="#ffd966" opacity="0.9"/>
+    <circle cx="45" cy="50" r="2.5" fill="#e8a24a" opacity="0.5"/>
+  </svg>
+
+  <!-- Squiggle (bottom center) -->
+  <svg class="doodle" style="bottom:60px;left:700px;width:150px;opacity:0.22;" viewBox="0 0 130 44" fill="none">
+    <path d="M5 22 C15 8 25 36 35 22 C45 8 55 36 65 22 C75 8 85 36 95 22 C105 8 115 36 125 22" stroke="#e8a24a" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </svg>
+
+  <!-- ===== TEXT ===== -->
+  <div class="content">
+    <div class="eyebrow">✦ Game Developer · Jeddah, SA</div>
+    <h1 class="name">Wahib <span class="accent">Walaa<svg viewBox="0 0 200 16" fill="none"><path d="M4 9 C50 3 120 14 196 6" stroke="#e8a24a" stroke-width="3.5" stroke-linecap="round"/></svg></span> Mohammed</h1>
+    <div class="role">Unity <b>C#</b> Programmer <span class="sep">•</span> Game Jam Champion <span class="sep">•</span> Community Builder</div>
+    <div class="meta">
+      <span><i class="dot"></i>Building <b>&nbsp;Finn</b>&nbsp; for Steam</span>
+      <span><i class="dot"></i>Head of 150-student game dev community @ UQU</span>
+    </div>
+  </div>
+
+  <!-- ===== STICKY NOTES (right) ===== -->
+  <div class="fnote fnote-yellow" style="top:48px;right:240px;--fr:-4deg;">
+    NO SLEEP<br><code>// ever</code>
+  </div>
+  <div class="fnote fnote-blue" style="bottom:54px;right:300px;--fr:3deg;">
+    Chill Guy<br><code>// it's all good</code>
+  </div>
+  <div class="fnote fnote-green" style="top:150px;right:70px;--fr:-2.5deg;">
+    Addicted to<br>caffeine<br><code>☕ x ∞</code>
+  </div>
+
+  <!-- ===== STICKERS ===== -->
+  <div class="sticker sticker-ship" style="top:40px;right:60px;--sr:-12deg;">SHIP<br>IT!</div>
+  <div class="sticker sticker-csharp" style="bottom:46px;right:120px;--sr:5deg;">BUILT&nbsp;WITH&nbsp;C#</div>
+</div>
+</body>
+</html>

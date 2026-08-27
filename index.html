@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script defer src="smooth-scroll.js"></script>
     <style>
         /* ============================================================
            ROOT & VARIABLES
@@ -116,7 +117,7 @@
             transition: color var(--transition);
         }
         .nav-logo span { color: var(--amber-dark); }
-        .nav-logo:hover { animation: hand-drift 3.8s ease-in-out infinite; }
+        .nav-logo:hover { animation: squiggly-anim 0.38s linear infinite; }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
         .nav-link {
             font-family: var(--font-hand); font-size: 1.1rem;
@@ -984,6 +985,14 @@
         .comp-title { font-family:var(--font-hand); font-size:1.25rem; color:var(--ink); margin-bottom:0.4rem; }
         .comp-desc { font-size:0.85rem; color:var(--ink-light); line-height:1.6; }
 
+        .skills-intro {
+            max-width: 720px;
+            margin: -1.6rem 0 2.8rem;
+            color: var(--ink-light);
+            font-size: 1rem;
+            line-height: 1.75;
+        }
+
         .skills-cats { display:grid; grid-template-columns:repeat(4,1fr); gap:2rem; }
         .skill-cat-title {
             font-family:var(--font-hand); font-size:1.15rem; color:var(--ink);
@@ -1391,6 +1400,63 @@
             .sticker-hide-sm { display: none; }
         }
 
+        /* Dry margin notes — small observations, physically placed like working notes. */
+        .field-note {
+            position: absolute;
+            z-index: 14;
+            width: 172px;
+            padding: 1rem 1rem 1.15rem;
+            background: var(--note-paper, var(--postit-yellow));
+            color: #2a2016;
+            font-family: var(--font-hand);
+            font-size: 1.02rem;
+            font-weight: 600;
+            line-height: 1.16;
+            letter-spacing: 0.005em;
+            transform: rotate(var(--note-rot, -3deg));
+            box-shadow: 3px 4px 0 rgba(42,32,22,0.13), 0 8px 16px rgba(42,32,22,0.09);
+            clip-path: polygon(1% 1%, 99% 0, 100% 96%, 96% 100%, 2% 98%, 0 5%);
+            pointer-events: none;
+        }
+        .field-note::before {
+            content: '';
+            position: absolute;
+            top: -9px;
+            left: 50%;
+            width: 58px;
+            height: 18px;
+            background: rgba(255,255,255,0.58);
+            border: 1px solid rgba(92,78,56,0.08);
+            transform: translateX(-50%) rotate(-2deg);
+        }
+        .field-note::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(225deg, rgba(42,32,22,0.14) 0 42%, rgba(255,255,255,0.28) 43% 60%, transparent 61%);
+        }
+        .field-note-label {
+            display: block;
+            margin-bottom: 0.45rem;
+            font-family: var(--font-mono);
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.58;
+        }
+        .field-note-yellow { --note-paper: #ffe27d; }
+        .field-note-pink   { --note-paper: #ffc6d5; }
+        .field-note-blue   { --note-paper: #c9e5f7; }
+        .field-note-green  { --note-paper: #c7efd9; }
+        .field-note-orange { --note-paper: #ffd0a1; }
+        @media(max-width:1180px) {
+            .field-note { display: none; }
+        }
+
         /* ============================================================
            GAME JAMS
         ============================================================ */
@@ -1577,22 +1643,24 @@
         /* ============================================================
            SQUIGGLY TEXT & OUTLINE EFFECT
         ============================================================ */
-        @keyframes hand-drift {
-            0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
-            45%      { transform: translate3d(0, -0.6px, 0) rotate(-0.12deg); }
-            72%      { transform: translate3d(0.25px, -0.2px, 0) rotate(0.08deg); }
+        @keyframes squiggly-anim {
+            0%   { filter: url('#squiggly-0'); }
+            25%  { filter: url('#squiggly-1'); }
+            50%  { filter: url('#squiggly-2'); }
+            75%  { filter: url('#squiggly-3'); }
+            100% { filter: url('#squiggly-4'); }
         }
-        /* Handwritten type stays crisp; motion is a slow physical drift, not distortion. */
+        /* Deliberately harsh animated distortion — part of the site's original energy. */
         .squiggly {
             display: inline-block;
-            animation: hand-drift 3.8s ease-in-out infinite;
+            animation: squiggly-anim 0.38s linear infinite;
         }
         .squiggly-slow {
             display: inline-block;
-            animation: hand-drift 6.5s ease-in-out infinite;
+            animation: squiggly-anim 0.85s linear infinite;
         }
         .squiggly-svg {
-            animation: hand-drift 7s ease-in-out infinite;
+            animation: squiggly-anim 1.2s linear infinite;
         }
 
         /* ============================================================
@@ -1689,7 +1757,7 @@
         .crayon {
             position: absolute;
             pointer-events: none;
-            opacity: var(--crayon-op, 0.50);
+            opacity: calc(var(--crayon-op, 0.50) * 1.55);
             transform: rotate(var(--crayon-rot, 0deg));
             filter: url('#pen-ink');
         }
@@ -1707,7 +1775,7 @@
             shape-rendering: geometricPrecision;
         }
         html[data-theme="dark"] .crayon {
-            opacity: calc(var(--crayon-op, 0.50) * 0.85);
+            opacity: calc(var(--crayon-op, 0.50) * 1.25);
         }
         /* Hide some on mobile to avoid clutter */
         @media (max-width: 768px) {
@@ -1860,7 +1928,7 @@
         }
 
         @media(prefers-reduced-motion:reduce) {
-            *, *::before, *::after { animation-duration:0.01ms!important; transition-duration:0.01ms!important; }
+            *, *::before, *::after { scroll-behavior:auto!important; animation-duration:0.01ms!important; transition-duration:0.01ms!important; }
         }
         /* ============================================================
            DARK MODE TOGGLE BUTTON
@@ -2858,19 +2926,40 @@
 ============================================================ -->
 <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden;" aria-hidden="true">
     <defs>
+        <filter id="squiggly-0" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="turbulence" baseFrequency="0.018" numOctaves="3" result="noise" seed="0"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="squiggly-1" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="turbulence" baseFrequency="0.020" numOctaves="3" result="noise" seed="1"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="squiggly-2" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="turbulence" baseFrequency="0.018" numOctaves="3" result="noise" seed="2"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="squiggly-3" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="turbulence" baseFrequency="0.022" numOctaves="3" result="noise" seed="3"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="squiggly-4" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="turbulence" baseFrequency="0.018" numOctaves="3" result="noise" seed="4"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+
         <!-- Pen filters: tiny directional displacement keeps curves smooth while
              breaking the perfect vector edge. Three strengths prevent repetition. -->
         <filter id="pen-ink" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
             <feTurbulence type="fractalNoise" baseFrequency="0.018 0.11" numOctaves="2" seed="17" result="inkNoise"/>
-            <feDisplacementMap in="SourceGraphic" in2="inkNoise" scale="0.65" xChannelSelector="R" yChannelSelector="G"/>
+            <feDisplacementMap in="SourceGraphic" in2="inkNoise" scale="1.05" xChannelSelector="R" yChannelSelector="G"/>
         </filter>
         <filter id="pen-ink-soft" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
             <feTurbulence type="fractalNoise" baseFrequency="0.014 0.09" numOctaves="2" seed="29" result="inkNoise"/>
-            <feDisplacementMap in="SourceGraphic" in2="inkNoise" scale="0.38" xChannelSelector="R" yChannelSelector="G"/>
+            <feDisplacementMap in="SourceGraphic" in2="inkNoise" scale="0.62" xChannelSelector="R" yChannelSelector="G"/>
         </filter>
         <filter id="pen-ink-rough" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
             <feTurbulence type="fractalNoise" baseFrequency="0.022 0.14" numOctaves="2" seed="43" result="inkNoise"/>
-            <feDisplacementMap in="SourceGraphic" in2="inkNoise" scale="0.9" xChannelSelector="R" yChannelSelector="G"/>
+            <feDisplacementMap in="SourceGraphic" in2="inkNoise" scale="1.45" xChannelSelector="R" yChannelSelector="G"/>
         </filter>
     </defs>
 </svg>
@@ -2952,10 +3041,13 @@
 
     <!-- Smiley face, top right -->
     <svg class="crayon" style="top:6%;right:14%;width:62px;height:62px;--crayon-rot:7deg;--crayon-op:0.32;" viewBox="0 0 60 60" fill="none">
-        <circle cx="30" cy="30" r="26" stroke="#e8a24a" stroke-width="3.5" fill="rgba(232,162,74,0.12)"/>
-        <circle cx="21" cy="24" r="2.6" fill="#2a2016"/>
-        <circle cx="39" cy="24" r="2.6" fill="#2a2016"/>
-        <path d="M18 36 C22 44 38 44 42 36" stroke="#2a2016" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+        <path d="M31 4 C45 5 55 15 56 29 C57 43 47 54 32 56 C17 58 6 48 5 33 C3 19 13 7 27 5 C28 5 30 4 31 4 Z"
+              stroke="#d4910a" stroke-width="3.2" fill="none"/>
+        <path d="M27 7 C15 9 7 18 7 31 C6 42 13 51 24 54" stroke="#e8a24a" stroke-width="1.15" opacity="0.48" fill="none"/>
+        <path d="M18.5 23.5 C19 21 22.5 21 23 23.5 C23 26 19.5 26.5 18.5 23.5 Z" fill="#2a2016"/>
+        <path d="M37 23 C38 20.5 41.5 21.5 41.5 24 C41 26.5 37.5 26 37 23 Z" fill="#2a2016"/>
+        <path d="M17 36 C21 43 28 46 35 44 C39 43 42 40 44 36.5" stroke="#2a2016" stroke-width="2.3" fill="none"/>
+        <path d="M20 39 C23 42 26 43 29 43.5" stroke="#2a2016" stroke-width="0.9" opacity="0.38" fill="none"/>
     </svg>
 
     <!-- Lightning bolt, hero-left -->
@@ -2966,22 +3058,19 @@
 
     <!-- Crayon star, big -->
     <svg class="crayon crayon-rough" style="top:24%;right:6%;width:90px;height:88px;--crayon-rot:-18deg;--crayon-op:0.26;" viewBox="0 0 90 88" fill="none">
-        <path d="M45 6 L55 35 L86 35 L61 53 L70 82 L45 64 L20 82 L29 53 L4 35 L35 35 Z"
-              stroke="#8a6cc6" stroke-width="3.5" stroke-linejoin="round" fill="rgba(138,108,198,0.22)"/>
+        <path d="M44 6 C48 16 51 27 55 34 C65 34 76 33 85 36 C77 42 68 48 61 54 C64 63 68 72 69 82 C61 77 52 69 44 65 C37 70 28 77 19 81 C22 71 27 62 29 53 C21 48 11 42 5 35 C15 34 26 36 35 34 C38 24 40 14 44 6 Z"
+              stroke="#795ab5" stroke-width="3.15" fill="none"/>
+        <path d="M13 37 C22 37 31 38 37 36 C39 27 41 18 44 11" stroke="#8a6cc6" stroke-width="1.1" opacity="0.42" fill="none"/>
     </svg>
 
     <!-- Sun with rays -->
     <svg class="crayon" style="top:13%;left:34%;width:78px;height:78px;--crayon-rot:5deg;--crayon-op:0.30;" viewBox="0 0 78 78" fill="none">
-        <circle cx="39" cy="39" r="16" stroke="#e8a24a" stroke-width="3" fill="rgba(232,162,74,0.32)"/>
+        <path d="M40 23 C49 23 56 30 55 39 C55 48 49 55 39 55 C30 56 23 49 23 40 C22 31 30 24 40 23 Z" stroke="#d4910a" stroke-width="3" fill="none"/>
         <g stroke="#e8a24a" stroke-width="2.8" stroke-linecap="round">
-            <line x1="39" y1="4" x2="39" y2="14"/>
-            <line x1="39" y1="64" x2="39" y2="74"/>
-            <line x1="4" y1="39" x2="14" y2="39"/>
-            <line x1="64" y1="39" x2="74" y2="39"/>
-            <line x1="14" y1="14" x2="21" y2="21"/>
-            <line x1="57" y1="57" x2="64" y2="64"/>
-            <line x1="14" y1="64" x2="21" y2="57"/>
-            <line x1="57" y1="21" x2="64" y2="14"/>
+            <path d="M39 4 C40 7 39 11 40 15"/><path d="M38 64 C39 68 38 72 39 75"/>
+            <path d="M4 40 C8 39 11 40 15 39"/><path d="M64 38 C68 39 71 38 75 39"/>
+            <path d="M14 14 C17 17 19 19 21 22"/><path d="M57 57 C60 59 62 62 65 64"/>
+            <path d="M13 65 C16 62 19 59 21 57"/><path d="M57 21 C60 18 62 16 65 13"/>
         </g>
     </svg>
 
@@ -3000,47 +3089,42 @@
 
     <!-- Music note duo -->
     <svg class="crayon" style="top:8%;left:62%;width:54px;height:70px;--crayon-rot:-6deg;--crayon-op:0.28;" viewBox="0 0 54 70" fill="none">
-        <ellipse cx="12" cy="56" rx="8" ry="6" stroke="#8a6cc6" stroke-width="2.6" fill="rgba(138,108,198,0.30)"/>
-        <line x1="20" y1="56" x2="20" y2="8" stroke="#8a6cc6" stroke-width="2.6" stroke-linecap="round"/>
-        <ellipse cx="38" cy="50" rx="8" ry="6" stroke="#8a6cc6" stroke-width="2.6" fill="rgba(138,108,198,0.30)"/>
-        <line x1="46" y1="50" x2="46" y2="4" stroke="#8a6cc6" stroke-width="2.6" stroke-linecap="round"/>
-        <path d="M20 8 C30 4 40 0 46 4" stroke="#8a6cc6" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+        <path d="M19 54 C16 51 10 51 6 54 C2 57 4 62 9 63 C14 64 20 61 20 57 C20 56 20 55 19 54 Z" stroke="#795ab5" stroke-width="2.5" fill="none"/>
+        <path d="M20 56 C19 42 18 27 17 10 C25 8 35 5 45 4" stroke="#795ab5" stroke-width="2.7" fill="none"/>
+        <path d="M45 47 C41 44 35 45 32 48 C29 51 31 55 36 56 C41 57 46 54 46 50 C46 49 46 48 45 47 Z" stroke="#795ab5" stroke-width="2.5" fill="none"/>
+        <path d="M46 50 C46 35 45 20 45 4" stroke="#795ab5" stroke-width="2.7" fill="none"/>
+        <path d="M19 12 C27 10 37 6 44 6" stroke="#8a6cc6" stroke-width="0.9" opacity="0.48" fill="none"/>
     </svg>
 
     <!-- ABOUT ZONE — middle-upper -->
     <!-- Coffee mug doodle -->
     <svg class="crayon crayon-soft" style="top:21%;left:4%;width:74px;height:74px;--crayon-rot:-8deg;--crayon-op:0.30;" viewBox="0 0 74 74" fill="none">
-        <path d="M14 22 L14 56 C14 62 18 66 24 66 L46 66 C52 66 56 62 56 56 L56 22 Z"
-              stroke="#5c4e38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="rgba(92,78,56,0.18)"/>
-        <path d="M56 30 C66 30 66 44 56 44" stroke="#5c4e38" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <path d="M22 14 C24 10 22 6 24 2" stroke="#5c4e38" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-        <path d="M34 14 C36 10 34 6 36 2" stroke="#5c4e38" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-        <path d="M46 14 C48 10 46 6 48 2" stroke="#5c4e38" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+        <path d="M14 23 C14 35 13 48 15 57 C16 64 21 67 29 67 L44 66 C51 66 55 62 56 55 C57 44 56 33 56 23 C43 21 28 22 14 23 Z"
+              stroke="#5c4e38" stroke-width="2.8" fill="none"/>
+        <path d="M56 31 C64 28 68 32 68 37 C68 43 63 47 56 44" stroke="#5c4e38" stroke-width="2.7" fill="none"/>
+        <path d="M21 15 C18 10 25 8 22 3 M34 15 C31 10 38 8 35 3 M47 15 C44 11 50 8 48 4" stroke="#5c4e38" stroke-width="2.1" fill="none"/>
+        <path d="M18 26 C29 24 43 25 53 24" stroke="#5c4e38" stroke-width="0.9" opacity="0.38" fill="none"/>
     </svg>
 
     <!-- Cat face -->
     <svg class="crayon" style="top:25%;right:38%;width:74px;height:64px;--crayon-rot:6deg;--crayon-op:0.30;" viewBox="0 0 74 64" fill="none">
-        <path d="M14 4 L20 26 L8 30 Z" stroke="#2a2016" stroke-width="2.6" stroke-linejoin="round" fill="rgba(42,32,22,0.20)"/>
-        <path d="M60 4 L54 26 L66 30 Z" stroke="#2a2016" stroke-width="2.6" stroke-linejoin="round" fill="rgba(42,32,22,0.20)"/>
-        <ellipse cx="37" cy="36" rx="26" ry="22" stroke="#2a2016" stroke-width="3" fill="rgba(42,32,22,0.12)"/>
-        <ellipse cx="27" cy="32" rx="2" ry="3.5" fill="#2a2016"/>
-        <ellipse cx="47" cy="32" rx="2" ry="3.5" fill="#2a2016"/>
-        <path d="M33 42 L37 46 L41 42" stroke="#2a2016" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <line x1="14" y1="38" x2="22" y2="38" stroke="#2a2016" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="14" y1="42" x2="22" y2="42" stroke="#2a2016" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="52" y1="38" x2="60" y2="38" stroke="#2a2016" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="52" y1="42" x2="60" y2="42" stroke="#2a2016" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M13 6 C15 13 18 20 20 26 C14 27 10 29 8 33 C6 44 16 56 31 59 C47 62 63 53 66 40 C68 33 63 28 54 25 C56 18 59 11 61 5 C55 10 50 15 46 20 C39 18 32 18 25 21 C21 15 17 10 13 6 Z" stroke="#2a2016" stroke-width="2.7" fill="none"/>
+        <path d="M12 35 C11 46 21 55 33 57" stroke="#2a2016" stroke-width="0.9" opacity="0.35" fill="none"/>
+        <path d="M25 31 C26 28 29 29 29 32 C29 35 25 35 25 31 Z M46 31 C47 28 50 29 50 32 C49 35 46 35 46 31 Z" fill="#2a2016"/>
+        <path d="M33 41 C35 39 38 39 40 41 C39 44 37 45 36 45 C35 44 34 43 33 41 Z M36 45 C34 49 30 48 29 46 M36 45 C38 49 43 49 44 46" stroke="#2a2016" stroke-width="1.7" fill="none"/>
+        <path d="M11 39 C17 38 21 39 24 39 M10 44 C16 42 21 43 24 43 M51 39 C57 37 62 38 67 39 M51 43 C57 42 62 44 66 46" stroke="#2a2016" stroke-width="1.35" fill="none"/>
     </svg>
 
     <!-- Game controller doodle -->
     <svg class="crayon crayon-rough" style="top:32%;right:8%;width:96px;height:64px;--crayon-rot:-4deg;--crayon-op:0.28;" viewBox="0 0 96 64" fill="none">
-        <rect x="6" y="16" width="84" height="42" rx="20" stroke="#4aa898" stroke-width="3" fill="rgba(74,168,152,0.18)"/>
-        <line x1="22" y1="30" x2="22" y2="44" stroke="#4aa898" stroke-width="2.6" stroke-linecap="round"/>
-        <line x1="15" y1="37" x2="29" y2="37" stroke="#4aa898" stroke-width="2.6" stroke-linecap="round"/>
-        <circle cx="68" cy="32" r="3.5" fill="#c9614a"/>
-        <circle cx="78" cy="38" r="3.5" fill="#e8a24a"/>
-        <circle cx="68" cy="44" r="3.5" fill="#5a9e6f"/>
-        <circle cx="58" cy="38" r="3.5" fill="#8a6cc6"/>
+        <path d="M25 15 C15 14 8 19 6 30 C4 39 6 52 14 57 C20 60 27 56 33 51 C42 47 53 48 62 51 C70 57 78 60 84 55 C92 48 92 34 88 25 C85 18 78 15 69 16 C55 17 40 15 25 15 Z" stroke="#3b9989" stroke-width="2.9" fill="none"/>
+        <path d="M10 31 C8 41 11 50 17 54" stroke="#4aa898" stroke-width="1" opacity="0.45" fill="none"/>
+        <path d="M22 28 C22 33 22 38 21 44 M15 36 C20 36 25 37 29 36" stroke="#3b9989" stroke-width="2.5" fill="none"/>
+        <path d="M68 29 C71 27 74 29 73 32 C72 35 68 35 67 32 C67 31 67 30 68 29 Z" fill="#c9614a"/>
+        <path d="M78 35 C81 34 83 36 82 39 C81 42 77 41 77 38 C77 37 77 36 78 35 Z" fill="#d4910a"/>
+        <path d="M67 42 C70 40 73 42 72 45 C71 48 67 48 66 45 C66 44 66 43 67 42 Z" fill="#5a9e6f"/>
+        <path d="M57 35 C60 33 63 35 62 38 C61 41 57 41 56 38 C56 37 56 36 57 35 Z" fill="#8a6cc6"/>
+        <path d="M42 23 C45 22 48 22 50 23 M55 23 C58 22 61 23 63 24" stroke="#3b9989" stroke-width="1.45" fill="none"/>
     </svg>
 
     <!-- Heart with arrow -->
@@ -3061,42 +3145,32 @@
 
     <!-- Mushroom -->
     <svg class="crayon" style="top:46%;right:14%;width:60px;height:80px;--crayon-rot:-10deg;--crayon-op:0.30;" viewBox="0 0 60 80" fill="none">
-        <path d="M6 38 C6 18 24 4 30 4 C36 4 54 18 54 38 Z"
-              stroke="#c9614a" stroke-width="3" stroke-linejoin="round" fill="rgba(201,97,74,0.28)"/>
-        <circle cx="18" cy="22" r="4" fill="rgba(253,250,242,0.7)"/>
-        <circle cx="32" cy="14" r="3" fill="rgba(253,250,242,0.7)"/>
-        <circle cx="42" cy="26" r="3.5" fill="rgba(253,250,242,0.7)"/>
-        <path d="M16 38 L16 64 C16 72 22 76 30 76 C38 76 44 72 44 64 L44 38"
-              stroke="#5c4e38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="rgba(245,240,232,0.7)"/>
+        <path d="M6 39 C7 23 19 7 29 5 C39 4 53 21 54 37 C42 39 24 40 6 39 Z" stroke="#b84f3d" stroke-width="2.9" fill="none"/>
+        <path d="M10 36 C20 34 38 36 51 34" stroke="#c9614a" stroke-width="0.95" opacity="0.38" fill="none"/>
+        <path d="M16 38 C17 47 15 58 17 66 C19 73 25 77 32 76 C40 75 44 70 43 63 C42 55 43 47 44 38" stroke="#5c4e38" stroke-width="2.8" fill="none"/>
+        <path d="M16 22 C17 18 22 18 23 22 C24 26 18 28 16 24 Z M31 12 C33 9 36 11 36 14 C35 17 31 16 31 12 Z M40 25 C42 21 47 23 47 27 C46 31 40 30 40 25 Z" fill="#c9614a" opacity="0.5"/>
     </svg>
 
     <!-- Rocket -->
     <svg class="crayon" style="top:50%;left:60%;width:50px;height:96px;--crayon-rot:-15deg;--crayon-op:0.30;" viewBox="0 0 50 96" fill="none">
-        <path d="M25 4 C16 12 12 28 12 50 L12 70 L38 70 L38 50 C38 28 34 12 25 4 Z"
-              stroke="#4aa898" stroke-width="3" stroke-linejoin="round" fill="rgba(74,168,152,0.22)"/>
-        <circle cx="25" cy="34" r="6" stroke="#c9614a" stroke-width="2.4" fill="rgba(201,97,74,0.35)"/>
-        <path d="M12 56 L2 72 L12 70 Z" stroke="#c9614a" stroke-width="2.4" stroke-linejoin="round" fill="rgba(201,97,74,0.30)"/>
-        <path d="M38 56 L48 72 L38 70 Z" stroke="#c9614a" stroke-width="2.4" stroke-linejoin="round" fill="rgba(201,97,74,0.30)"/>
-        <path d="M18 72 L18 84 M25 72 L25 92 M32 72 L32 84"
-              stroke="#e8a24a" stroke-width="3" stroke-linecap="round"/>
+        <path d="M25 4 C16 14 12 30 13 51 C13 59 13 65 14 70 C21 72 30 71 37 69 C38 61 38 54 37 49 C36 29 32 13 25 4 Z" stroke="#3b9989" stroke-width="2.8" fill="none"/>
+        <path d="M22 9 C16 22 15 38 16 56" stroke="#4aa898" stroke-width="0.95" opacity="0.42" fill="none"/>
+        <path d="M21 33 C22 28 29 28 31 33 C32 38 29 42 25 42 C21 42 19 38 21 33 Z" stroke="#b84f3d" stroke-width="2.2" fill="none"/>
+        <path d="M14 55 C9 59 5 65 3 72 C7 70 11 69 14 69 M37 54 C42 59 46 64 48 70 C44 69 40 68 37 68" stroke="#b84f3d" stroke-width="2.25" fill="none"/>
+        <path d="M18 73 C17 78 19 82 17 86 M25 73 C22 81 28 85 24 93 M32 72 C31 78 34 81 32 86" stroke="#d4910a" stroke-width="2.6" fill="none"/>
     </svg>
 
     <!-- Pencil -->
     <svg class="crayon" style="top:54%;left:4%;width:120px;height:34px;--crayon-rot:12deg;--crayon-op:0.30;" viewBox="0 0 120 34" fill="none">
-        <path d="M4 16 L14 6 L100 6 L110 16 L100 26 L14 26 Z"
-              stroke="#e8a24a" stroke-width="2.8" stroke-linejoin="round" fill="rgba(232,162,74,0.30)"/>
-        <path d="M100 6 L110 16 L100 26" stroke="#c4842a" stroke-width="2.6" stroke-linejoin="round" fill="rgba(196,132,42,0.40)"/>
-        <line x1="14" y1="6" x2="14" y2="26" stroke="#2a2016" stroke-width="2"/>
-        <path d="M4 16 L14 6 M4 16 L14 26" stroke="#2a2016" stroke-width="2" stroke-linejoin="round"/>
-        <circle cx="6" cy="16" r="2.4" fill="#2a2016"/>
+        <path d="M4 17 C7 13 10 9 14 6 C42 7 72 5 100 7 C104 10 108 13 111 16 C108 20 104 23 100 26 C70 25 42 27 14 26 C10 23 7 20 4 17 Z" stroke="#d4910a" stroke-width="2.65" fill="none"/>
+        <path d="M100 7 C104 10 108 13 111 16 C107 20 104 23 100 26 M14 7 C14 13 15 20 14 26 M4 17 C8 15 10 16 13 17" stroke="#5c4e38" stroke-width="1.8" fill="none"/>
+        <path d="M18 10 C42 10 70 8 96 10" stroke="#e8a24a" stroke-width="0.9" opacity="0.46" fill="none"/>
     </svg>
 
     <!-- Diamond / gem -->
     <svg class="crayon" style="top:56%;right:32%;width:54px;height:60px;--crayon-rot:0deg;--crayon-op:0.28;" viewBox="0 0 54 60" fill="none">
-        <path d="M14 4 L40 4 L52 22 L27 56 L2 22 Z"
-              stroke="#a8d4f0" stroke-width="3" stroke-linejoin="round" fill="rgba(168,212,240,0.28)"/>
-        <path d="M2 22 L52 22 M14 4 L27 56 L40 4 M14 4 L24 22 L14 4 M40 4 L30 22 L40 4"
-              stroke="#a8d4f0" stroke-width="2" fill="none"/>
+        <path d="M14 5 C22 4 32 5 40 4 C45 10 49 16 52 22 C45 34 36 46 27 56 C18 46 9 34 3 23 C6 16 10 10 14 5 Z" stroke="#77b8d8" stroke-width="2.7" fill="none"/>
+        <path d="M4 23 C19 21 36 23 51 22 M14 6 C18 11 21 17 24 22 C25 33 26 45 27 55 M40 5 C36 11 33 17 30 22 C29 34 28 44 27 55" stroke="#77b8d8" stroke-width="1.55" fill="none"/>
     </svg>
 
     <!-- Crown -->
@@ -3111,11 +3185,10 @@
 
     <!-- Fish (small) -->
     <svg class="crayon" style="top:60%;right:42%;width:80px;height:46px;--crayon-rot:8deg;--crayon-op:0.28;" viewBox="0 0 80 46" fill="none">
-        <path d="M14 23 C22 8 56 8 64 23 C56 38 22 38 14 23 Z"
-              stroke="#4aa898" stroke-width="3" stroke-linecap="round" fill="rgba(74,168,152,0.25)"/>
-        <path d="M64 23 L78 12 L74 23 L78 34 Z" stroke="#4aa898" stroke-width="2.6" stroke-linejoin="round" fill="rgba(74,168,152,0.32)"/>
-        <circle cx="26" cy="19" r="3" fill="#2a2016"/>
-        <path d="M34 16 C42 12 48 16 50 18" stroke="#4aa898" stroke-width="1.8" fill="none"/>
+        <path d="M13 24 C22 10 49 8 64 22 C57 36 29 40 13 24 Z" stroke="#3b9989" stroke-width="2.8" fill="none"/>
+        <path d="M64 22 C70 18 75 14 78 12 C76 18 75 23 74 25 C77 29 78 32 78 35 C73 32 68 27 64 24" stroke="#3b9989" stroke-width="2.35" fill="none"/>
+        <path d="M25 18 C27 16 30 18 29 21 C28 23 25 22 25 18 Z" fill="#2a2016"/>
+        <path d="M35 16 C41 13 48 15 52 18 M19 28 C27 34 39 35 49 32" stroke="#4aa898" stroke-width="1.25" opacity="0.7" fill="none"/>
     </svg>
 
     <!-- SKILLS / JAMS ZONE -->
@@ -3127,33 +3200,24 @@
 
     <!-- Speech bubble -->
     <svg class="crayon" style="top:64%;left:6%;width:100px;height:72px;--crayon-rot:-6deg;--crayon-op:0.28;" viewBox="0 0 100 72" fill="none">
-        <path d="M6 12 C6 6 12 4 18 4 L82 4 C88 4 94 8 94 14 L94 42 C94 48 88 52 82 52 L34 52 L20 66 L24 52 L18 52 C12 52 6 48 6 42 Z"
-              stroke="#5a9e6f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="rgba(90,158,111,0.22)"/>
-        <circle cx="30" cy="28" r="3" fill="#5a9e6f"/>
-        <circle cx="50" cy="28" r="3" fill="#5a9e6f"/>
-        <circle cx="70" cy="28" r="3" fill="#5a9e6f"/>
+        <path d="M18 5 C38 3 63 5 82 4 C90 4 95 9 94 16 C95 25 94 35 93 42 C92 49 87 52 80 52 C63 51 48 53 34 52 C29 57 24 62 19 66 C21 61 23 56 23 52 C13 53 7 49 6 42 C5 33 6 22 6 13 C7 8 12 5 18 5 Z" stroke="#4c8f62" stroke-width="2.8" fill="none"/>
+        <path d="M27 28 C28 25 32 26 32 29 C31 32 27 32 27 28 Z M47 28 C48 25 52 26 52 29 C51 32 47 32 47 28 Z M67 28 C68 25 72 26 72 29 C71 32 67 32 67 28 Z" fill="#4c8f62"/>
+        <path d="M13 10 C32 8 60 9 84 8" stroke="#5a9e6f" stroke-width="0.9" opacity="0.4" fill="none"/>
     </svg>
 
     <!-- Flower -->
     <svg class="crayon" style="top:70%;right:4%;width:80px;height:88px;--crayon-rot:18deg;--crayon-op:0.30;" viewBox="0 0 80 88" fill="none">
-        <ellipse cx="40" cy="14" rx="10" ry="14" stroke="#ffb3c6" stroke-width="2.8" fill="rgba(255,179,198,0.40)"/>
-        <ellipse cx="62" cy="36" rx="14" ry="10" stroke="#ffb3c6" stroke-width="2.8" fill="rgba(255,179,198,0.40)"/>
-        <ellipse cx="40" cy="58" rx="10" ry="14" stroke="#ffb3c6" stroke-width="2.8" fill="rgba(255,179,198,0.40)"/>
-        <ellipse cx="18" cy="36" rx="14" ry="10" stroke="#ffb3c6" stroke-width="2.8" fill="rgba(255,179,198,0.40)"/>
-        <circle cx="40" cy="36" r="9" stroke="#e8a24a" stroke-width="2.8" fill="rgba(232,162,74,0.55)"/>
-        <path d="M40 70 C42 76 38 80 40 86" stroke="#5a9e6f" stroke-width="2.8" stroke-linecap="round" fill="none"/>
-        <path d="M40 80 C46 78 50 74 52 70" stroke="#5a9e6f" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+        <path d="M39 27 C30 23 29 13 35 7 C41 1 49 8 49 16 C49 22 46 26 43 28 C49 24 56 23 62 27 C69 32 66 41 59 44 C53 47 48 44 45 41 C49 46 50 54 46 60 C42 67 33 64 30 57 C27 51 30 45 34 42 C29 46 21 47 15 43 C8 38 12 29 19 26 C26 23 31 27 35 30" stroke="#d9859f" stroke-width="2.6" fill="none"/>
+        <path d="M34 35 C35 30 42 28 46 32 C50 36 47 43 42 45 C36 46 32 41 34 35 Z" stroke="#d4910a" stroke-width="2.5" fill="none"/>
+        <path d="M40 45 C41 58 39 72 40 86 M40 74 C45 72 49 68 52 63" stroke="#4c8f62" stroke-width="2.5" fill="none"/>
     </svg>
 
     <!-- Cassette / floppy doodle -->
     <svg class="crayon crayon-rough" style="top:72%;left:24%;width:78px;height:78px;--crayon-rot:-7deg;--crayon-op:0.28;" viewBox="0 0 78 78" fill="none">
-        <rect x="4" y="4" width="70" height="70" rx="4" stroke="#8a6cc6" stroke-width="3" fill="rgba(138,108,198,0.20)"/>
-        <rect x="14" y="4" width="50" height="22" stroke="#8a6cc6" stroke-width="2" fill="rgba(245,240,232,0.55)"/>
-        <rect x="22" y="38" width="34" height="32" stroke="#8a6cc6" stroke-width="2" fill="rgba(245,240,232,0.40)"/>
-        <line x1="28" y1="46" x2="50" y2="46" stroke="#8a6cc6" stroke-width="1.6"/>
-        <line x1="28" y1="52" x2="50" y2="52" stroke="#8a6cc6" stroke-width="1.6"/>
-        <line x1="28" y1="58" x2="44" y2="58" stroke="#8a6cc6" stroke-width="1.6"/>
-        <rect x="62" y="4" width="6" height="10" fill="#8a6cc6"/>
+        <path d="M6 4 C27 5 51 3 71 5 C74 22 73 52 74 71 C56 75 25 73 6 74 C3 56 5 25 6 4 Z" stroke="#795ab5" stroke-width="2.7" fill="none"/>
+        <path d="M15 5 C31 6 48 5 63 5 C63 12 64 19 63 26 C48 25 29 27 15 25 C14 18 15 11 15 5 Z M22 70 C22 58 22 48 23 39 C34 38 46 39 56 38 C57 49 56 59 56 70" stroke="#795ab5" stroke-width="1.75" fill="none"/>
+        <path d="M29 46 C35 45 43 46 50 45 M29 52 C35 51 44 52 50 51 M29 58 C34 57 39 58 44 57" stroke="#795ab5" stroke-width="1.35" fill="none"/>
+        <path d="M63 6 C65 7 67 7 69 7 C69 10 69 12 68 14" stroke="#795ab5" stroke-width="2.1" fill="none"/>
     </svg>
 
     <!-- Sparkle cluster -->
@@ -3188,26 +3252,25 @@
 
     <!-- Eye doodle -->
     <svg class="crayon" style="top:82%;left:6%;width:90px;height:56px;--crayon-rot:4deg;--crayon-op:0.30;" viewBox="0 0 90 56" fill="none">
-        <path d="M4 28 C18 6 72 6 86 28 C72 50 18 50 4 28 Z" stroke="#2a2016" stroke-width="3" fill="rgba(255,255,255,0.55)"/>
-        <circle cx="45" cy="28" r="14" stroke="#2a2016" stroke-width="2.4" fill="rgba(74,168,152,0.55)"/>
-        <circle cx="45" cy="28" r="6" fill="#2a2016"/>
-        <circle cx="49" cy="24" r="2.4" fill="white"/>
+        <path d="M4 29 C17 10 36 6 51 10 C66 12 78 19 86 28 C75 43 57 49 41 47 C25 46 12 39 4 29 Z" stroke="#2a2016" stroke-width="2.7" fill="none"/>
+        <path d="M44 14 C54 14 60 22 59 30 C58 39 51 45 43 43 C34 42 29 35 30 27 C31 19 36 15 44 14 Z" stroke="#3b9989" stroke-width="2.2" fill="none"/>
+        <path d="M42 23 C47 21 52 25 51 30 C50 35 45 37 41 34 C37 31 38 26 42 23 Z" fill="#2a2016"/>
+        <path d="M15 28 C26 17 37 13 49 13" stroke="#2a2016" stroke-width="0.9" opacity="0.36" fill="none"/>
     </svg>
 
     <!-- CONTACT ZONE -->
     <!-- Mail envelope -->
     <svg class="crayon" style="top:88%;left:42%;width:96px;height:64px;--crayon-rot:-3deg;--crayon-op:0.30;" viewBox="0 0 96 64" fill="none">
-        <rect x="4" y="6" width="88" height="54" rx="3" stroke="#c9614a" stroke-width="3" fill="rgba(253,250,242,0.55)"/>
-        <path d="M4 6 L48 38 L92 6" stroke="#c9614a" stroke-width="3" stroke-linejoin="round" fill="none"/>
-        <path d="M4 60 L36 30 M92 60 L60 30" stroke="#c9614a" stroke-width="2" fill="none"/>
+        <path d="M5 7 C29 6 68 8 91 6 C92 22 91 44 92 59 C69 61 29 59 5 60 C4 44 5 23 5 7 Z" stroke="#b84f3d" stroke-width="2.8" fill="none"/>
+        <path d="M7 8 C20 18 34 29 48 38 C62 29 77 17 90 8 M6 58 C16 49 26 39 36 31 M91 58 C81 48 71 39 60 31" stroke="#b84f3d" stroke-width="2" fill="none"/>
+        <path d="M9 11 C29 9 66 10 87 9" stroke="#c9614a" stroke-width="0.85" opacity="0.38" fill="none"/>
     </svg>
 
     <!-- Coffee cup / latte heart -->
     <svg class="crayon" style="top:90%;right:8%;width:72px;height:78px;--crayon-rot:7deg;--crayon-op:0.30;" viewBox="0 0 72 78" fill="none">
-        <ellipse cx="36" cy="14" rx="28" ry="8" stroke="#5c4e38" stroke-width="2.8" fill="rgba(232,162,74,0.45)"/>
-        <path d="M8 14 L14 70 C16 74 56 74 58 70 L64 14"
-              stroke="#5c4e38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="rgba(245,240,232,0.50)"/>
-        <path d="M36 14 C30 18 30 22 36 24 C42 22 42 18 36 14" fill="#c9614a" stroke="none"/>
+        <path d="M8 14 C14 5 56 4 64 14 C60 23 15 23 8 14 Z" stroke="#5c4e38" stroke-width="2.6" fill="none"/>
+        <path d="M9 16 C10 32 12 53 14 69 C19 75 52 76 58 69 C61 51 63 33 63 16" stroke="#5c4e38" stroke-width="2.8" fill="none"/>
+        <path d="M36 13 C31 15 30 19 33 22 C35 24 36 25 36 25 C39 23 43 20 41 16 C40 13 38 13 36 15 C35 13 34 13 32 14" stroke="#b84f3d" stroke-width="1.7" fill="none"/>
     </svg>
 
     <!-- Crayon underline scribble (very long, with double-pass) -->
@@ -3372,39 +3435,29 @@
     <div class="hero-doodles">
         <!-- Fish doodle — for Finn -->
         <svg class="doodle doodle-fish" viewBox="0 0 160 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22 45 C45 15 100 15 120 45 C100 75 45 75 22 45Z" stroke="#e8a24a" stroke-width="2.5" fill="rgba(232,162,74,0.08)" stroke-linecap="round"/>
-            <path d="M120 45 L144 28 L138 45 L144 62Z" fill="#e8a24a" opacity="0.5"/>
-            <circle cx="50" cy="38" r="5" fill="#e8a24a"/>
-            <circle cx="51" cy="37" r="2" fill="#2a2016"/>
-            <path d="M60 32 Q72 26 84 32" stroke="#e8a24a" stroke-width="1.5" fill="none"/>
-            <path d="M65 56 Q77 62 89 56" stroke="#e8a24a" stroke-width="1.5" fill="none"/>
-            <path d="M38 45 Q32 38 34 30" stroke="#e8a24a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-            <circle cx="35" cy="29" r="1.5" fill="#e8a24a"/>
-            <path d="M70 20 Q72 14 76 10" stroke="#6ec6b5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="3 3"/>
-            <circle cx="76" cy="9" r="3" fill="#6ec6b5" opacity="0.6"/>
+            <path d="M21 46 C42 17 94 14 121 43 C105 70 51 78 21 46 Z" stroke="#d4910a" stroke-width="2.7" fill="none"/>
+            <path d="M31 51 C52 69 91 68 112 51" stroke="#e8a24a" stroke-width="0.95" opacity="0.5" fill="none"/>
+            <path d="M121 43 C130 38 139 31 145 27 C142 35 140 42 139 46 C143 53 145 59 145 64 C138 59 129 51 121 47" stroke="#d4910a" stroke-width="2.4" fill="none"/>
+            <path d="M45 36 C48 32 54 35 53 40 C51 44 45 42 45 36 Z" fill="#2a2016"/>
+            <path d="M62 32 C70 27 80 28 87 32 M64 57 C74 61 84 60 91 56 M37 46 C33 41 33 35 35 30" stroke="#d4910a" stroke-width="1.45" fill="none"/>
+            <path d="M70 20 C72 15 74 12 77 9" stroke="#4aa898" stroke-width="1.4" fill="none" stroke-dasharray="3 3"/>
+            <path d="M75 8 C77 5 81 7 80 10 C79 13 75 12 75 8 Z" fill="#4aa898"/>
         </svg>
 
         <!-- Two Moons doodle -->
         <svg class="doodle doodle-moon" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 18 C28 18 12 35 12 55 C12 76 28 90 50 90 C38 76 33 65 35 55 C37 40 46 26 60 20 C57 18 54 18 50 18Z" fill="#8a6cc6" opacity="0.6"/>
-            <circle cx="78" cy="22" r="5" fill="#ffd966" opacity="0.9"/>
-            <circle cx="22" cy="32" r="3" fill="#ffd966" opacity="0.6"/>
-            <circle cx="82" cy="55" r="3.5" fill="#ffd966" opacity="0.7"/>
-            <path d="M66 38 L68 31 L70 38 L77 40.5 L70 43 L68 50 L66 43 L59 40.5Z" fill="#ffd966" opacity="0.95"/>
-            <path d="M28 65 L29.5 60 L31 65 L36 67 L31 69 L29.5 74 L28 69 L23 67Z" fill="#ffd966" opacity="0.7"/>
+            <path d="M51 18 C31 15 14 33 13 54 C12 76 30 92 51 89 C42 80 36 69 36 58 C36 42 45 28 60 21 C57 19 54 18 51 18 Z" stroke="#795ab5" stroke-width="2.5" fill="none"/>
+            <path d="M21 39 C16 55 22 74 37 83" stroke="#8a6cc6" stroke-width="0.9" opacity="0.45" fill="none"/>
+            <path d="M76 20 C78 16 83 18 83 22 C82 27 76 27 74 23 C74 22 75 21 76 20 Z M20 30 C22 28 26 30 25 33 C24 36 20 35 20 30 Z M80 53 C82 50 86 52 86 56 C85 59 81 59 80 55 Z" fill="#d4910a"/>
+            <path d="M67 31 C68 35 69 38 70 39 C73 40 76 40 78 42 C75 43 72 44 70 46 C70 48 69 51 67 53 C67 49 66 46 64 45 C62 44 60 43 58 41 C62 41 65 40 66 38 C66 36 67 33 67 31 Z" stroke="#d4910a" stroke-width="1.5" fill="none"/>
         </svg>
 
         <!-- Game controller -->
         <svg class="doodle doodle-ctrl" viewBox="0 0 110 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="5" y="16" width="100" height="44" rx="22" stroke="#6ec6b5" stroke-width="2.5" fill="none"/>
-            <rect x="22" y="29" width="4" height="18" rx="2" fill="#6ec6b5"/>
-            <rect x="14" y="35" width="20" height="4" rx="2" fill="#6ec6b5"/>
-            <circle cx="72" cy="32" r="4.5" fill="#c9614a" opacity="0.75"/>
-            <circle cx="83" cy="38" r="4.5" fill="#e8a24a" opacity="0.75"/>
-            <circle cx="72" cy="44" r="4.5" fill="#5a9e6f" opacity="0.75"/>
-            <circle cx="61" cy="38" r="4.5" fill="#8a6cc6" opacity="0.75"/>
-            <rect x="44" y="22" width="7" height="3.5" rx="1.75" fill="#6ec6b5" opacity="0.55"/>
-            <rect x="59" y="22" width="7" height="3.5" rx="1.75" fill="#6ec6b5" opacity="0.55"/>
+            <path d="M28 15 C16 14 7 20 5 32 C3 43 7 57 16 61 C24 65 31 57 38 53 C49 49 62 50 72 54 C81 62 90 65 98 57 C107 48 107 33 101 23 C96 15 87 14 76 16 C60 17 44 15 28 15 Z" stroke="#3b9989" stroke-width="2.7" fill="none"/>
+            <path d="M24 28 C24 34 23 40 23 46 M15 37 C21 37 27 38 32 37" stroke="#3b9989" stroke-width="2.45" fill="none"/>
+            <path d="M72 28 C75 26 79 29 77 33 C76 36 72 35 71 32 C71 30 71 29 72 28 Z M83 35 C86 33 90 36 88 40 C87 43 83 42 82 39 C82 37 82 36 83 35 Z M71 43 C74 41 78 43 77 47 C76 50 72 50 70 47 C70 45 70 44 71 43 Z M60 35 C63 33 67 36 66 39 C65 42 61 42 59 39 C59 37 59 36 60 35 Z" fill="#4aa898"/>
+            <path d="M45 23 C48 22 51 22 54 23 M60 23 C63 22 66 23 68 24" stroke="#3b9989" stroke-width="1.4" fill="none"/>
         </svg>
 
         <!-- Loose one-pass pen test — intentionally uneven, but still smooth -->
@@ -3442,7 +3495,7 @@
             </p>
             <div class="hero-ctas">
                 <a href="#projects" class="btn-primary">View My Work →</a>
-                <a href="#" class="btn-secondary">Download Resume</a>
+                <a href="assets/Wahib_Mohammed_Coop.pdf" download="Wahib_Mohammed_Coop_Resume.pdf" class="btn-secondary">Download Resume</a>
             </div>
         </div>
     </div>
@@ -3452,6 +3505,10 @@
      ABOUT
 ============================================================ -->
 <section id="about" aria-label="About Wahib" style="position:relative;">
+    <aside class="field-note field-note-yellow" style="top:14%;right:2%;--note-rot:3deg;">
+        <span class="field-note-label">debug note</span>
+        The bug was state. It is usually state.
+    </aside>
     <!-- Floating manila folder — detective-style case file -->
     <div class="folder folder-floating" style="top:6%;right:3%;--folder-rot:6deg;" aria-hidden="true">
         <span class="folder-tab-label">CASE&nbsp;FILE</span>
@@ -3550,6 +3607,10 @@
      EXPERIENCE — Detective Crime Board
 ============================================================ -->
 <section id="experience" aria-label="Experience">
+    <aside class="field-note field-note-blue" style="top:25%;left:1.5%;--note-rot:-4deg;">
+        <span class="field-note-label">working rule</span>
+        Make the workflow obvious. Keep the clever part underneath.
+    </aside>
     <!-- Coffee stains / marks on the folder -->
     <div class="exp-stain exp-stain-1" aria-hidden="true"></div>
     <div class="exp-stain exp-stain-2" aria-hidden="true"></div>
@@ -3741,6 +3802,10 @@
      PROJECTS
 ============================================================ -->
 <section id="projects" aria-label="Featured projects">
+    <aside class="field-note field-note-pink" style="top:22%;left:1%;--note-rot:2deg;">
+        <span class="field-note-label">prototype note</span>
+        A prototype is an argument you can play.
+    </aside>
     <!-- Floating folder — case file for projects -->
     <div class="folder folder-floating" style="top:3%;left:2%;--folder-rot:-7deg;" aria-hidden="true">
         <span class="folder-tab-label">PROJECT&nbsp;LOG</span>
@@ -4120,7 +4185,11 @@
 <!-- ============================================================
      SKILLS
 ============================================================ -->
-<section id="skills" aria-label="Skills and tools" style="position:relative;">
+<section id="skills" aria-label="How Wahib builds" style="position:relative;">
+    <aside class="field-note field-note-green" style="top:24%;right:1.5%;--note-rot:-3deg;">
+        <span class="field-note-label">architecture</span>
+        Abstractions must earn their rent.
+    </aside>
     <!-- Stickers in skills -->
     <div class="sticker sticker-amber sticker-circle sticker-dotted sticker-hide-sm" id="st-stack" style="top:5%;right:3%;--sticker-rot:9deg;">
         UNITY<br>&amp; C#
@@ -4133,8 +4202,9 @@
     </div>
 
     <div class="container skills-board">
-        <div class="section-label">02 · Skills &amp; Tools</div>
-        <h2 class="section-title" style="margin-bottom:2.5rem;"><span class="squiggly-slow">What I Work With</span></h2>
+        <div class="section-label">02 · How I Build</div>
+        <h2 class="section-title" style="margin-bottom:2.5rem;"><span class="squiggly-slow">Where Tools Meet Play</span></h2>
+        <p class="skills-intro">I work across the whole path from a rough idea to something people can actually use: shaping the system, building the interaction, polishing the workflow, and verifying the final result.</p>
 
         <div class="competencies">
             <div class="comp-card pin-in">
@@ -4146,8 +4216,8 @@
                         <path d="M5 27 L19 34 L33 27"/>
                     </svg>
                 </div>
-                <div class="comp-title">Modular Unity Architecture</div>
-                <div class="comp-desc">Typed SO event channels and runtime sets — systems communicate through asset references, not hard-wired scene dependencies. Entire features hot-swap without touching existing code.</div>
+                <div class="comp-title">Unity Tools That Feel Native</div>
+                <div class="comp-desc">Editor windows, inspectors, scene tools, and focused workflows that help creators move faster without fighting Unity. Built for real projects, clear documentation, and clean handoff.</div>
             </div>
             <div class="comp-card pin-in">
                 <div class="pin pin-blue" style="top:-10px;left:50%;transform:translateX(-50%);"></div>
@@ -4159,8 +4229,8 @@
                         <circle cx="29" cy="23" r="1.7" fill="#4aa898" stroke="none"/>
                     </svg>
                 </div>
-                <div class="comp-title">Gameplay Systems &amp; Game Feel</div>
-                <div class="comp-desc">Per-species fish behaviors, card effect pipelines, and NPC state machines all driven by SO data assets. Designers tune parameters in the inspector — no recompile, no programmer required.</div>
+                <div class="comp-title">Systems You Can Feel</div>
+                <div class="comp-desc">NPC pathing, dialogue, quests, rewards, UI feedback, and game-feel details. The code stays modular; the important decisions stay easy to tune in the Inspector.</div>
             </div>
             <div class="comp-card pin-in">
                 <div class="pin pin-green" style="top:-10px;left:50%;transform:translateX(-50%);"></div>
@@ -4172,58 +4242,56 @@
                         <path d="M21 32 C21 26 24 24 27 24 C30 24 34 26 34 32"/>
                     </svg>
                 </div>
-                <div class="comp-title">Team Leadership &amp; Mentorship</div>
-                <div class="comp-desc">Led 150+ students to ship 11+ games. I run sprints, resolve blockers, and help people discover the joy of making things move on screen.</div>
+                <div class="comp-title">From Prototype to Shipped</div>
+                <div class="comp-desc">I turn unclear ideas into focused builds, test the real workflow, and close the release gaps. That same approach has helped 150+ students ship 11+ games together.</div>
             </div>
         </div>
 
         <div class="skills-cats">
             <div class="pin-in doc-sheet" style="--doc-rot:-1.4deg;">
                 <div class="pflag pflag-r pflag-yellow" style="top:22px;" aria-hidden="true"></div>
-                <div class="skill-cat-title">Core Languages</div>
+                <div class="skill-cat-title">Unity Toolmaking</div>
                 <div class="skill-chips">
+                    <span class="skill-chip sk-expert">Unity</span>
                     <span class="skill-chip sk-expert">C#</span>
-                    <span class="skill-chip sk-mid">Java</span>
-                    <span class="skill-chip sk-mid">Python</span>
+                    <span class="skill-chip sk-adv">Editor Tooling</span>
+                    <span class="skill-chip sk-adv">UI Toolkit</span>
+                    <span class="skill-chip sk-mid">IMGUI</span>
                 </div>
             </div>
             <div class="pin-in doc-sheet" style="--doc-rot:1.0deg;">
                 <div class="pflag pflag-r pflag-teal" style="top:28px;" aria-hidden="true"></div>
-                <div class="skill-cat-title">Game Engine</div>
+                <div class="skill-cat-title">Game Systems</div>
                 <div class="skill-chips">
-                    <span class="skill-chip sk-expert">Unity</span>
-                    <span class="skill-chip sk-adv">URP</span>
-                    <span class="skill-chip sk-adv">Cinemachine</span>
-                    <span class="skill-chip sk-adv">TextMeshPro</span>
-                    <span class="skill-chip sk-mid">Shader Graph</span>
+                    <span class="skill-chip sk-expert">Gameplay Architecture</span>
+                    <span class="skill-chip sk-adv">NPC &amp; Pathing</span>
+                    <span class="skill-chip sk-adv">Dialogue</span>
+                    <span class="skill-chip sk-adv">UI &amp; Game Feel</span>
+                    <span class="skill-chip sk-mid">State Machines</span>
                 </div>
             </div>
             <div class="pin-in doc-sheet" style="--doc-rot:-0.7deg;">
                 <div class="pflag pflag-r pflag-purple" style="top:24px;" aria-hidden="true"></div>
-                <div class="skill-cat-title">Architecture</div>
+                <div class="skill-cat-title">Shipping Products</div>
                 <div class="skill-chips">
-                    <span class="skill-chip sk-expert">ScriptableObjects</span>
-                    <span class="skill-chip sk-expert">Modular Design</span>
-                    <span class="skill-chip sk-adv">Editor Tooling</span>
-                    <span class="skill-chip sk-adv">State Machines</span>
+                    <span class="skill-chip sk-expert">Asset Store Packages</span>
+                    <span class="skill-chip sk-adv">Testing</span>
+                    <span class="skill-chip sk-adv">Documentation</span>
+                    <span class="skill-chip sk-adv">Debugging</span>
+                    <span class="skill-chip sk-mid">Git</span>
                 </div>
             </div>
             <div class="pin-in doc-sheet" style="--doc-rot:1.2deg;">
                 <div class="pflag pflag-r pflag-pink" style="top:20px;" aria-hidden="true"></div>
-                <div class="skill-cat-title">Tools &amp; Workflow</div>
+                <div class="skill-cat-title">Beyond Games</div>
                 <div class="skill-chips">
-                    <span class="skill-chip sk-adv">Git</span>
-                    <span class="skill-chip sk-adv">Agile/Scrum</span>
-                    <span class="skill-chip sk-mid">Blender</span>
-                    <span class="skill-chip sk-mid">Aseprite</span>
+                    <span class="skill-chip sk-expert">Web Products</span>
+                    <span class="skill-chip sk-adv">Electron</span>
+                    <span class="skill-chip sk-adv">React</span>
+                    <span class="skill-chip sk-mid">Java</span>
+                    <span class="skill-chip sk-mid">Python</span>
                 </div>
             </div>
-        </div>
-
-        <div class="skill-legend">
-            <span style="color:var(--amber-dark);">●</span> Expert &nbsp;
-            <span style="color:var(--teal-dark);">●</span> Advanced &nbsp;
-            <span style="color:var(--ink-muted);">●</span> Intermediate
         </div>
     </div>
 </section>
@@ -4232,6 +4300,10 @@
      GAME JAMS
 ============================================================ -->
 <section id="jams" aria-label="Game jam history" style="position:relative;">
+    <aside class="field-note field-note-orange" style="top:32%;right:2%;--note-rot:4deg;">
+        <span class="field-note-label">72-hour truth</span>
+        The deadline removed three “essential” features.
+    </aside>
     <!-- Manila folder for jam evidence -->
     <div class="folder folder-floating" style="top:8%;right:3%;--folder-rot:5deg;" aria-hidden="true">
         <span class="folder-tab-label">EVIDENCE</span>
@@ -4293,6 +4365,10 @@
      BLOG
 ============================================================ -->
 <section id="blog" aria-label="Blog" data-mode="preview">
+    <aside class="field-note field-note-blue" style="top:18%;left:1.5%;--note-rot:-2deg;">
+        <span class="field-note-label">editorial policy</span>
+        If the useful part fits in a paragraph, I stop there.
+    </aside>
     <div class="container">
         <div class="section-header">
             <div class="section-label">Writing</div>
@@ -4395,6 +4471,10 @@
      CONTACT
 ============================================================ -->
 <section id="contact" aria-label="Contact" style="position:relative;">
+    <aside class="field-note field-note-yellow" style="top:25%;left:1.5%;--note-rot:3deg;">
+        <span class="field-note-label">before we start</span>
+        Good briefs welcome. Vague ones get questions.
+    </aside>
     <!-- Stickers around contact -->
     <div class="sticker sticker-green sticker-bubble" id="st-opportunities" style="top:6%;right:5%;--sticker-rot:7deg;">
         ✉ OPEN TO OPPORTUNITIES
@@ -4827,7 +4907,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
         const el = document.querySelector(id);
         if(el){
             e.preventDefault();
-            window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 80, behavior:'smooth'});
+            const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+            window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 80, behavior});
         }
     });
 });
@@ -5019,7 +5100,10 @@ document.getElementById('email-copy').addEventListener('click', e=>{
 /* ============================================================
    BACK TO TOP
 ============================================================ */
-document.getElementById('btt').addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+document.getElementById('btt').addEventListener('click', ()=> {
+    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    window.scrollTo({top:0, behavior});
+});
 
 /* ============================================================
    TOAST

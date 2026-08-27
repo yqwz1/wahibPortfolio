@@ -1,6 +1,36 @@
 {
   "posts": [
     {
+      "slug": "building-2d-animation-preview",
+      "title": "Building 2D Animation Preview inside Unity's normal Inspector",
+      "date": "2026-08-27",
+      "readTime": "4 min read",
+      "excerpt": "Why I built an editor-only sprite-sheet preview that stays inside Unity's Texture Importer instead of creating another window and another workflow.",
+      "tags": ["unity", "editor tooling", "2d animation"],
+      "hero": "images/blog/animation-preview.svg",
+      "files": []
+    },
+    {
+      "slug": "shipping-waypoint-path-system",
+      "title": "Shipping Waypoint Path System: NPC routes built in the Scene View",
+      "date": "2026-08-06",
+      "readTime": "5 min read",
+      "excerpt": "A look at the design decisions behind my Unity path-authoring tool, from click-to-place waypoints to interruptions, smoothing, and reusable NPC routes.",
+      "tags": ["unity", "editor tooling", "waypoint system"],
+      "hero": "images/pathnpc/banner.png",
+      "files": []
+    },
+    {
+      "slug": "starting-coop-training-at-aiqona",
+      "title": "Starting my co-op training at Aiqona as a game developer",
+      "date": "2026-06-30",
+      "readTime": "3 min read",
+      "excerpt": "I am moving from mostly self-directed Unity projects into a professional team environment, with a clear list of skills I want to strengthen along the way.",
+      "tags": ["career", "co-op training", "game development"],
+      "hero": "images/blog/aiqona-coop.svg",
+      "files": []
+    },
+    {
       "slug": "hello-world",
       "title": "Hello — and why I started writing",
       "date": "2026-05-24",

@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script defer src="smooth-scroll.js"></script>
     <style>
         /* ===== CORE TOKENS ===== */
         :root {
@@ -41,6 +42,9 @@
         }
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+        }
         body {
             font-family: var(--font-body);
             background: var(--paper);
@@ -135,7 +139,52 @@
         }
 
         /* ===== CONTROLS ===== */
-        #blog-page { padding: 0 2rem 5rem; }
+        #blog-page { position: relative; padding: 0 2rem 5rem; }
+        .page-note,
+        .blog-margin-note {
+            position: absolute;
+            z-index: 6;
+            width: 158px;
+            padding: .95rem 1rem 1.1rem;
+            color: #2a2016;
+            font: 600 1rem/1.15 var(--font-hand);
+            box-shadow: 3px 4px 0 rgba(42,32,22,.12), 0 8px 16px rgba(42,32,22,.08);
+            clip-path: polygon(1% 1%,99% 0,100% 96%,96% 100%,2% 98%,0 5%);
+        }
+        .page-note {
+            top: 8rem;
+            right: 1.5rem;
+            background: #ffc6d5;
+            transform: rotate(3deg);
+        }
+        .blog-margin-note {
+            top: 8rem;
+            right: 1.25rem;
+            background: #c7efd9;
+            transform: rotate(-3deg);
+        }
+        .page-note::before,
+        .blog-margin-note::before {
+            content: '';
+            position: absolute;
+            top: -9px;
+            left: 50%;
+            width: 58px;
+            height: 18px;
+            background: rgba(255,255,255,.58);
+            transform: translateX(-50%) rotate(-2deg);
+        }
+        .note-label {
+            display: block;
+            margin-bottom: .4rem;
+            font: 700 .55rem/1 var(--font-mono);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            opacity: .56;
+        }
+        @media (max-width: 1050px) {
+            .page-note, .blog-margin-note { display: none; }
+        }
         .blog-controls {
             max-width: 1100px; margin: 0 auto 2.5rem;
             display: flex; gap: 1rem; flex-wrap: wrap;
@@ -250,6 +299,8 @@
             position: relative; overflow: hidden;
         }
         .blog-card-hero img { width: 100%; height: 100%; object-fit: cover; }
+        .polaroid-caption,
+        .tape-strip { display: none; }
         .blog-card-hero-empty {
             font-family: var(--font-hand); color: var(--ink-muted);
             font-size: 3rem; opacity: 0.4;
@@ -400,6 +451,7 @@
         /* Handwritten caption strip at the bottom of the polaroid */
         .blog-grid.view-grid .blog-card-hero::after { /* override above */ }
         .blog-grid.view-grid .polaroid-caption {
+            display: block;
             position: absolute;
             bottom: 0.4rem; left: 0; right: 0;
             text-align: center;
@@ -411,6 +463,7 @@
         }
         /* Little tape strips on the polaroid */
         .blog-grid.view-grid .blog-card-hero .tape-strip {
+            display: block;
             position: absolute;
             width: 56px; height: 18px;
             background: repeating-linear-gradient(45deg,
@@ -568,6 +621,7 @@
             transition: opacity 240ms ease;
             backdrop-filter: blur(6px);
             overflow-y: auto;
+            overflow-x: hidden;
         }
         #blog-modal.open { opacity: 1; pointer-events: all; }
         .blog-modal-paper {
@@ -577,6 +631,7 @@
                     transparent 0, transparent 27px,
                     rgba(116,146,182,0.13) 27px, rgba(116,146,182,0.13) 28px);
             max-width: 760px; width: 100%;
+            box-sizing: border-box;
             margin: auto;
             padding: 3rem 3.5rem 2.5rem;
             box-shadow: 0 24px 80px rgba(0,0,0,0.5);
@@ -608,6 +663,8 @@
             color: var(--ink); margin-bottom: 1.2rem;
             border-bottom: 3px solid var(--amber); padding-bottom: 0.6rem;
             display: inline-block;
+            max-width: 100%;
+            overflow-wrap: anywhere;
         }
         #blog-modal-content h2 {
             font-family: var(--font-hand); font-size: 1.7rem; color: var(--ink);
@@ -672,7 +729,12 @@
             display: flex; justify-content: flex-end;
         }
         @media (max-width: 700px) {
-            .blog-modal-paper { padding: 2rem 1.5rem; }
+            .blog-modal-paper {
+                width: calc(100vw - 2rem);
+                max-width: calc(100vw - 2rem);
+                padding: 2rem 1.5rem;
+                flex: 0 0 auto;
+            }
             #blog-modal-content h1 { font-size: 1.8rem; }
         }
 
@@ -791,6 +853,10 @@
     <a href="index.html" class="back-home">← Back to home</a>
 
     <header class="page-header">
+        <aside class="page-note">
+            <span class="note-label">editorial stance</span>
+            No thought leadership. Mostly field notes.
+        </aside>
         <div class="section-label">Writing</div>
         <h1 class="page-title">
             From the Notebook
@@ -806,6 +872,10 @@
     </header>
 
     <section id="blog-page">
+        <aside class="blog-margin-note">
+            <span class="note-label">timing</span>
+            Written after the fix, before hindsight rewrites it.
+        </aside>
         <div class="blog-controls">
             <div class="blog-search-wrap">
                 <svg class="blog-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
