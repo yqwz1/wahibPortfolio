@@ -116,7 +116,7 @@
             transition: color var(--transition);
         }
         .nav-logo span { color: var(--amber-dark); }
-        .nav-logo:hover { animation: squiggly-anim 0.38s linear infinite; }
+        .nav-logo:hover { animation: hand-drift 3.8s ease-in-out infinite; }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
         .nav-link {
             font-family: var(--font-hand); font-size: 1.1rem;
@@ -280,9 +280,13 @@
 
         .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
 
-        /* Hero floating doodles */
+        /* Hero floating doodles — clean pen lines with a faint, organic edge */
         .hero-doodles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-        .doodle { position: absolute; opacity: 0.45; }
+        .doodle {
+            position: absolute;
+            opacity: 0.45;
+            filter: url('#pen-ink-soft') drop-shadow(0 0.35px 0 rgba(42,32,22,0.10));
+        }
 
         @keyframes floatA { 0%,100%{transform:translateY(0) rotate(0deg)} 40%{transform:translateY(-12px) rotate(2.5deg)} 70%{transform:translateY(-6px) rotate(-1.5deg)} }
         @keyframes floatB { 0%,100%{transform:translateY(0) rotate(0deg)} 35%{transform:translateY(-8px) rotate(-2deg)} 65%{transform:translateY(-14px) rotate(1.5deg)} }
@@ -1277,7 +1281,7 @@
             position: absolute;
             pointer-events: none;
             opacity: var(--fg-op, 0.85);
-            filter: drop-shadow(0 1px 0 rgba(0,0,0,0.06));
+            filter: url('#pen-ink-soft') drop-shadow(0 0.45px 0 rgba(42,32,22,0.08));
             will-change: transform, top, left;
         }
         /* Hand-written note attached to a doodle */
@@ -1573,26 +1577,22 @@
         /* ============================================================
            SQUIGGLY TEXT & OUTLINE EFFECT
         ============================================================ */
-        @keyframes squiggly-anim {
-            0%   { filter: url('#squiggly-0'); }
-            25%  { filter: url('#squiggly-1'); }
-            50%  { filter: url('#squiggly-2'); }
-            75%  { filter: url('#squiggly-3'); }
-            100% { filter: url('#squiggly-4'); }
+        @keyframes hand-drift {
+            0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+            45%      { transform: translate3d(0, -0.6px, 0) rotate(-0.12deg); }
+            72%      { transform: translate3d(0.25px, -0.2px, 0) rotate(0.08deg); }
         }
-        /* Fast wobble — for small elements / accents */
+        /* Handwritten type stays crisp; motion is a slow physical drift, not distortion. */
         .squiggly {
             display: inline-block;
-            animation: squiggly-anim 0.38s linear infinite;
+            animation: hand-drift 3.8s ease-in-out infinite;
         }
-        /* Slow wobble — for large headings (stays readable) */
         .squiggly-slow {
             display: inline-block;
-            animation: squiggly-anim 0.85s linear infinite;
+            animation: hand-drift 6.5s ease-in-out infinite;
         }
-        /* Squiggly SVG doodle paths get this via class */
         .squiggly-svg {
-            animation: squiggly-anim 1.2s linear infinite;
+            animation: hand-drift 7s ease-in-out infinite;
         }
 
         /* ============================================================
@@ -1684,17 +1684,28 @@
         }
 
         /* ============================================================
-           CRAYON DOODLES — waxy, textured, hand-drawn scribbles
+           PEN DOODLES — smooth strokes with subtle ink irregularity
         ============================================================ */
         .crayon {
             position: absolute;
             pointer-events: none;
             opacity: var(--crayon-op, 0.50);
             transform: rotate(var(--crayon-rot, 0deg));
+            filter: url('#pen-ink');
         }
-        /* crayon-soft / crayon-rough are alias classes — kept for markup compatibility */
-        .crayon-soft  { }
-        .crayon-rough { }
+        /* Legacy class names remain in the markup, but now select pen subtleties. */
+        .crayon-soft  { filter: url('#pen-ink-soft'); }
+        .crayon-rough { filter: url('#pen-ink-rough'); }
+        .crayon :is(path, line, polyline, polygon, circle, ellipse, rect),
+        .fg-doodle :is(path, line, polyline, polygon, circle, ellipse, rect),
+        .hero-doodles .doodle :is(path, line, polyline, polygon, circle, ellipse, rect),
+        .section-squiggle path,
+        .sub-arrow path,
+        .sub-title-scribble path {
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            shape-rendering: geometricPrecision;
+        }
         html[data-theme="dark"] .crayon {
             opacity: calc(var(--crayon-op, 0.50) * 0.85);
         }
@@ -2843,43 +2854,23 @@
 <body>
 
 <!-- ============================================================
-     SVG SQUIGGLY FILTERS (hidden — referenced by CSS animation)
+     SVG PEN FILTERS (hidden — shared by the hand-drawn artwork)
 ============================================================ -->
 <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden;" aria-hidden="true">
     <defs>
-        <filter id="squiggly-0" x="-5%" y="-5%" width="110%" height="110%">
-            <feTurbulence type="turbulence" baseFrequency="0.018" numOctaves="3" result="noise" seed="0"/>
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+        <!-- Pen filters: tiny directional displacement keeps curves smooth while
+             breaking the perfect vector edge. Three strengths prevent repetition. -->
+        <filter id="pen-ink" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.018 0.11" numOctaves="2" seed="17" result="inkNoise"/>
+            <feDisplacementMap in="SourceGraphic" in2="inkNoise" scale="0.65" xChannelSelector="R" yChannelSelector="G"/>
         </filter>
-        <filter id="squiggly-1" x="-5%" y="-5%" width="110%" height="110%">
-            <feTurbulence type="turbulence" baseFrequency="0.020" numOctaves="3" result="noise" seed="1"/>
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+        <filter id="pen-ink-soft" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.014 0.09" numOctaves="2" seed="29" result="inkNoise"/>
+            <feDisplacementMap in="SourceGraphic" in2="inkNoise" scale="0.38" xChannelSelector="R" yChannelSelector="G"/>
         </filter>
-        <filter id="squiggly-2" x="-5%" y="-5%" width="110%" height="110%">
-            <feTurbulence type="turbulence" baseFrequency="0.018" numOctaves="3" result="noise" seed="2"/>
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-        <filter id="squiggly-3" x="-5%" y="-5%" width="110%" height="110%">
-            <feTurbulence type="turbulence" baseFrequency="0.022" numOctaves="3" result="noise" seed="3"/>
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-        <filter id="squiggly-4" x="-5%" y="-5%" width="110%" height="110%">
-            <feTurbulence type="turbulence" baseFrequency="0.018" numOctaves="3" result="noise" seed="4"/>
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-
-        <!-- Crayon filter: turbulence + light displacement = rough waxy stroke -->
-        <filter id="crayon" x="-10%" y="-10%" width="120%" height="120%">
-            <feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="2" seed="5" result="noise"/>
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.8" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-        <filter id="crayon-soft" x="-10%" y="-10%" width="120%" height="120%">
-            <feTurbulence type="fractalNoise" baseFrequency="2.4" numOctaves="2" seed="7" result="noise"/>
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.2" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-        <filter id="crayon-rough" x="-10%" y="-10%" width="120%" height="120%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="11" result="noise"/>
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+        <filter id="pen-ink-rough" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.022 0.14" numOctaves="2" seed="43" result="inkNoise"/>
+            <feDisplacementMap in="SourceGraphic" in2="inkNoise" scale="0.9" xChannelSelector="R" yChannelSelector="G"/>
         </filter>
     </defs>
 </svg>
@@ -3416,9 +3407,10 @@
             <rect x="59" y="22" width="7" height="3.5" rx="1.75" fill="#6ec6b5" opacity="0.55"/>
         </svg>
 
-        <!-- Squiggle doodle (squiggly-svg class makes it wobbly) -->
+        <!-- Loose one-pass pen test — intentionally uneven, but still smooth -->
         <svg class="doodle doodle-squig squiggly-svg" viewBox="0 0 130 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 22 C15 8 25 36 35 22 C45 8 55 36 65 22 C75 8 85 36 95 22 C105 8 115 36 125 22" stroke="#e8a24a" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M5 24 C13 8 24 35 34 21 C42 10 52 34 63 23 C72 12 83 35 94 20 C103 8 114 33 125 18" stroke="#e8a24a" stroke-width="2.15" fill="none"/>
+            <path d="M7 26 C18 16 24 31 32 25" stroke="#e8a24a" stroke-width="0.85" opacity="0.38" fill="none"/>
         </svg>
     </div>
 
@@ -4307,9 +4299,11 @@
             <h2 class="section-title section-title-squiggle">
                 <span class="squiggly-slow">From the Notebook</span>
                 <svg class="section-squiggle" viewBox="0 0 320 14" aria-hidden="true">
-                    <path d="M3 8 Q 40 2, 80 9 T 160 6 T 240 10 T 317 5"
+                    <path d="M3 8 C31 3 53 11 82 7 C112 3 132 10 160 6 C191 2 217 11 244 8 C272 5 294 7 317 5"
                           stroke="#e8a24a" stroke-width="3.5"
                           stroke-linecap="round" fill="none"/>
+                    <path d="M17 11 C70 8 112 12 164 9 C214 7 258 11 304 8"
+                          stroke="#c4842a" stroke-width="1.05" opacity="0.28" fill="none"/>
                 </svg>
             </h2>
         </div>
@@ -4329,15 +4323,15 @@
         <div class="subscribe-wrap">
             <!-- Scribbly arrow doodle pointing at the box -->
             <svg class="sub-arrow sub-arrow-l" viewBox="0 0 120 90" aria-hidden="true">
-                <path d="M5 20 Q 40 5, 60 25 T 110 70" stroke="#c4842a"
+                <path d="M5 22 C29 8 43 12 57 24 C72 37 82 55 108 70" stroke="#c4842a"
                       stroke-width="2.4" fill="none" stroke-linecap="round"
                       stroke-dasharray="0" />
-                <path d="M100 60 L 112 72 L 96 75 Z" fill="#c4842a"/>
+                <path d="M97 65 C103 67 108 70 112 73 M111 73 C106 74 101 77 97 79" stroke="#c4842a" stroke-width="2.4" fill="none"/>
             </svg>
             <svg class="sub-arrow sub-arrow-r" viewBox="0 0 120 90" aria-hidden="true">
-                <path d="M115 20 Q 80 5, 60 25 T 10 70" stroke="#4aa898"
+                <path d="M115 22 C91 8 77 12 63 24 C48 37 38 55 12 70" stroke="#4aa898"
                       stroke-width="2.4" fill="none" stroke-linecap="round"/>
-                <path d="M20 60 L 8 72 L 24 75 Z" fill="#4aa898"/>
+                <path d="M23 65 C17 67 12 70 8 73 M9 73 C14 74 19 77 23 79" stroke="#4aa898" stroke-width="2.4" fill="none"/>
             </svg>
 
             <!-- Floating stickers around the box -->
@@ -4356,7 +4350,7 @@
                 <h3 class="sub-title">
                     Stay in the loop!
                     <svg class="sub-title-scribble" viewBox="0 0 200 12" aria-hidden="true">
-                        <path d="M2 6 Q 25 1, 50 7 T 100 5 T 150 8 T 198 4"
+                        <path d="M2 7 C20 3 35 8 52 6 C71 3 83 8 101 5 C121 2 137 9 153 7 C170 5 185 6 198 4"
                               stroke="#e8a24a" stroke-width="3"
                               stroke-linecap="round" fill="none"/>
                     </svg>

@@ -83,10 +83,6 @@
         }
 
         /* ===== PAGE HEADER ===== */
-        @keyframes draw-line {
-            from { stroke-dashoffset: 380; }
-            to   { stroke-dashoffset: 0; }
-        }
         .page-header {
             padding: 9rem 2rem 3rem;
             max-width: 1100px; margin: 0 auto;
@@ -116,8 +112,8 @@
             overflow: visible;
         }
         .page-title-squiggle path {
-            stroke-dasharray: 380; stroke-dashoffset: 380;
-            animation: draw-line 1.1s ease 0.2s forwards;
+            stroke-dasharray: none;
+            stroke-dashoffset: 0;
         }
         .page-subtitle {
             font-family: var(--font-hand);
@@ -452,9 +448,8 @@
             content: '';
             position: absolute;
             left: 0; right: 30%; bottom: -3px;
-            height: 3px;
-            background: var(--amber);
-            border-radius: 2px;
+            height: 7px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 8' preserveAspectRatio='none'%3E%3Cpath d='M2 5 C25 2 42 6 64 4 C86 2 103 6 126 4 C147 2 163 5 178 3' fill='none' stroke='%23e8a24a' stroke-width='2.7' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
             transform: scaleX(0) rotate(-0.5deg);
             transform-origin: left center;
             transition: transform 380ms cubic-bezier(0.34,1.56,0.64,1);
@@ -492,7 +487,7 @@
         .card-doodle {
             position: absolute;
             pointer-events: none;
-            opacity: 0.7;
+            opacity: 0.62;
             color: var(--ink-light);
             z-index: 3;
         }
@@ -503,7 +498,18 @@
         /* Only show doodles in sketchbook view */
         .blog-grid.view-cards .card-doodle { display: none; }
         .blog-grid.view-grid .card-doodle  { display: block; }
-        .card-doodle svg { display: block; width: 100%; height: 100%; }
+        .card-doodle svg {
+            display: block;
+            width: 100%; height: 100%;
+            overflow: visible;
+            filter: url('#pen-ink');
+        }
+        .card-doodle :is(path, line, polyline, polygon, circle, ellipse),
+        .page-title-squiggle path {
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            shape-rendering: geometricPrecision;
+        }
 
         @media (max-width: 760px) {
             .blog-grid.view-grid {
@@ -772,6 +778,15 @@
     </ul>
 </nav>
 
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+    <defs>
+        <filter id="pen-ink" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.02 0.13" numOctaves="2" seed="23" result="inkNoise"/>
+            <feDisplacementMap in="SourceGraphic" in2="inkNoise" scale="0.55" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </defs>
+</svg>
+
 <main>
     <a href="index.html" class="back-home">← Back to home</a>
 
@@ -780,9 +795,11 @@
         <h1 class="page-title">
             From the Notebook
             <svg class="page-title-squiggle" viewBox="0 0 320 14" aria-hidden="true">
-                <path d="M3 8 Q 40 2, 80 9 T 160 6 T 240 10 T 317 5"
+                <path d="M3 8 C31 3 53 11 82 7 C112 3 132 10 160 6 C191 2 217 11 244 8 C272 5 294 7 317 5"
                       stroke="#e8a24a" stroke-width="3.5"
                       stroke-linecap="round" fill="none"/>
+                <path d="M17 11 C70 8 112 12 164 9 C214 7 258 11 304 8"
+                      stroke="#c4842a" stroke-width="1.05" opacity="0.28" fill="none"/>
             </svg>
         </h1>
         <p class="page-subtitle">Everything I've written so far — devlogs, Unity tips, jam writeups.</p>
@@ -975,9 +992,9 @@
     // Each entry: viewBox + inner SVG content. Color is via CSS currentColor.
     const DOODLES = [
         // star
-        { vb:'0 0 30 30', svg:'<path d="M15 3 L18 11 L26 12 L20 18 L22 26 L15 22 L8 26 L10 18 L4 12 L12 11 Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' },
+        { vb:'0 0 30 30', svg:'<path d="M15 3 C16 7 17 10 19 11 C22 11 25 11 27 13 C24 15 21 17 20 19 C21 22 22 24 21 27 C18 25 16 23 14 22 C11 24 9 26 7 25 C8 21 10 18 9 17 C7 15 4 14 3 12 C7 12 11 12 12 10 C13 7 14 5 15 3 Z" stroke="currentColor" stroke-width="1.8" fill="none"/>' },
         // heart
-        { vb:'0 0 30 30', svg:'<path d="M15 25 L7 16 Q3 12, 7 8 Q11 4, 15 9 Q19 4, 23 8 Q27 12, 23 16 Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' },
+        { vb:'0 0 30 30', svg:'<path d="M15 26 C12 22 6 18 5 14 C4 10 6 7 10 7 C13 7 15 10 16 12 C17 9 19 6 22 7 C26 8 27 11 25 15 C23 19 18 23 15 26 Z" stroke="currentColor" stroke-width="1.85" fill="none"/>' },
         // sparkle / 4-point burst
         { vb:'0 0 30 30', svg:
             '<line x1="15" y1="3"  x2="15" y2="11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>' +
@@ -989,11 +1006,11 @@
             '<line x1="23" y1="7"  x2="19" y2="11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>' +
             '<line x1="11" y1="19" x2="7"  y2="23" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>' },
         // squiggle wave
-        { vb:'0 0 50 16', svg:'<path d="M3 8 Q 10 1, 17 8 T 32 8 T 47 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>' },
+        { vb:'0 0 50 16', svg:'<path d="M3 9 C8 1 13 13 18 7 C23 2 28 13 33 8 C38 2 42 11 47 6" stroke="currentColor" stroke-width="2" fill="none"/>' },
         // curved arrow
         { vb:'0 0 40 40', svg:
-            '<path d="M5 35 Q 5 8, 32 8" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' +
-            '<path d="M27 4 L33 8 L27 13" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' },
+            '<path d="M5 35 C4 24 8 14 17 10 C22 8 27 8 33 9" stroke="currentColor" stroke-width="1.8" fill="none"/>' +
+            '<path d="M27 5 C29 7 31 8 34 9 C31 10 29 12 27 14" stroke="currentColor" stroke-width="1.8" fill="none"/>' },
         // asterisk
         { vb:'0 0 24 24', svg:
             '<line x1="12" y1="3"  x2="12" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' +
@@ -1009,7 +1026,7 @@
             '<path d="M3 12 Q 15 2, 27 12 Q 15 22, 3 12 Z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>' +
             '<circle cx="15" cy="12" r="3.2" stroke="currentColor" stroke-width="1.6" fill="none"/>' },
         // tiny scribble cloud
-        { vb:'0 0 40 22', svg:'<path d="M5 17 Q 3 11, 9 11 Q 9 5, 16 6 Q 19 2, 25 5 Q 33 4, 33 11 Q 38 13, 33 17 Z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/>' },
+        { vb:'0 0 40 22', svg:'<path d="M5 17 C2 13 5 10 10 11 C9 7 12 5 17 7 C19 3 24 3 27 6 C32 4 35 7 33 11 C38 12 38 16 33 18 C25 19 13 18 5 17 Z" stroke="currentColor" stroke-width="1.6" fill="none"/>' },
         // dotted-dash line
         { vb:'0 0 50 12', svg:
             '<line x1="2"  y1="6" x2="10" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' +
@@ -1053,7 +1070,7 @@
 
     function doodlesFor(post){
         const rnd = seededRand(seedFor(post.slug));
-        const slotCount = 3 + Math.floor(rnd()*2); // 3-4 doodles per card
+        const slotCount = 2 + Math.floor(rnd()*2); // 2-3 marks: enough personality without wallpapering the card
         const slotIdxs = SLOTS.map((_,i)=>i).sort(()=> rnd()-0.5).slice(0, slotCount);
         let html = '';
         for(const si of slotIdxs){
