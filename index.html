@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-view="recruiter">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.web3forms.com https://abacus.jasoncameron.dev; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com;">
-    <title>Wahib Walaa Mohammed — Game Developer</title>
-    <meta name="description" content="Unity C# programmer, game jam champion, and head of a 100-student game dev community. Currently building Finn for Steam.">
-    <meta property="og:title" content="Wahib Walaa Mohammed — Game Developer">
-    <meta property="og:description" content="Unity programmer, game jam champion, head of 100-student game dev community.">
+    <title>Wahib Walaa Mohammed — Unity Programmer &amp; Tools Developer</title>
+    <meta name="description" content="Unity and C# programmer building gameplay systems, editor tools, and shipped game-development products. Based in Saudi Arabia and open to remote opportunities.">
+    <meta property="og:title" content="Wahib Walaa Mohammed — Unity Programmer &amp; Tools Developer">
+    <meta property="og:description" content="Unity and C# programmer focused on gameplay systems, editor tooling, and practical workflows for game teams.">
     <meta name="theme-color" content="#f5f0e8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script defer src="smooth-scroll.js"></script>
+    <script defer src="portfolio-view.js"></script>
     <style>
         /* ============================================================
            ROOT & VARIABLES
@@ -289,11 +290,9 @@
             filter: url('#pen-ink-soft') drop-shadow(0 0.35px 0 rgba(42,32,22,0.10));
         }
 
-        @keyframes floatA { 0%,100%{transform:translateY(0) rotate(0deg)} 40%{transform:translateY(-12px) rotate(2.5deg)} 70%{transform:translateY(-6px) rotate(-1.5deg)} }
         @keyframes floatB { 0%,100%{transform:translateY(0) rotate(0deg)} 35%{transform:translateY(-8px) rotate(-2deg)} 65%{transform:translateY(-14px) rotate(1.5deg)} }
         @keyframes floatC { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-10px) rotate(3deg)} }
 
-        .doodle-fish    { top:14%; right:7%;  width:150px; animation: floatA 7s ease-in-out infinite; }
         .doodle-moon    { top:10%; left:62%;  width:100px; animation: floatB 9s ease-in-out infinite; opacity:0.3; }
         .doodle-ctrl    { bottom:18%; right:13%; width:110px; animation: floatC 8s ease-in-out infinite; opacity:0.3; }
         .doodle-squig   { top:62%; left:52%; width:130px; opacity:0.15; }
@@ -2909,13 +2908,24 @@
         }
     </style>
 
-    <!-- Anti-FOUC: set theme before first paint -->
+    <link rel="stylesheet" href="recruiter-view.css">
+
+    <!-- Anti-FOUC: set theme and preferred portfolio view before first paint -->
     <script>
         (function(){
-            var t = localStorage.getItem('wahib-theme');
-            if(t) document.documentElement.setAttribute('data-theme', t);
-            else if(window.matchMedia('(prefers-color-scheme: dark)').matches)
-                document.documentElement.setAttribute('data-theme', 'dark');
+            document.documentElement.classList.add('js');
+            try {
+                var t = localStorage.getItem('wahib-theme');
+                if(t) document.documentElement.setAttribute('data-theme', t);
+                else if(window.matchMedia('(prefers-color-scheme: dark)').matches)
+                    document.documentElement.setAttribute('data-theme', 'dark');
+
+                var v = localStorage.getItem('wahib-portfolio-view');
+                if(v === 'recruiter' || v === 'portfolio')
+                    document.documentElement.setAttribute('data-view', v);
+            } catch (error) {
+                document.documentElement.setAttribute('data-view', 'recruiter');
+            }
         })();
     </script>
 </head>
@@ -2968,8 +2978,14 @@
 
 <!-- NAV -->
 <nav id="navbar" aria-label="Main navigation">
-    <a href="#hero" class="nav-logo">W<span>·</span>W<span>·</span>M</a>
-    <ul class="nav-links">
+    <a href="#recruiter-overview" class="nav-logo" data-view-home>W<span>·</span>W<span>·</span>M</a>
+    <ul class="nav-links" data-view-nav="recruiter">
+        <li><a href="#recruiter-overview" class="nav-link">Overview</a></li>
+        <li><a href="#recruiter-experience" class="nav-link">Experience</a></li>
+        <li><a href="#recruiter-work" class="nav-link">Selected Work</a></li>
+        <li><a href="#recruiter-contact" class="nav-link">Contact</a></li>
+    </ul>
+    <ul class="nav-links" data-view-nav="portfolio">
         <li><a href="#about"    class="nav-link">About</a></li>
         <li><a href="#experience" class="nav-link">Experience</a></li>
         <li><a href="projects.html" class="nav-link">Work</a></li>
@@ -2978,38 +2994,249 @@
         <li><a href="#blog"     class="nav-link">Blog</a></li>
         <li><a href="#contact"  class="nav-link">Contact</a></li>
     </ul>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark / light mode">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-            <circle cx="12" cy="12" r="4.4"/>
-            <path d="M12 1.6V4 M12 20V22.4 M4 12H1.6 M22.4 12H20 M4.9 4.9 3.2 3.2 M20.8 20.8 19.1 19.1 M19.1 4.9 20.8 3.2 M3.2 20.8 4.9 19.1"/>
-        </svg>
-        <span class="tt-track" aria-hidden="true"><span class="tt-thumb"></span></span>
-        <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-            <path d="M20.5 14.8A8.6 8.6 0 0 1 9.2 3.5 8.6 8.6 0 1 0 20.5 14.8Z"/>
-        </svg>
-    </button>
-    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-    </button>
+    <div class="nav-actions">
+        <div class="view-switcher" role="group" aria-label="Choose portfolio view">
+            <button type="button" data-view-trigger="recruiter" aria-pressed="true">Recruiter View</button>
+            <button type="button" data-view-trigger="portfolio" aria-pressed="false">Full Portfolio</button>
+        </div>
+        <a href="assets/Wahib_Mohammed_Coop.pdf" download="Wahib_Mohammed_Coop_Resume.pdf" class="nav-resume" data-view-nav="recruiter">Resume</a>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark / light mode">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                <circle cx="12" cy="12" r="4.4"/>
+                <path d="M12 1.6V4 M12 20V22.4 M4 12H1.6 M22.4 12H20 M4.9 4.9 3.2 3.2 M20.8 20.8 19.1 19.1 M19.1 4.9 20.8 3.2 M3.2 20.8 4.9 19.1"/>
+            </svg>
+            <span class="tt-track" aria-hidden="true"><span class="tt-thumb"></span></span>
+            <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <path d="M20.5 14.8A8.6 8.6 0 0 1 9.2 3.5 8.6 8.6 0 1 0 20.5 14.8Z"/>
+            </svg>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
 </nav>
 
 <!-- MOBILE MENU -->
-<div id="mobile-menu" aria-hidden="true">
-    <a href="#about"    class="nav-link">About</a>
-    <a href="#experience" class="nav-link">Experience</a>
-    <a href="projects.html" class="nav-link">Work</a>
-    <a href="#skills"   class="nav-link">Skills</a>
-    <a href="#jams"     class="nav-link">Jams</a>
-    <a href="blog.html" class="nav-link">Blog</a>
-    <a href="#contact"  class="nav-link">Contact</a>
+<div id="mobile-menu" aria-hidden="true" inert>
+    <div class="mobile-view-switcher view-switcher" role="group" aria-label="Choose portfolio view">
+        <button type="button" data-view-trigger="recruiter" aria-pressed="true">Recruiter View</button>
+        <button type="button" data-view-trigger="portfolio" aria-pressed="false">Full Portfolio</button>
+    </div>
+    <div class="mobile-nav-group" data-view-nav="recruiter">
+        <a href="#recruiter-overview" class="nav-link">Overview</a>
+        <a href="#recruiter-experience" class="nav-link">Experience</a>
+        <a href="#recruiter-work" class="nav-link">Selected Work</a>
+        <a href="#recruiter-contact" class="nav-link">Contact</a>
+        <a href="assets/Wahib_Mohammed_Coop.pdf" download="Wahib_Mohammed_Coop_Resume.pdf" class="mobile-resume-link">Download Resume</a>
+    </div>
+    <div class="mobile-nav-group" data-view-nav="portfolio">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#experience" class="nav-link">Experience</a>
+        <a href="projects.html" class="nav-link">Work</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#jams" class="nav-link">Jams</a>
+        <a href="blog.html" class="nav-link">Blog</a>
+        <a href="#contact" class="nav-link">Contact</a>
+    </div>
 </div>
 
 <main>
 <!-- ============================================================
+     RECRUITER VIEW — concise, evidence-first overview
+============================================================ -->
+<div id="recruiter-view" data-view-panel="recruiter">
+    <section class="rv-hero" id="recruiter-overview" aria-labelledby="rv-title">
+        <div class="rv-shell rv-hero-grid">
+            <div class="rv-hero-copy">
+                <p class="rv-eyebrow"><span aria-hidden="true"></span> Unity programmer · Jeddah, Saudi Arabia</p>
+                <h1 id="rv-title">Wahib Walaa Mohammed</h1>
+                <p class="rv-role">Unity Programmer <span aria-hidden="true">&amp;</span> <span class="sr-only">and</span> Tools Developer</p>
+                <p class="rv-intro">I build maintainable gameplay systems and Unity editor tools that help teams move from prototype to a polished, shippable product.</p>
+                <div class="rv-availability"><span aria-hidden="true"></span> Open to Unity opportunities · Saudi Arabia &amp; remote</div>
+                <div class="rv-actions">
+                    <a class="rv-button rv-button-primary" href="#recruiter-work">View selected work</a>
+                    <a class="rv-button rv-button-secondary" href="assets/Wahib_Mohammed_Coop.pdf" download="Wahib_Mohammed_Coop_Resume.pdf">Download resume</a>
+                </div>
+                <div class="rv-profile-links" aria-label="Professional profiles">
+                    <a href="https://www.linkedin.com/in/wahib-mohammed" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+                    <a href="https://github.com/yqwz1" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+                    <a href="https://yqwz1.itch.io" target="_blank" rel="noopener">itch.io <span aria-hidden="true">↗</span></a>
+                </div>
+            </div>
+            <aside class="rv-hero-proof" aria-label="Professional summary">
+                <p class="rv-proof-label">At a glance</p>
+                <div class="rv-proof-primary">
+                    <strong>Unity &amp; C#</strong>
+                    <span>Gameplay systems · Editor tooling · Product delivery</span>
+                </div>
+                <dl class="rv-proof-list">
+                    <div><dt>3+</dt><dd>years building with Unity</dd></div>
+                    <div><dt>1</dt><dd>released Asset Store tool</dd></div>
+                    <div><dt>1st</dt><dd>place in a 72-hour game jam</dd></div>
+                    <div><dt>150+</dt><dd>students mentored</dd></div>
+                </dl>
+            </aside>
+        </div>
+    </section>
+
+    <section class="rv-section" id="recruiter-experience" aria-labelledby="rv-experience-title">
+        <div class="rv-shell">
+            <header class="rv-section-heading">
+                <p class="rv-kicker">Experience</p>
+                <h2 id="rv-experience-title">Building systems people can actually use.</h2>
+            </header>
+            <div class="rv-timeline">
+                <article class="rv-role-card">
+                    <div class="rv-role-meta">
+                        <p>Jun 2026 — Present</p>
+                        <span>MaybeTeam</span>
+                    </div>
+                    <div>
+                        <h3>Lead Programmer</h3>
+                        <ul>
+                            <li>Leading development on Finn, a 3D cozy fishing game heading to Steam, including its modular fishing framework and NPC pathing.</li>
+                            <li>Built editor-facing dialogue and content workflows so writers and designers can work without touching C#.</li>
+                        </ul>
+                    </div>
+                </article>
+                <article class="rv-role-card">
+                    <div class="rv-role-meta">
+                        <p>Aug 2025 — Present</p>
+                        <span>UQU Electronic Games Club</span>
+                    </div>
+                    <div>
+                        <h3>Head of Game Development Committee</h3>
+                        <ul>
+                            <li>Mentored more than 150 students in Unity and C#, with 97.2% program satisfaction.</li>
+                            <li>Planned workshops and milestones that helped student teams publish more than 11 games on itch.io.</li>
+                        </ul>
+                    </div>
+                </article>
+                <article class="rv-role-card">
+                    <div class="rv-role-meta">
+                        <p>Mar 2025 — Nov 2025</p>
+                        <span>Fiverr</span>
+                    </div>
+                    <div>
+                        <h3>Freelance Unity Developer</h3>
+                        <ul>
+                            <li>Delivered gameplay features, UI, and modular interactive systems for international clients.</li>
+                            <li>Improved game feel through camera, controls, feedback, and VFX iteration with clients.</li>
+                        </ul>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="rv-section rv-work-section" id="recruiter-work" aria-labelledby="rv-work-title">
+        <div class="rv-shell">
+            <header class="rv-section-heading rv-heading-row">
+                <div>
+                    <p class="rv-kicker">Selected work</p>
+                    <h2 id="rv-work-title">Three projects. Three kinds of proof.</h2>
+                </div>
+                <a class="rv-text-link" href="projects.html">View project archive <span aria-hidden="true">→</span></a>
+            </header>
+            <div class="rv-project-grid">
+                <article class="rv-project-card">
+                    <a class="rv-project-image" href="project-waypoint-path-system.html" aria-label="Read the Waypoint Path System case study">
+                        <img src="images/pathnpc/banner.png" alt="Waypoint Path System visual path-authoring interface in Unity">
+                    </a>
+                    <div class="rv-project-body">
+                        <div class="rv-project-topline"><span>Released · Asset Store</span><span>Creator &amp; Developer</span></div>
+                        <h3>Waypoint Path System</h3>
+                        <dl class="rv-project-evidence">
+                            <div><dt>Problem</dt><dd>Unity teams needed a faster, visual way to author NPC routes.</dd></div>
+                            <div><dt>Contribution</dt><dd>Designed the Scene View workflow, traversal modes, runtime controls, events, documentation, and release package.</dd></div>
+                            <div><dt>Outcome</dt><dd>Shipped version 1.0.0 as a reusable Unity Asset Store tool.</dd></div>
+                        </dl>
+                        <ul class="rv-tech-list" aria-label="Technologies"><li>C#</li><li>Unity</li><li>UI Toolkit</li><li>NavMesh</li></ul>
+                        <a class="rv-case-link" href="project-waypoint-path-system.html">Read case study <span aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+
+                <article class="rv-project-card">
+                    <a class="rv-project-image" href="project-finn.html" aria-label="Read the Finn case study">
+                        <img src="images/finn/image9.png" alt="Dock environment from the 3D cozy fishing game Finn">
+                    </a>
+                    <div class="rv-project-body">
+                        <div class="rv-project-topline"><span>In development · Steam</span><span>Lead Programmer</span></div>
+                        <h3>Finn</h3>
+                        <dl class="rv-project-evidence">
+                            <div><dt>Problem</dt><dd>A small team needed tactile fishing and content workflows that could grow without tightly coupled code.</dd></div>
+                            <div><dt>Contribution</dt><dd>Built the modular fishing framework, NPC pathing tool, flag-based dialogue, and event-driven foundations.</dd></div>
+                            <div><dt>Outcome</dt><dd>Designers and writers can create gameplay content through focused Unity workflows without editing C#.</dd></div>
+                        </dl>
+                        <ul class="rv-tech-list" aria-label="Technologies"><li>C#</li><li>Unity</li><li>ScriptableObjects</li><li>Cinemachine</li></ul>
+                        <a class="rv-case-link" href="project-finn.html">Read case study <span aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+
+                <article class="rv-project-card">
+                    <a class="rv-project-image" href="project-two-moons.html" aria-label="Read the Two Moons case study">
+                        <img src="images/two-moons/image3.png" alt="Narrative card battle from Two Moons">
+                    </a>
+                    <div class="rv-project-body">
+                        <div class="rv-project-topline"><span>Shipped · 1st Place</span><span>Lead Programmer</span></div>
+                        <h3>Two Moons</h3>
+                        <dl class="rv-project-evidence">
+                            <div><dt>Problem</dt><dd>A six-person team had 72 hours to build and ship a narrative card battler.</dd></div>
+                            <div><dt>Contribution</dt><dd>Established the project structure and content-driven card architecture for parallel team production.</dd></div>
+                            <div><dt>Outcome</dt><dd>Shipped within the jam deadline and won first place in the Story Mode Game Jam.</dd></div>
+                        </dl>
+                        <ul class="rv-tech-list" aria-label="Technologies"><li>C#</li><li>Unity</li><li>ScriptableObjects</li><li>WebGL</li></ul>
+                        <a class="rv-case-link" href="project-two-moons.html">Read case study <span aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="rv-section" id="recruiter-skills" aria-labelledby="rv-skills-title">
+        <div class="rv-shell rv-skills-layout">
+            <header class="rv-section-heading">
+                <p class="rv-kicker">Technical focus</p>
+                <h2 id="rv-skills-title">Unity systems with clean team workflows.</h2>
+                <p>I focus on code that stays understandable in production and tools that make the correct workflow obvious to designers.</p>
+            </header>
+            <div class="rv-skill-groups">
+                <div><h3>Core</h3><p>Unity · C# · Gameplay architecture · ScriptableObjects</p></div>
+                <div><h3>Tooling</h3><p>EditorWindow · UI Toolkit · Custom inspectors · Scene tools</p></div>
+                <div><h3>Delivery</h3><p>Testing · Debugging · Git · Documentation</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="rv-section rv-contact" id="recruiter-contact" aria-labelledby="rv-contact-title">
+        <div class="rv-shell rv-contact-grid">
+            <div>
+                <p class="rv-kicker">Contact</p>
+                <h2 id="rv-contact-title">Looking for a Unity programmer?</h2>
+                <p>I’m open to Unity programming opportunities in Saudi Arabia and remote roles where gameplay systems, editor tooling, and reliable delivery matter.</p>
+            </div>
+            <div class="rv-contact-actions">
+                <a class="rv-button rv-button-primary" href="mailto:wahib.w.mohammed@gmail.com">Email Wahib</a>
+                <a class="rv-button rv-button-secondary" href="assets/Wahib_Mohammed_Coop.pdf" download="Wahib_Mohammed_Coop_Resume.pdf">Download resume</a>
+                <div class="rv-contact-links">
+                    <a href="https://www.linkedin.com/in/wahib-mohammed" target="_blank" rel="noopener">LinkedIn</a>
+                    <a href="https://github.com/yqwz1" target="_blank" rel="noopener">GitHub</a>
+                    <button type="button" data-view-trigger="portfolio">Explore full portfolio</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="rv-footer">
+        <div class="rv-shell"><span>Wahib Walaa Mohammed</span><span>Unity Programmer · Tools Developer · Jeddah, Saudi Arabia</span></div>
+    </footer>
+</div>
+
+<!-- ============================================================
      BACKGROUND HAND-DRAWN DECORATION
      (scattered across the full page, behind everything)
 ============================================================ -->
-<div id="bg-sketches" aria-hidden="true">
+<div id="bg-sketches" aria-hidden="true" data-view-panel="portfolio">
     <!-- Scattered stars cluster -->
     <svg class="sk-svg" style="top:56%;left:38%;width:70px;height:60px;" viewBox="0 0 70 60" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M15 10 L17 16 L23 18 L17 20 L15 26 L13 20 L7 18 L13 16Z" fill="#e8a24a"/>
@@ -3018,12 +3245,6 @@
         <path d="M60 35 L61 37.5 L63.5 38.5 L61 39.5 L60 42 L59 39.5 L56.5 38.5 L59 37.5Z" fill="#e8a24a"/>
         <circle cx="8" cy="38" r="2" fill="#e8a24a"/>
         <circle cx="42" cy="22" r="1.5" fill="#e8a24a"/>
-    </svg>
-
-    <!-- Doodle explosion / burst (top left corner accent) -->
-    <svg class="sk-svg" style="top:0%;left:0%;width:80px;height:80px;" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M5 5 L20 30 M5 5 L30 20 M5 5 L32 8 M5 5 L8 32 M5 5 L25 25"
-              stroke="#e8a24a" stroke-width="1.5" stroke-linecap="round"/>
     </svg>
 
     <!-- ═══════════════════════════════════════════════════
@@ -3431,19 +3652,8 @@
 <!-- ============================================================
      HERO
 ============================================================ -->
-<section id="hero" aria-label="Introduction">
+<section id="hero" aria-label="Introduction" data-view-panel="portfolio">
     <div class="hero-doodles">
-        <!-- Fish doodle — for Finn -->
-        <svg class="doodle doodle-fish" viewBox="0 0 160 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21 46 C42 17 94 14 121 43 C105 70 51 78 21 46 Z" stroke="#d4910a" stroke-width="2.7" fill="none"/>
-            <path d="M31 51 C52 69 91 68 112 51" stroke="#e8a24a" stroke-width="0.95" opacity="0.5" fill="none"/>
-            <path d="M121 43 C130 38 139 31 145 27 C142 35 140 42 139 46 C143 53 145 59 145 64 C138 59 129 51 121 47" stroke="#d4910a" stroke-width="2.4" fill="none"/>
-            <path d="M45 36 C48 32 54 35 53 40 C51 44 45 42 45 36 Z" fill="#2a2016"/>
-            <path d="M62 32 C70 27 80 28 87 32 M64 57 C74 61 84 60 91 56 M37 46 C33 41 33 35 35 30" stroke="#d4910a" stroke-width="1.45" fill="none"/>
-            <path d="M70 20 C72 15 74 12 77 9" stroke="#4aa898" stroke-width="1.4" fill="none" stroke-dasharray="3 3"/>
-            <path d="M75 8 C77 5 81 7 80 10 C79 13 75 12 75 8 Z" fill="#4aa898"/>
-        </svg>
-
         <!-- Two Moons doodle -->
         <svg class="doodle doodle-moon" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M51 18 C31 15 14 33 13 54 C12 76 30 92 51 89 C42 80 36 69 36 58 C36 42 45 28 60 21 C57 19 54 18 51 18 Z" stroke="#795ab5" stroke-width="2.5" fill="none"/>
@@ -3504,7 +3714,7 @@
 <!-- ============================================================
      ABOUT
 ============================================================ -->
-<section id="about" aria-label="About Wahib" style="position:relative;">
+<section id="about" aria-label="About Wahib" style="position:relative;" data-view-panel="portfolio">
     <aside class="field-note field-note-yellow" style="top:14%;right:2%;--note-rot:3deg;">
         <span class="field-note-label">debug note</span>
         The bug was state. It is usually state.
@@ -3606,7 +3816,7 @@
 <!-- ============================================================
      EXPERIENCE — Detective Crime Board
 ============================================================ -->
-<section id="experience" aria-label="Experience">
+<section id="experience" aria-label="Experience" data-view-panel="portfolio">
     <aside class="field-note field-note-blue" style="top:25%;left:1.5%;--note-rot:-4deg;">
         <span class="field-note-label">working rule</span>
         Make the workflow obvious. Keep the clever part underneath.
@@ -3801,7 +4011,7 @@
 <!-- ============================================================
      PROJECTS
 ============================================================ -->
-<section id="projects" aria-label="Featured projects">
+<section id="projects" aria-label="Featured projects" data-view-panel="portfolio">
     <aside class="field-note field-note-pink" style="top:22%;left:1%;--note-rot:2deg;">
         <span class="field-note-label">prototype note</span>
         A prototype is an argument you can play.
@@ -3917,6 +4127,7 @@
                     </div>
 
                     <div class="project-links">
+                        <a href="project-finn.html" class="project-link">Read case study →</a>
                         <a href="#" class="project-link">Steam (coming soon) →</a>
                     </div>
                 </div>
@@ -3991,6 +4202,7 @@
                     </div>
 
                     <div class="project-links">
+                        <a href="project-two-moons.html" class="project-link">Read case study →</a>
                         <a href="https://yqwz1.itch.io" target="_blank" rel="noopener" class="project-link">Play on itch.io →</a>
                     </div>
                 </div>
@@ -4063,6 +4275,7 @@
                     </div>
 
                     <div class="project-links">
+                        <a href="project-easy-dialogue.html" class="project-link">Read case study →</a>
                         <a href="https://github.com/yqwz1" target="_blank" rel="noopener" class="project-link">GitHub →</a>
                     </div>
                 </div>
@@ -4166,6 +4379,7 @@
                     </div>
 
                     <div class="project-links">
+                        <a href="project-waypoint-path-system.html" class="project-link">Read case study →</a>
                         <a href="https://assetstore.unity.com/packages/tools/game-toolkits/waypoint-path-system-390624" target="_blank" rel="noopener" class="project-link">Unity Asset Store →</a>
                         <a href="https://github.com/yqwz1/waypoint-path-system-tool" target="_blank" rel="noopener" class="project-link">GitHub &amp; docs →</a>
                     </div>
@@ -4185,7 +4399,7 @@
 <!-- ============================================================
      SKILLS
 ============================================================ -->
-<section id="skills" aria-label="How Wahib builds" style="position:relative;">
+<section id="skills" aria-label="How Wahib builds" style="position:relative;" data-view-panel="portfolio">
     <aside class="field-note field-note-green" style="top:24%;right:1.5%;--note-rot:-3deg;">
         <span class="field-note-label">architecture</span>
         Abstractions must earn their rent.
@@ -4299,7 +4513,7 @@
 <!-- ============================================================
      GAME JAMS
 ============================================================ -->
-<section id="jams" aria-label="Game jam history" style="position:relative;">
+<section id="jams" aria-label="Game jam history" style="position:relative;" data-view-panel="portfolio">
     <aside class="field-note field-note-orange" style="top:32%;right:2%;--note-rot:4deg;">
         <span class="field-note-label">72-hour truth</span>
         The deadline removed three “essential” features.
@@ -4364,7 +4578,7 @@
 <!-- ============================================================
      BLOG
 ============================================================ -->
-<section id="blog" aria-label="Blog" data-mode="preview">
+<section id="blog" aria-label="Blog" data-mode="preview" data-view-panel="portfolio">
     <aside class="field-note field-note-blue" style="top:18%;left:1.5%;--note-rot:-2deg;">
         <span class="field-note-label">editorial policy</span>
         If the useful part fits in a paragraph, I stop there.
@@ -4452,7 +4666,7 @@
 </section>
 
 <!-- Blog post viewer modal -->
-<div id="blog-modal" aria-hidden="true">
+<div id="blog-modal" aria-hidden="true" data-view-panel="portfolio">
     <div class="blog-modal-paper">
         <button id="blog-modal-close" aria-label="Close">✕</button>
         <article id="blog-modal-content"></article>
@@ -4470,7 +4684,7 @@
 <!-- ============================================================
      CONTACT
 ============================================================ -->
-<section id="contact" aria-label="Contact" style="position:relative;">
+<section id="contact" aria-label="Contact" style="position:relative;" data-view-panel="portfolio">
     <aside class="field-note field-note-yellow" style="top:25%;left:1.5%;--note-rot:3deg;">
         <span class="field-note-label">before we start</span>
         Good briefs welcome. Vague ones get questions.
@@ -4574,7 +4788,7 @@
 </main>
 
 <!-- FOOTER -->
-<footer id="footer">
+<footer id="footer" data-view-panel="portfolio">
     <div class="footer-inner">
         <div>
             <div class="footer-name">Wahib Walaa Mohammed</div>
@@ -4592,12 +4806,13 @@
 
 <button id="btt" aria-label="Back to top">↑</button>
 <div id="toast" role="status" aria-live="polite"></div>
+<div id="view-status" class="sr-only" role="status" aria-live="polite"></div>
 
 <!-- ============================================================
      FOREGROUND DOODLES — each anchored to a sticker via data-anchor.
      JS positions them relative to the sticker's real bounding box.
 ============================================================ -->
-<div id="fg-doodles" aria-hidden="true">
+<div id="fg-doodles" aria-hidden="true" data-view-panel="portfolio">
 
     <!-- ── HERO ── -->
     <!-- Scribbled crayon loop around the shipped-work sticker -->
@@ -4923,12 +5138,14 @@ burger.addEventListener('click', ()=>{
     burger.classList.toggle('open', open);
     burger.setAttribute('aria-expanded', open);
     mMenu.setAttribute('aria-hidden', !open);
+    mMenu.toggleAttribute('inert', !open);
 });
 mMenu.querySelectorAll('a').forEach(a=> a.addEventListener('click', ()=>{
     mMenu.classList.remove('open');
     burger.classList.remove('open');
     burger.setAttribute('aria-expanded','false');
     mMenu.setAttribute('aria-hidden','true');
+    mMenu.setAttribute('inert', '');
 }));
 
 /* ============================================================

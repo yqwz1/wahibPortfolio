@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; object-src 'none'; base-uri 'self';">
+    <title>FINN — Project Case Study · Wahib Mohammed</title>
+    <meta name="description" content="FINN case study: gameplay systems, designer tooling, and lead programming work by Wahib Mohammed.">
+    <meta name="theme-color" content="#f5f0e8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="project-detail.css">
+    <script defer src="smooth-scroll.js"></script>
+</head>
+<body>
+<nav id="navbar" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo">Wahib<span>.</span></a>
+    <ul class="nav-links">
+        <li><a href="index.html#about" class="nav-link">About</a></li>
+        <li><a href="projects.html" class="nav-link active" aria-current="page">Work</a></li>
+        <li><a href="blog.html" class="nav-link">Blog</a></li>
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+    </ul>
+</nav>
+
+<main>
+    <header class="case-hero" data-case="01">
+        <div class="hero-copy">
+            <a href="projects.html" class="back-link">← All projects</a>
+            <p class="case-label">Case file 001 · Game development</p>
+            <h1 class="case-title">FINN</h1>
+            <p class="case-subtitle">3D Cozy Fishing Adventure</p>
+            <p class="case-lede">A cozy fishing game heading to Steam. I lead programming across gameplay and internal tools, with a focus on tactile fishing and systems the rest of the team can author without touching C#.</p>
+            <div class="status-line">
+                <span class="status-chip accent">✦ In development</span>
+                <span class="status-chip">Lead programmer</span>
+                <span class="status-chip">Unity · C#</span>
+            </div>
+        </div>
+        <figure class="hero-visual">
+            <img src="images/finn/image9.png" alt="FINN game scene showing a wooden dock beside the water">
+            <figcaption class="hero-caption">the dock — where the fishing loop begins</figcaption>
+        </figure>
+        <span class="scroll-note">Scroll to open the file ↓</span>
+    </header>
+
+    <div class="case-content">
+        <section class="case-facts" aria-label="Project facts">
+            <div class="fact"><span class="fact-label">My role</span><span class="fact-value">Lead Programmer</span></div>
+            <div class="fact"><span class="fact-label">Focus</span><span class="fact-value">Gameplay &amp; Tools</span></div>
+            <div class="fact"><span class="fact-label">Platform</span><span class="fact-value">Steam</span></div>
+            <div class="fact"><span class="fact-label">Status</span><span class="fact-value">In Development</span></div>
+        </section>
+
+        <section class="story-section">
+            <header><p class="section-kicker">01 · The brief</p><h2 class="section-title">Make cozy systems feel good—and easy to build with.</h2></header>
+            <div class="story-body">
+                <p>FINN needs more than a working fishing mechanic. The moment-to-moment interaction has to feel tactile, while fish, fishing spots, conversations, and NPC routes all need to grow as production continues.</p>
+                <p>My responsibility is split between the player-facing experience and the workflows behind it. I build the gameplay foundations, then expose the right controls so teammates can create content independently.</p>
+                <blockquote class="pull-quote">The system is only finished when the team can use it without waiting for a programmer.</blockquote>
+            </div>
+        </section>
+
+        <section class="story-section">
+            <header><p class="section-kicker">02 · My contribution</p><h2 class="section-title">The parts I own.</h2></header>
+            <div class="contribution-grid">
+                <article class="contribution-card" data-number="SYSTEM 01"><h3>Modular fishing</h3><p>Structured fish and fishing spots as configurable content so the roster and locations can expand without new code for every variation.</p></article>
+                <article class="contribution-card" data-number="SYSTEM 02"><h3>Branching dialogue</h3><p>Built a ScriptableObject dialogue workflow with flag-based branches, allowing writers to assemble conversation trees directly in the Inspector.</p></article>
+                <article class="contribution-card" data-number="TOOL 03"><h3>NPC path authoring</h3><p>Created a custom path tool so teammates can lay out patrol routes quickly instead of hand-wiring movement setup.</p></article>
+            </div>
+        </section>
+
+        <section class="story-section">
+            <header><p class="section-kicker">03 · The work</p><h2 class="section-title">Decisions behind the build.</h2></header>
+            <div class="decision-list">
+                <article class="decision"><h3>Content over conditionals</h3><p>Fish, spots, and dialogue are modeled as authored data. This keeps the runtime reusable and moves everyday iteration into tools that designers already understand.</p></article>
+                <article class="decision"><h3>Flags as a shared language</h3><p>Dialogue branches evaluate explicit story flags, giving writing and programming one small, predictable contract for narrative state.</p></article>
+                <article class="decision"><h3>Fast feedback</h3><p>Team-facing controls prioritize quick setup and clear Inspector feedback, reducing the hidden configuration that usually makes custom Unity systems difficult to hand off.</p></article>
+            </div>
+        </section>
+
+        <section class="story-section">
+            <header><p class="section-kicker">04 · In the game</p><h2 class="section-title">World snapshots.</h2></header>
+            <div class="gallery">
+                <a class="gallery-shot" href="images/finn/image9.png" target="_blank"><img src="images/finn/image9.png" alt="FINN wooden dock scene"><span>The dock</span></a>
+                <a class="gallery-shot" href="images/finn/image10.png" target="_blank"><img src="images/finn/image10.png" alt="FINN beach scene"><span>The beach</span></a>
+                <a class="gallery-shot" href="images/finn/image11.png" target="_blank"><img src="images/finn/image11.png" alt="Activities on FINN's beach"><span>Beach activities</span></a>
+                <a class="gallery-shot" href="images/finn/image12.png" target="_blank"><img src="images/finn/image12.png" alt="FINN village environment"><span>The village</span></a>
+            </div>
+        </section>
+
+        <section class="story-section">
+            <header><p class="section-kicker">05 · Stack &amp; outcome</p><h2 class="section-title">Built for continued production.</h2></header>
+            <div class="story-body">
+                <p>The result is a growing set of gameplay systems that remain editable by the people producing the content. Fishing, dialogue, and NPC movement share the same goal: make iteration faster without hiding important behavior.</p>
+                <div class="stack-list" aria-label="Technologies"><span>Unity</span><span>C#</span><span>URP</span><span>ScriptableObjects</span><span>Cinemachine</span><span>TextMeshPro</span></div>
+                <div class="case-actions"><span class="button secondary" aria-disabled="true">Steam page coming soon</span><a class="button" href="index.html#contact">Discuss the work →</a></div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<aside class="next-case"><a href="project-two-moons.html"><span class="next-label">Next case file</span><span class="next-title">TWO MOONS</span><span class="next-arrow">→</span></a></aside>
+<footer>© 2026 Wahib Mohammed · Built like a sketchbook, documented like a case file.</footer>
+</body>
+</html>

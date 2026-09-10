@@ -324,7 +324,20 @@
         .project-card:nth-child(3) { animation-delay: .14s; }
         .project-card:nth-child(4) { animation-delay: .2s; }
         .project-card:hover { z-index: 3; box-shadow: var(--shadow-lift); transform: rotate(0) translateY(-5px); }
+        .project-card:has(.project-card-detail:focus-visible) {
+            z-index: 3;
+            outline: 3px solid var(--teal-dark);
+            outline-offset: 5px;
+            box-shadow: var(--shadow-lift);
+        }
         .project-card[hidden] { display: none; }
+        .project-card-detail {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            border-radius: 3px;
+        }
+        .project-card-detail:focus-visible { outline: 0; }
         .project-card::before {
             content: '';
             position: absolute;
@@ -444,7 +457,7 @@
             color: var(--ink-muted);
             font: 400 .62rem var(--font-mono);
         }
-        .project-links { display: flex; flex-wrap: wrap; align-items: center; gap: .85rem; min-height: 30px; }
+        .project-links { position: relative; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: .85rem; min-height: 30px; }
         .project-link {
             display: inline-flex;
             align-items: center;
@@ -623,6 +636,7 @@
 
         <div class="projects-grid" id="projects-grid">
             <article class="project-card" data-kind="game development" data-status="development" data-search="finn cozy fishing game unity c# urp scriptableobjects cinemachine textmeshpro dialogue npc path steam">
+                <a href="project-finn.html" class="project-card-detail"><span class="sr-only">Open the FINN project case study</span></a>
                 <div class="project-visual">
                     <img src="images/finn/image9.png" alt="FINN game scene showing a wooden dock by the water">
                     <span class="project-index">CASE 001 / 004</span>
@@ -641,11 +655,12 @@
                     <div class="tech-tags" aria-label="Technologies">
                         <span class="tech-tag">Unity</span><span class="tech-tag">C#</span><span class="tech-tag">URP</span><span class="tech-tag">ScriptableObjects</span><span class="tech-tag">Cinemachine</span>
                     </div>
-                    <div class="project-links"><span class="coming-soon">Steam page coming soon</span></div>
+                    <div class="project-links"><a href="project-finn.html" class="project-link">Open case study →</a><span class="coming-soon">Steam page coming soon</span></div>
                 </div>
             </article>
 
             <article class="project-card" data-kind="game shipped" data-status="shipped" data-search="two moons narrative card battler unity c# scriptableobjects webgl game jam shipped first place">
+                <a href="project-two-moons.html" class="project-card-detail"><span class="sr-only">Open the TWO MOONS project case study</span></a>
                 <div class="project-visual">
                     <img src="images/two-moons/image3.png" alt="Two Moons narrative card battler gameplay">
                     <span class="project-index">CASE 002 / 004</span>
@@ -665,6 +680,7 @@
                         <span class="tech-tag">Unity</span><span class="tech-tag">C#</span><span class="tech-tag">ScriptableObjects</span><span class="tech-tag">Narrative Systems</span><span class="tech-tag">WebGL</span>
                     </div>
                     <div class="project-links">
+                        <a href="project-two-moons.html" class="project-link">Open case study →</a>
                         <a href="https://yqwz1.itch.io" target="_blank" rel="noopener" class="project-link">Play on itch.io
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
                         </a>
@@ -673,6 +689,7 @@
             </article>
 
             <article class="project-card" data-kind="tool" data-status="open source" data-search="easy dialogue unity editor tool c# editorwindow custom inspector scriptableobjects graph open source">
+                <a href="project-easy-dialogue.html" class="project-card-detail"><span class="sr-only">Open the EASY DIALOGUE project case study</span></a>
                 <div class="project-visual">
                     <img src="images/easy-dialogue/image.png" alt="Easy Dialogue graph editor inside Unity">
                     <span class="project-index">CASE 003 / 004</span>
@@ -692,6 +709,7 @@
                         <span class="tech-tag">C#</span><span class="tech-tag">Unity Editor API</span><span class="tech-tag">EditorWindow</span><span class="tech-tag">CustomInspector</span><span class="tech-tag">ScriptableObjects</span>
                     </div>
                     <div class="project-links">
+                        <a href="project-easy-dialogue.html" class="project-link">Open case study →</a>
                         <a href="https://github.com/yqwz1" target="_blank" rel="noopener" class="project-link">View GitHub
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
                         </a>
@@ -700,6 +718,7 @@
             </article>
 
             <article class="project-card" data-kind="tool shipped" data-status="shipped" data-search="waypoint path system unity navmesh path authoring tool c# ui toolkit scene view navmeshagent unityevents asset store shipped">
+                <a href="project-waypoint-path-system.html" class="project-card-detail"><span class="sr-only">Open the WAYPOINT PATH SYSTEM project case study</span></a>
                 <div class="project-visual">
                     <img src="images/pathnpc/banner.png" alt="Waypoint Path System banner showing visual NPC path authoring in Unity">
                     <span class="project-index">CASE 004 / 004</span>
@@ -719,6 +738,7 @@
                         <span class="tech-tag">C#</span><span class="tech-tag">Unity 2022.3+</span><span class="tech-tag">UI Toolkit</span><span class="tech-tag">NavMeshAgent</span><span class="tech-tag">Scene View Tooling</span>
                     </div>
                     <div class="project-links">
+                        <a href="project-waypoint-path-system.html" class="project-link">Open case study →</a>
                         <a href="https://assetstore.unity.com/packages/tools/game-toolkits/waypoint-path-system-390624" target="_blank" rel="noopener" class="project-link">Unity Asset Store
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
                         </a>
