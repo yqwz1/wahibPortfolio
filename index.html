@@ -469,7 +469,7 @@
             position: relative;
             max-width: 1080px;
             margin: 0 auto;
-            min-height: 1280px;
+            min-height: 1700px;
             z-index: 3;
         }
         /* SVG strings overlay */
@@ -491,6 +491,7 @@
         .crime-row-1 { top: 40px; }
         .crime-row-2 { top: 460px; }
         .crime-row-3 { top: 880px; }
+        .crime-row-4 { top: 1300px; }
 
         /* Cards — aged case file paper */
         .case-card {
@@ -640,6 +641,10 @@
             width: 100%; height: 100%;
             object-fit: cover;
         }
+        .case-photo img.case-photo-logo {
+            object-fit: contain;
+            background: #fff;
+        }
         .case-photo-stencil {
             font-family: var(--font-mono); font-weight: 700;
             font-size: 0.68rem; letter-spacing: 0.18em;
@@ -693,20 +698,23 @@
             transform: rotate(32deg);
         }
 
-        /* Row 1: card left, polaroid right */
+        /* Odd rows: card left, polaroid right */
         .crime-row-1 .case-card { left: 30px; top: 50px; transform: rotate(-1.3deg); }
         .crime-row-1 .case-pin  { left: 188px; top: 38px; }
         .crime-row-1 .case-polaroid { right: 80px; top: 60px; transform: rotate(4deg); }
 
-        /* Row 2: polaroid left, card right */
+        /* Even rows: polaroid left, card right */
         .crime-row-2 .case-card { right: 30px; top: 50px; transform: rotate(1.6deg); }
         .crime-row-2 .case-pin  { right: 220px; top: 38px; }
         .crime-row-2 .case-polaroid { left: 80px; top: 60px; transform: rotate(-3.5deg); }
 
-        /* Row 3: card left, polaroid right */
         .crime-row-3 .case-card { left: 30px; top: 50px; transform: rotate(-0.9deg); }
         .crime-row-3 .case-pin  { left: 188px; top: 38px; }
         .crime-row-3 .case-polaroid { right: 80px; top: 60px; transform: rotate(3deg); }
+
+        .crime-row-4 .case-card { right: 30px; top: 50px; transform: rotate(1.1deg); }
+        .crime-row-4 .case-pin  { right: 220px; top: 38px; }
+        .crime-row-4 .case-polaroid { left: 80px; top: 60px; transform: rotate(-3deg); }
 
         /* Hover — straighten + lift, matching site-wide spring */
         .case-card:hover {
@@ -3088,6 +3096,19 @@
             <div class="rv-timeline">
                 <article class="rv-role-card">
                     <div class="rv-role-meta">
+                        <p>Present</p>
+                        <span>Aiqona Productions</span>
+                        <img class="rv-role-logo" src="images/portraits/aiqona-productions.jpg" alt="" loading="lazy" decoding="async">
+                    </div>
+                    <div>
+                        <h3>Game Developer Intern</h3>
+                        <ul>
+                            <li>Contributing to game development as part of the Aiqona Productions team.</li>
+                        </ul>
+                    </div>
+                </article>
+                <article class="rv-role-card">
+                    <div class="rv-role-meta">
                         <p>Jun 2026 — Present</p>
                         <span>MaybeTeam</span>
                     </div>
@@ -3834,7 +3855,7 @@
     <div class="crime-board">
         <!-- SVG with curvy red yarn connecting the pins -->
         <svg class="crime-strings"
-             viewBox="0 0 1080 1280"
+             viewBox="0 0 1080 1700"
              preserveAspectRatio="none"
              aria-hidden="true">
             <defs>
@@ -3856,6 +3877,7 @@
                 Pin1 = (201, 91)    [row1, card-left]
                 Pin2 = (847, 511)   [row2, card-right]
                 Pin3 = (201, 931)   [row3, card-left]
+                Pin4 = (847, 1351)  [row4, card-right]
                 Curves sag naturally between pins for that loose-yarn look.
             -->
 
@@ -3864,7 +3886,8 @@
                      L 201 91
                      C 220 250, 880 360, 847 511
                      C 820 660, 220 780, 201 931
-                     L 201 1300"
+                     C 220 1080, 880 1200, 847 1351
+                     L 847 1720"
                   stroke="rgba(20,5,0,0.55)"
                   stroke-width="9"
                   stroke-linecap="round"
@@ -3877,7 +3900,8 @@
                      L 201 91
                      C 220 250, 880 360, 847 511
                      C 820 660, 220 780, 201 931
-                     L 201 1300"
+                     C 220 1080, 880 1200, 847 1351
+                     L 847 1720"
                   stroke="url(#yarn-grad)"
                   stroke-width="6.5"
                   stroke-linecap="round"
@@ -3889,7 +3913,8 @@
                      L 201 91
                      C 220 250, 880 360, 847 511
                      C 820 660, 220 780, 201 931
-                     L 201 1300"
+                     C 220 1080, 880 1200, 847 1351
+                     L 847 1720"
                   stroke="#ef5d4a"
                   stroke-width="2"
                   stroke-linecap="round"
@@ -3903,7 +3928,8 @@
                      L 201 91
                      C 220 250, 880 360, 847 511
                      C 820 660, 220 780, 201 931
-                     L 201 1300"
+                     C 220 1080, 880 1200, 847 1351
+                     L 847 1720"
                   stroke="rgba(255,180,160,0.55)"
                   stroke-width="0.8"
                   stroke-linecap="round"
@@ -3911,11 +3937,40 @@
                   opacity="0.8"/>
         </svg>
 
-        <!-- ── ROW 1: MaybeTeam (card left, photo right) ── -->
+        <!-- ── ROW 1: Aiqona Productions (card left, logo right) ── -->
         <div class="crime-row crime-row-1">
             <article class="case-card pin-in">
                 <div class="case-stamp">
-                    <span class="case-stamp-no">FILE No. 001 / 03</span>
+                    <span class="case-stamp-no">FILE No. 001 / 04</span>
+                    <span class="case-stamp-classified">ACTIVE</span>
+                </div>
+                <div class="case-role">Game Developer Intern</div>
+                <div class="case-company">Aiqona Productions</div>
+                <div class="case-date">PRESENT</div>
+                <ul class="case-bullets">
+                    <li>Contributing to game development as part of the Aiqona Productions team.</li>
+                </ul>
+            </article>
+
+            <div class="case-pin" aria-hidden="true">
+                <div class="case-pin-head"></div>
+            </div>
+
+            <div class="case-polaroid pin-in">
+                <div class="case-tape case-tape-tl" aria-hidden="true"></div>
+                <div class="case-tape case-tape-tr" aria-hidden="true"></div>
+                <div class="case-photo">
+                    <img class="case-photo-logo" src="images/portraits/aiqona-productions.jpg" alt="Aiqona Productions logo" loading="lazy" decoding="async">
+                </div>
+                <div class="case-photo-caption">Aiqona Productions · Present</div>
+            </div>
+        </div>
+
+        <!-- ── ROW 2: MaybeTeam (photo left, card right) ── -->
+        <div class="crime-row crime-row-2">
+            <article class="case-card pin-in">
+                <div class="case-stamp">
+                    <span class="case-stamp-no">FILE No. 002 / 04</span>
                     <span class="case-stamp-classified">CLASSIFIED</span>
                 </div>
                 <div class="case-role">Lead Programmer</div>
@@ -3943,8 +3998,8 @@
             </div>
         </div>
 
-        <!-- ── ROW 2: UQU Club (photo left, card right) ── -->
-        <div class="crime-row crime-row-2">
+        <!-- ── ROW 3: UQU Club (card left, photo right) ── -->
+        <div class="crime-row crime-row-3">
             <div class="case-polaroid pin-in">
                 <div class="case-tape case-tape-tl" aria-hidden="true"></div>
                 <div class="case-tape case-tape-tr" aria-hidden="true"></div>
@@ -3961,7 +4016,7 @@
 
             <article class="case-card pin-in">
                 <div class="case-stamp">
-                    <span class="case-stamp-no">FILE No. 002 / 03</span>
+                    <span class="case-stamp-no">FILE No. 003 / 04</span>
                     <span class="case-stamp-classified">CLASSIFIED</span>
                 </div>
                 <div class="case-role">Head of Game Development Committee</div>
@@ -3975,11 +4030,11 @@
             </article>
         </div>
 
-        <!-- ── ROW 3: Freelance (card left, photo right) ── -->
-        <div class="crime-row crime-row-3">
+        <!-- ── ROW 4: Freelance (photo left, card right) ── -->
+        <div class="crime-row crime-row-4">
             <article class="case-card pin-in">
                 <div class="case-stamp">
-                    <span class="case-stamp-no">FILE No. 003 / 03</span>
+                    <span class="case-stamp-no">FILE No. 004 / 04</span>
                     <span class="case-stamp-classified">CLASSIFIED</span>
                 </div>
                 <div class="case-role">Freelance Unity Developer</div>

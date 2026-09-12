@@ -478,6 +478,17 @@ html[data-view="recruiter"] #btt {
     font-size: 0.84rem;
 }
 
+.rv-role-logo {
+    display: block;
+    width: 76px;
+    height: 54px;
+    margin-top: 1rem;
+    border: 1px solid var(--rv-line);
+    border-radius: 6px;
+    object-fit: contain;
+    background: #fff;
+}
+
 .rv-role-card h3 {
     font-family: var(--font-body);
     font-size: 1.3rem;
